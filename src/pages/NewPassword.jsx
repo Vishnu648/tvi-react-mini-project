@@ -7,28 +7,25 @@ import "./style.css";
 function Login() {
   return (
     <div className="bg-[#007bff] w-screen h-screen flex flex-col relative items-center pt-12">
-      <section className="w-[85%] md:w-[70%] xl:w-[441px] h-[462px] relative bg-white rounded-md">
-        <AuthHeading heading={"Login"} />
+      <section className="w-[85%] md:w-[70%] xl:w-[441px] h-[432px] relative bg-white rounded-md">
+        <AuthHeading heading={"Create Password"} />
         <form className="h-[312px] p-5 flex flex-col gap-6 ">
           <label id="Label">
-            Email
-            <br /> <input type="email" placeholder="Enter email address" />
+            New Password
+            <br /> <input type="email" placeholder="Enter new password" />
           </label>
 
           <label id="Label">
-            Password
-            <br /> <input type="password" placeholder="Enter password" />
+            Confirm Password
+            <br /> <input type="password" placeholder="Confirm password" />
           </label>
-          <label className="flex gap-2 text-[#2a2e32] text-sm">
-            <input type="checkbox" />
-            Remember Password
-          </label>
+          
           <div className="flex w-full items-center justify-between">
             <p className="hover:underline cursor-pointer text-[13px] text-[#007bff]">
-              Forgot Password?
+            
             </p>
             <button className="bg-[#007bff] hover:bg-[#0062cc] py-[6px] px-4 rounded-[3px] text-white">
-              Login
+              Create
             </button>
           </div>
         </form>

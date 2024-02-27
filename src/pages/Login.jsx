@@ -10,12 +10,12 @@ function Login() {
       <section className="w-[85%] md:w-[70%] xl:w-[441px] h-[462px] relative bg-white rounded-md">
         <AuthHeading heading={"Login"} />
         <form className="h-[312px] p-5 flex flex-col gap-6 ">
-          <label id="loginLabel">
+          <label id="Label">
             Email
             <br /> <input type="email" placeholder="Enter email address" />
           </label>
 
-          <label id="loginLabel">
+          <label id="Label">
             Password
             <br /> <input type="password" placeholder="Enter password" />
           </label>
@@ -27,7 +27,7 @@ function Login() {
             <p className="hover:underline cursor-pointer text-[13px] text-[#007bff]">
               Forgot Password?
             </p>
-            <button className="bg-[#007bff] py-[6px] px-4 rounded-sm text-white">
+            <button className="bg-[#007bff] py-[6px] px-4 rounded-[3px] text-white">
               Login
             </button>
           </div>

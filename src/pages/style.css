@@ -1,4 +1,4 @@
-#loginLabel {
+#Label {
   font-size: 13px;
   color: #2a2e32;
   display: flex;
@@ -6,7 +6,7 @@
   gap: 5px;
 }
 
-#loginLabel input {
+#Label input {
   border: 1px solid #dee2e6;
   width: 100%;
   padding: 5px;
@@ -15,6 +15,5 @@
 }
 
 input::placeholder {
-  opacity: 0.5;
   font-size: 15px;
 }

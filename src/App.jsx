@@ -12,9 +12,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
         <Route path="/" element={<Register />} />
-        <Route path="/test" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/recover-password" element={<PasswordRecovery />} />
+        <Route path="/otp" element={<Otp />} />
+        <Route path="/create-password" element={<NewPassword />} />
+        <Route path="/home" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );

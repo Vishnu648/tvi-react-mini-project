@@ -3,6 +3,7 @@ import AuthFooter from "../components/auth/AuthFooter";
 import AuthHeading from "../components/auth/AuthHeading";
 import SubFooter from "../components/auth/SubFooter";
 import "./style.css";
+import { Link } from "react-router-dom";
 
 function Login() {
   return (
@@ -19,15 +20,19 @@ function Login() {
             <br /> <input type="email" placeholder="Enter email address" />
           </label>
           <div className="flex w-full mt-6 items-center justify-between">
-            <p className="hover:underline cursor-pointer text-[13px] text-[#007bff]">
-              Return to login
-            </p>
+            <Link to="/login">
+              <p className="hover:underline cursor-pointer text-[13px] text-[#007bff]">
+                Return to login
+              </p>
+            </Link>
             <button className="bg-[#007bff] hover:bg-[#0062cc] py-[6px] px-4 rounded-[3px] text-white">
               Generate OTP
             </button>
           </div>
         </section>
-        <SubFooter message={"Need an account? Sign up!"} />
+        <Link to="/">
+          <SubFooter message={"Need an account? Sign up!"} />
+        </Link>
       </section>
       <AuthFooter />
     </div>

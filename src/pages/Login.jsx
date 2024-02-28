@@ -4,14 +4,37 @@ import AuthHeading from "../components/auth/AuthHeading";
 import SubFooter from "../components/auth/SubFooter";
 import "./style.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  set_Access_Tokken,
+  set_Refresh_Token,
+} from "../Redux/features/tokenSlice";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate=useNavigate()
+  const tokens = useSelector((state) => state.token);
+  const [email, setEmail] = useState("admin@gmail.com");
+  const [password, setPassword] = useState("admin@12345");
 
   const handleLogin = (e) => {
+    const credentials = {
+      email: email,
+      password: password,
+    };
     e.preventDefault();
-    console.log(email, password);
+    if (email.length > 0 && password.length > 0) {
+      axios
+        .post("http://localhost:8000/api/login", credentials)
+        .then((response) => {
+          dispatch(set_Access_Tokken(response.data.access_token));
+          dispatch(set_Refresh_Token(response.data.refresh_token));
+        });
+        console.log('--login--',tokens)
+        // navigate('/')
+    }
   };
 
   return (
@@ -24,6 +47,7 @@ function Login() {
             <br />{" "}
             <input
               type="email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter email address"
             />
@@ -34,11 +58,12 @@ function Login() {
             <br />{" "}
             <input
               type="password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter password"
             />
           </label>
-          <label className="flex gap-2 text-[#2a2e32] text-sm">
+          <label className="flex gap-2 text-[#2a2e32] text-sm invisible">
             <input type="checkbox" />
             Remember Password
           </label>

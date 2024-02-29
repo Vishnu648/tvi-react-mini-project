@@ -14,8 +14,8 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   const dispatch = useDispatch();
-  const navigate=useNavigate()
-  const tokens = useSelector((state) => state.token);
+  const navigate = useNavigate();
+  const tokens = useSelector((state) => state.token.access_token);
   const [email, setEmail] = useState("admin@gmail.com");
   const [password, setPassword] = useState("admin@12345");
 
@@ -27,13 +27,16 @@ function Login() {
     e.preventDefault();
     if (email.length > 0 && password.length > 0) {
       axios
-        .post("http://localhost:8000/api/login", credentials)
+        .post("http://localhost:8000/api/login", credentials, {
+          headers: {
+            "Content-type": "application/json",
+          },
+        })
         .then((response) => {
           dispatch(set_Access_Tokken(response.data.access_token));
           dispatch(set_Refresh_Token(response.data.refresh_token));
+          navigate("/");
         });
-        console.log('--login--',tokens)
-        // navigate('/')
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AuthFooter from "../components/auth/AuthFooter";
 import AuthHeading from "../components/auth/AuthHeading";
 import SubFooter from "../components/auth/SubFooter";
@@ -9,17 +9,17 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState("");
+  const [firstName, setFirstName] = useState("first");
+  const [lastName, setLastName] = useState("last");
+  const [email, setEmail] = useState("email@gmail.com");
+  const [password, setPassword] = useState("12345678");
+  const [confirmPassword, setConfirmPassword] = useState("12345678");
+  const [role, setRole] = useState("agent");
   const tokens = useSelector((state) => state.token);
+  let local_accessToken = localStorage.getItem("accessToken");
 
   const handleCreate = (e) => {
     e.preventDefault();
-
     const newUser = {
       firstName: firstName,
       lastName: lastName,
@@ -28,8 +28,6 @@ function Register() {
       role: role,
     };
 
-    console.log(tokens)
-
     if (
       firstName.length > 0 &&
       lastName.length > 0 &&
@@ -37,17 +35,15 @@ function Register() {
       confirmPassword > 0
     ) {
       if (password == confirmPassword) {
-        // axios("https://jsonplaceholder.typicode.com/posts", {
-        //   method: "POST",
-        //   body: JSON.stringify({
-        //    newUser
-        //   }),
-        //   headers: {
-        //     "Content-type": "application/json;",
-        //   },
-        // })
-        //   .then((response) => response.json())
-        //   .then((json) => console.log(json));
+        axios
+          .post("http://localhost:8000/api/user", newUser, {
+            headers: {
+              // method: "POST",
+              genericvalue: "admin",
+              Authorization: tokens.access_token || local_accessToken,
+            },
+          })
+          .then((response) => console.log(response));
       }
     }
   };

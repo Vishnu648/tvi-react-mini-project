@@ -11,9 +11,11 @@ const tokenSlice = createSlice({
   reducers: {
     set_Access_Tokken: (state, action) => {
       state.access_token = action.payload;
+      localStorage.setItem("accessToken", action.payload);
     },
     set_Refresh_Token: (state, action) => {
       state.refresh_token = action.payload;
+      localStorage.setItem("refreshToken", action.payload);
     },
   },
 });

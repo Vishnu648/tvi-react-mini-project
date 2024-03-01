@@ -17,6 +17,7 @@ function Register() {
   const [role, setRole] = useState("agent");
   const tokens = useSelector((state) => state.token);
   let local_accessToken = localStorage.getItem("accessToken");
+  const navigate = useNavigate();
 
   const handleCreate = (e) => {
     e.preventDefault();
@@ -44,6 +45,7 @@ function Register() {
             },
           })
           .then((response) => console.log(response));
+          navigate('/home')
       }
     }
   };

@@ -33,11 +33,15 @@ function Login() {
           },
         })
         .then((response) => {
+          let responseObj = JSON.parse(response.config.data);
           dispatch(set_Access_Tokken(response.data.access_token));
           dispatch(set_Refresh_Token(response.data.refresh_token));
-          console.log(response);
           if (response.status === 200) {
-            navigate("/");
+            if (responseObj.email == "admin@gmail.com") {
+              navigate("/home");
+            } else {
+              navigate("/user");
+            }
           }
         });
     }

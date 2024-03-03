@@ -91,7 +91,7 @@ export default function DataTable() {
   }, []);
 
   return (
-    <div style={{ height: 400, width: "100%", borderRadius: "4px" }}>
+    <div style={{ height: 400, borderRadius: "4px" }}>
       <div className="bg-[#e9ecef] h-[50px] rounded-t-[4px] flex items-center px-4 text-[#212529]">
         User Data
       </div>

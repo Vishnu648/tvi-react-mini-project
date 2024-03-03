@@ -39,15 +39,14 @@ function Register() {
         axios
           .post("http://localhost:8000/api/user", newUser, {
             headers: {
-              // method: "POST",
               genericvalue: "admin",
               Authorization: tokens.access_token || local_accessToken,
             },
           })
           .then((response) => {
-            console.log(response);
+            let responseObj=JSON.parse(response.config.data);
             if (response.status === 201) {
-              navigate('/home')
+              navigate("/login");
             }
           });
       }

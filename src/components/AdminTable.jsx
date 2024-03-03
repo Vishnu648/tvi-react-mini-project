@@ -39,7 +39,7 @@ export default function DataTable() {
       width: 120,
       renderCell: (e) => (
         <button>
-          <EditModal obj={e.row} />
+          <EditModal obj={e.row} userApiCall={userApiCall}/>
         </button>
       ),
     },

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -19,16 +19,16 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ obj }) {
+export default function BasicModal({ obj, userApiCall }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [email, setEmail] = useState();
+  const [firstName, setFirstName] = useState(obj.firstName);
+  const [lastName, setLastName] = useState(obj.lastName);
+  const [email, setEmail] = useState(obj.email);
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
-  const [role, setRole] = useState();
+  const [role, setRole] = useState(obj.role);
   const tokens = useSelector((state) => state.token);
   let local_accessToken = localStorage.getItem("accessToken");
 
@@ -39,21 +39,23 @@ export default function BasicModal({ obj }) {
       firstName: firstName,
       lastName: lastName,
       email: email,
-      password: password,
+      password: obj.password,
       role: role,
     };
 
     axios
-      .post(`http://localhost:8000/api/update/${obj.id}`, newDetails, {
+      .put(`http://localhost:8000/api/update/${obj.id}`, newDetails, {
         headers: {
           genericvalue: "admin",
           Authorization: tokens.access_token || local_accessToken,
         },
       })
       .then((response) => {
-        console.log(response);
+        if (response.status == 200) {
+          userApiCall();
+          handleClose();
+        }
       });
-    console.log(obj);
   };
 
   return (
@@ -126,7 +128,7 @@ export default function BasicModal({ obj }) {
               </label>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <label id="Label">
                 Password
                 <br />{" "}
@@ -149,7 +151,7 @@ export default function BasicModal({ obj }) {
                   placeholder="Confirm password"
                 />
               </label>
-            </div>
+            </div> */}
 
             <button
               onClick={handleEdit}

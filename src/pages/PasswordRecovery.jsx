@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import AuthFooter from "../components/auth/AuthFooter";
 import AuthHeading from "../components/auth/AuthHeading";
 import SubFooter from "../components/auth/SubFooter";
 import "./style.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const navigate=useNavigate();
+
+  const handleGenerateOtp = () => {
+    if(email){
+      console.log(email);
+      navigate('/otp')
+    }else{
+      console.log('----');
+    }
+  };
+
   return (
     <div className="bg-[#007bff] w-screen h-screen flex flex-col relative items-center pt-12">
       <section className="w-[85%] md:w-[70%] xl:w-[441px] h-[392px] relative bg-white rounded-md">
@@ -17,7 +30,13 @@ function Login() {
           </p>
           <label id="Label">
             Email
-            <br /> <input type="email" placeholder="Enter email address" />
+            <br />{" "}
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="Enter email address"
+            />
           </label>
           <div className="flex w-full mt-6 items-center justify-between">
             <Link to="/login">
@@ -25,7 +44,10 @@ function Login() {
                 Return to login
               </p>
             </Link>
-            <button className="bg-[#007bff] hover:bg-[#0062cc] py-[6px] px-4 rounded-[3px] text-white">
+            <button
+              onClick={handleGenerateOtp}
+              className="bg-[#007bff] hover:bg-[#0062cc] py-[6px] px-4 rounded-[3px] text-white"
+            >
               Generate OTP
             </button>
           </div>

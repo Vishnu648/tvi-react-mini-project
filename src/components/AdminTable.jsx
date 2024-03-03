@@ -13,6 +13,7 @@ export default function DataTable() {
 
   const columns = [
     // { field: "id", headerName: "id", width: 200 },
+    { field: "", headerName: "", width: 10 },
     {
       field: "fullName",
       headerName: "Full name",

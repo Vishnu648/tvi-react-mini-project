@@ -10,7 +10,7 @@ function Home() {
     <div>
       <Navbar />
       <section className="flex">
-        <nav className="bg-[#212529] w-[272px] h-screen">
+        <nav className="bg-[#212529] w-[225px] h-screen">
           <div className="w-full h-[58px] px-4 pt-7 pb-3 text-[#585b5e] font-medium text-[13px]">
             CORE
           </div>

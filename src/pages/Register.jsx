@@ -44,8 +44,12 @@ function Register() {
               Authorization: tokens.access_token || local_accessToken,
             },
           })
-          .then((response) => console.log(response));
-          navigate('/home')
+          .then((response) => {
+            console.log(response);
+            if (response.status === 201) {
+              navigate('/home')
+            }
+          });
       }
     }
   };

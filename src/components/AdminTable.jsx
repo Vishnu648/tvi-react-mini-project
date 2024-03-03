@@ -14,16 +14,6 @@ export default function DataTable() {
   const columns = [
     { field: "id", headerName: "id", width: 150 },
     {
-      field: "firstName",
-      headerName: "First Name",
-      width: 120,
-    },
-    {
-      field: "lastName",
-      headerName: "Last Name",
-      width: 120,
-    },
-    {
       field: "fullName",
       headerName: "Full name",
       description: "This column has a value getter and is not sortable.",
@@ -40,7 +30,7 @@ export default function DataTable() {
     {
       field: "edit",
       headerName: "Edit",
-      width: 120,
+      width: 80,
       renderCell: (e) => (
         <button onClick={() => handleEdit(e.row)}>
           <MdEdit size={"20px"} />
@@ -50,7 +40,7 @@ export default function DataTable() {
     {
       field: "delete",
       headerName: "Delete",
-      width: 120,
+      width: 80,
       renderCell: (e) => (
         <button onClick={() => handleDelete(e.row.id)}>
           <MdDelete size={"20px"} />

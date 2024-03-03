@@ -20,6 +20,12 @@ const style = {
   p: 4,
 };
 
+const handleLogout = () => {
+  localStorage.removeItem("accessToken");
+  handleClose();
+  navigate("/");
+};
+
 export default function BasicModal({ id, userApiCall }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -27,21 +33,6 @@ export default function BasicModal({ id, userApiCall }) {
 
   const tokens = useSelector((state) => state.token);
   let local_accessToken = localStorage.getItem("accessToken");
-
-  const handleDelete = () => {
-    axios
-      .delete(`http://localhost:8000/api/delete/${id}`, {
-        headers: {
-          genericvalue: "admin",
-          Authorization: tokens.access_token || local_accessToken,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        userApiCall();
-      });
-  };
-
   return (
     <div>
       <MdDelete onClick={handleOpen} size={"20px"} />
@@ -53,20 +44,20 @@ export default function BasicModal({ id, userApiCall }) {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Are you sure, you want to delete this user?
+            Are you sure, you want to logout?
           </Typography>
           <div className="flex justify-between">
             <button
               onClick={handleClose}
               className="bg-[#6b6b6b] hover:bg-[#616161] my-4 py-[6px] px-4 rounded-[3px] text-white"
             >
-              Cancel
+              no
             </button>
             <button
-              onClick={handleDelete}
+              onClick={handleLogout}
               className="bg-[#fd6969] hover:bg-[#c33a37] my-4 py-[6px] px-4 rounded-[3px] text-white"
             >
-              Delete
+              yes
             </button>
           </div>
         </Box>

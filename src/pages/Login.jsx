@@ -40,6 +40,7 @@ function Login() {
             if (responseObj.email == "admin@gmail.com") {
               navigate("/home");
             } else {
+              console.log(response);
               navigate("/user");
             }
           }

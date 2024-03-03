@@ -1,6 +1,7 @@
 import React from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import ProfileMenu from "../components/ProfileMenu";
+import LogoutModal from "../components/modals/LogoutModal";
 
 function UserNavbar() {
   return (
@@ -12,6 +13,7 @@ function UserNavbar() {
         </div>
         <div className="flex gap-7 items-center mr-2">
           <ProfileMenu />
+          {/* <LogoutModal/> */}
         </div>
         <div className="p-2 lg:hidden cursor-pointer">
           <RxHamburgerMenu />

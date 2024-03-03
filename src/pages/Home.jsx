@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { AiTwotoneDashboard } from "react-icons/ai";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
@@ -6,6 +6,12 @@ import AdminTable from "../components/AdminTable";
 import { Link } from "react-router-dom";
 
 function Home() {
+  // useEffect(() => {
+  //   setInterval(() => {
+
+  //   }, 2000);
+  // }, [])
+
   return (
     <div>
       <Navbar />

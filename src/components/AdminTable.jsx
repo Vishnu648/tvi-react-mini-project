@@ -13,7 +13,7 @@ export default function DataTable() {
 
   const columns = [
     // { field: "id", headerName: "id", width: 200 },
-    { field: "", headerName: "", width: 10 },
+    // { field: "", headerName: "", width: 10 },
     {
       field: "fullName",
       headerName: "Full name",
@@ -39,7 +39,7 @@ export default function DataTable() {
       width: 120,
       renderCell: (e) => (
         <button>
-          <EditModal obj={e.row} userApiCall={userApiCall}/>
+          <EditModal obj={e.row} userApiCall={userApiCall} />
         </button>
       ),
     },
@@ -63,7 +63,13 @@ export default function DataTable() {
           Authorization: tokens.access_token || local_accessToken,
         },
       })
-      .then((response) => setuserData(response.data.data));
+      .then((response) => {
+        setuserData(response.data.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
   };
 
   useEffect(() => {

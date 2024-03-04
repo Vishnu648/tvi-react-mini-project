@@ -128,30 +128,19 @@ export default function BasicModal({ obj, userApiCall }) {
               </label>
             </div>
 
-            {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <label id="Label">
                 Password
                 <br />{" "}
                 <input
-                  type="password"
+                  type="text"
                   defaultValue={obj.password}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
                 />
               </label>
-              <label id="Label">
-                Confirm Password
-                <br />{" "}
-                <input
-                  type="password"
-                  defaultValue={obj.password}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Confirm password"
-                />
-              </label>
-            </div> */}
+            </div>
 
             <button
               onClick={handleEdit}

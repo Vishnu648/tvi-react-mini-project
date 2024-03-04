@@ -4,13 +4,27 @@ import { AiTwotoneDashboard } from "react-icons/ai";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
 import AdminTable from "../components/AdminTable";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  set_Access_Tokken,
+  set_Refresh_Token,
+} from "../Redux/features/tokenSlice";
 
 function Home() {
-  // useEffect(() => {
-  //   setInterval(() => {
+  const tokens = useSelector((state) => state.token.access_token);
+  const local_refreshToken = localStorage.getItem("refreshToken");
 
-  //   }, 2000);
-  // }, [])
+  useEffect(() => {
+    // setInterval(() => {
+    axios
+      .post("http://localhost:8000/api/refresh-token", {
+        refreshToken: tokens.refreshToken || local_refreshToken,
+      })
+      .then((res) => dispatch(set_Access_Tokken(res.data.refresh_token)))
+      .catch((err) => err.message);
+    // }, 2000);
+  }, []);
 
   return (
     <div>

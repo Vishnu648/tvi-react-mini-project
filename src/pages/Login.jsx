@@ -37,6 +37,7 @@ function Login() {
           dispatch(set_Access_Tokken(response.data.access_token));
           dispatch(set_Refresh_Token(response.data.refresh_token));
           if (response.status === 200) {
+            console.log(response);
             if (responseRole == "admin") {
               navigate("/home");
             } else if (responseRole == "agent") {

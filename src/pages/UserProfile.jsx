@@ -7,43 +7,57 @@ import Paper from "@mui/material/Paper";
 import userDP from "../assets/userDP.png";
 
 function UserProfile() {
-  const [userData, setuserData] = useState({
-    dp: "",
-    email: "vaisakhg@techversantinfotech.com",
-    firstName: "top",
-    id: 1709547488305,
-    lastName: "g",
-    password: "password@123",
-    role: "qc",
-  });
+  const [userData, setuserData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
+  const [firstName, setFirstName] = useState(userData.firstName);
+  const [lastName, setLastName] = useState(userData.lastName);
 
   const tokens = useSelector((state) => state.token);
   let local_accessToken = localStorage.getItem("accessToken");
 
-  // const userApiCall = () => {
-  //   axios
-  //     .get("http://localhost:8000/api/users", {
-  //       headers: {
-  //         genericvalue: "admin",
-  //         Authorization: tokens.access_token || local_accessToken,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       setuserData(response.data.data);
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error.message);
-  //     });
-  //   console.log("api called");
-  // };
+  const userApiCall = () => {
+    axios
+      .get("http://localhost:8000/api/me", {
+        headers: {
+          genericvalue: "agent",
+          Authorization: tokens.access_token || local_accessToken,
+        },
+      })
+      .then((response) => {
+        setuserData(response.data.data);
+        console.log(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  };
 
-  // useEffect(() => {
-  //   userApiCall();
-  // }, []);
+  useEffect(() => {
+    userApiCall();
+  }, []);
 
   const handleSubmit = () => {
+    const details = {
+      firstName: firstName,
+      lastName: lastName,
+      file: { userDP },
+    };
+
+    axios
+      .put("http://localhost:8000/api/me/update-user", details, {
+        headers: {
+          genericvalue: "agent",
+          Authorization: tokens.access_token || local_accessToken,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+    userApiCall();
+
     setIsEditing((prev) => !prev);
   };
 
@@ -62,11 +76,12 @@ function UserProfile() {
                 type="text"
                 defaultValue={userData.firstName}
                 className="w-full h-full border border-blue-400 px-3 rounded-md"
+                onChange={(e) => setFirstName(e.target.value)}
               />
             ) : (
               <input
                 type="text"
-                defaultValue={userData.firstName}
+                value={userData.firstName}
                 className="w-full text-center h-full outline-none"
                 readOnly
               />
@@ -78,6 +93,7 @@ function UserProfile() {
                 type="text"
                 defaultValue={userData.lastName}
                 className="w-full h-full  border border-blue-400 px-3 rounded-md"
+                onChange={(e) => setLastName(e.target.value)}
               />
             ) : (
               <input
@@ -89,25 +105,17 @@ function UserProfile() {
             )}
           </Paper>{" "}
           <Paper elevation={2} className="h-11 rounded-md w-full md:w-[48%]">
-            {isEditing ? (
-              <input
-                type="text"
-                defaultValue={userData.email}
-                className="w-full h-full  border border-blue-400 px-3 rounded-md"
-              />
-            ) : (
-              <input
-                type="text"
-                defaultValue={userData.email}
-                className="w-full h-full text-center outline-none"
-                readOnly
-              />
-            )}
+            <input
+              type="text"
+              defaultValue={userData.email}
+              className="w-full h-full text-center outline-none"
+              readOnly
+            />
           </Paper>
           <Paper elevation={2} className="h-11 rounded-md w-full md:w-[48%]">
             <input
               type="text"
-              defaultValue={userData.role.toUpperCase()}
+              defaultValue={userData.role}
               className="w-full h-full text-center outline-none"
               readOnly
             />

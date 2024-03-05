@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import EditModal from "./modals/EditModal";
-import DeleteModal from "./modals/DeleteModal";
-import SingleUserModal from "./modals/SingleUserModal";
 
 export default function DataTable() {
   const [userData, setuserData] = useState([]);
@@ -34,43 +31,13 @@ export default function DataTable() {
       headerName: "Email",
       width: 290,
     },
-    {
-      field: "edit",
-      headerName: "Edit",
-      width: 120,
-      renderCell: (e) => (
-        <button onClick={() => console.log(e.row)}>
-          <EditModal obj={e.row} userApiCall={userApiCall} />
-        </button>
-      ),
-    },
-    {
-      field: "delete",
-      headerName: "Delete",
-      width: 120,
-      renderCell: (e) => (
-        <button>
-          <DeleteModal id={e.row.id} userApiCall={userApiCall} />
-        </button>
-      ),
-    },
-    {
-      field: "view",
-      headerName: "View",
-      width: 120,
-      renderCell: (e) => (
-        <button>
-          <SingleUserModal obj={e.row} />
-        </button>
-      ),
-    },
   ];
 
   const userApiCall = () => {
     axios
       .get("http://localhost:8000/api/users", {
         headers: {
-          genericvalue: "admin",
+          genericvalue: "supervisor",
           Authorization: tokens.access_token || local_accessToken,
         },
       })

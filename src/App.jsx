@@ -7,6 +7,7 @@ import Otp from "./pages/Otp";
 import NewPassword from "./pages/NewPassword";
 import Home from "./pages/Home";
 import UserProfile from "./pages/UserProfile";
+import SupervisorDashboard from "./pages/SupervisorDashboard";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/create-password" element={<NewPassword />} />
         <Route path="/home" element={<Home />} />
         <Route path="/user" element={<UserProfile />} />
+        <Route path="/supervisor" element={<SupervisorDashboard />} />
       </Routes>
     </BrowserRouter>
   );

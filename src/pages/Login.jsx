@@ -33,18 +33,21 @@ function Login() {
           },
         })
         .then((response) => {
-          let responseObj = JSON.parse(response.config.data);
+          let responseRole = response.data.role;
           dispatch(set_Access_Tokken(response.data.access_token));
           dispatch(set_Refresh_Token(response.data.refresh_token));
           if (response.status === 200) {
-            if (responseObj.email == "admin@gmail.com") {
+            if (responseRole == "admin") {
               navigate("/home");
-            } else {
-              console.log(response);
+            } else if (responseRole == "agent") {
               navigate("/user");
+            } else if (responseRole == "supervisor") {
+              navigate("/supervisor");
             }
+            console.log(responseRole);
           }
-        });
+        })
+        .catch((err) => console.log(err.message));
     }
   };
 

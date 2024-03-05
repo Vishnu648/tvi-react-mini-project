@@ -39,7 +39,8 @@ export default function BasicModal({ id, userApiCall }) {
       .then((response) => {
         console.log(response);
         userApiCall();
-      });
+      })
+      .catch((err) => console.error(err.message));
   };
 
   return (

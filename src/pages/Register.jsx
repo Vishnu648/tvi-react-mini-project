@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AuthFooter from "../components/auth/AuthFooter";
 import AuthHeading from "../components/auth/AuthHeading";
 import SubFooter from "../components/auth/SubFooter";
@@ -37,18 +37,20 @@ function Register() {
     ) {
       if (password == confirmPassword) {
         axios
-          .post("http://localhost:8000/api/user", newUser, {
-            headers: {
-              genericvalue: "admin",
-              Authorization: tokens.access_token || local_accessToken,
-            },
+          .post("http://localhost:8000/api/add", newUser, {
+            // headers: {
+            //   genericvalue: "admin",
+            //   Authorization: tokens.access_token || local_accessToken,
+            // },
           })
           .then((response) => {
-            let responseObj=JSON.parse(response.config.data);
+            let responseObj = JSON.parse(response.config.data);
+            console.log(response);
             if (response.status === 201) {
               navigate("/login");
             }
-          });
+          })
+          .catch((err) => console.error(err.message));
       }
     }
   };
@@ -81,7 +83,7 @@ function Register() {
             </label>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-4">
+          <div className="grid grid-cols-1">
             <label id="Label">
               Email
               <br />{" "}
@@ -93,7 +95,7 @@ function Register() {
               />
             </label>
 
-            <label htmlFor="role" className="flex gap-2">
+            {/* <label htmlFor="role" className="flex gap-2">
               Role:
               <select
                 name="role"
@@ -105,7 +107,7 @@ function Register() {
                 <option value="agent">Agent</option>
                 <option value="supervisor">supervisor</option>
               </select>
-            </label>
+            </label> */}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">

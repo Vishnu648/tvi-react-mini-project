@@ -55,7 +55,8 @@ export default function BasicModal({ obj, userApiCall }) {
           userApiCall();
           handleClose();
         }
-      });
+      })
+      .catch((err) => console.error(err.message));
   };
 
   return (
@@ -80,7 +81,7 @@ export default function BasicModal({ obj, userApiCall }) {
                   onChange={(e) => setFirstName(e.target.value)}
                   type="text"
                   defaultValue={obj.firstName}
-                  value={firstName}
+                  // value={firstName}
                   placeholder="Enter first name"
                 />
               </label>
@@ -91,7 +92,7 @@ export default function BasicModal({ obj, userApiCall }) {
                   onChange={(e) => setLastName(e.target.value)}
                   type="text"
                   defaultValue={obj.lastName}
-                  value={lastName}
+                  // value={lastName}
                   placeholder="Enter last name"
                 />
               </label>
@@ -104,7 +105,7 @@ export default function BasicModal({ obj, userApiCall }) {
                 <input
                   type="email"
                   defaultValue={obj.email}
-                  value={email}
+                  // value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter email address"
                 />
@@ -116,7 +117,7 @@ export default function BasicModal({ obj, userApiCall }) {
                   name="role"
                   id="role"
                   onClick={(e) => setRole(e.target.value)}
-                  value={role}
+                  // value={role}
                   defaultValue={obj.role}
                   className="px-2 rounded-md"
                 >
@@ -135,7 +136,7 @@ export default function BasicModal({ obj, userApiCall }) {
                 <input
                   type="text"
                   defaultValue={obj.password}
-                  value={password}
+                  // value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
                 />

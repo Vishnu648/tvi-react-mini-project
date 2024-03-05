@@ -15,16 +15,16 @@ function Home() {
   const tokens = useSelector((state) => state.token.access_token);
   const local_refreshToken = localStorage.getItem("refreshToken");
 
-  useEffect(() => {
-    // setInterval(() => {
-    axios
-      .post("http://localhost:8000/api/refresh-token", {
-        refreshToken: tokens.refreshToken || local_refreshToken,
-      })
-      .then((res) => dispatch(set_Access_Tokken(res.data.refresh_token)))
-      .catch((err) => err.message);
-    // }, 2000);
-  }, []);
+  // useEffect(() => {
+  //   // setInterval(() => {
+  //   axios
+  //     .post("http://localhost:8000/api/refresh-token", {
+  //       refreshToken: tokens.refreshToken || local_refreshToken,
+  //     })
+  //     .then((res) => dispatch(set_Access_Tokken(res.data.refresh_token)))
+  //     .catch((err) => err.message);
+  //   // }, 2000);
+  // }, []);
 
   return (
     <div>

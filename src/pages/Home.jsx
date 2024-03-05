@@ -40,7 +40,7 @@ function Home() {
           </div>
 
           <Link
-            to="/"
+            to="/register"
             className="w-full flex items-center gap-2 h-[48px] px-4 py-3 text-[#686b6d] cursor-pointer text-[1rem] font-normal "
           >
             <MdOutlineCreateNewFolder />

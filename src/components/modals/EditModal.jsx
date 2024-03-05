@@ -122,9 +122,9 @@ export default function BasicModal({ obj, userApiCall }) {
                   className="px-2 rounded-md"
                 >
                   <option value="qa">QA</option>
-                  <option value="qc">Qc</option>
+                  <option value="qc">QC</option>
                   <option value="agent">Agent</option>
-                  <option value="supervisor">supervisor</option>
+                  <option value="supervisor">Supervisor</option>
                 </select>
               </label>
             </div>

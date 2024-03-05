@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import AdminRegister from './pages/AdminRegister'
 import PasswordRecovery from "./pages/PasswordRecovery";
 import Otp from "./pages/Otp";
 import NewPassword from "./pages/NewPassword";
@@ -14,6 +15,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Register />} />
+        <Route path="/register" element={<AdminRegister />} />
         <Route path="/login" element={<Login />} />
         <Route path="/recover-password" element={<PasswordRecovery />} />
         <Route path="/otp" element={<Otp />} />

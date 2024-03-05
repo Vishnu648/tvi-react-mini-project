@@ -44,7 +44,8 @@ function Login() {
             } else if (responseRole == "supervisor") {
               navigate("/supervisor");
             }
-            console.log(responseRole);
+          } else {
+            alert("cannot login");
           }
         })
         .catch((err) => console.log(err.message));

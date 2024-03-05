@@ -1,7 +1,5 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { GrView } from "react-icons/gr";
 import { Paper } from "@mui/material";
@@ -15,7 +13,7 @@ const style = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  p: 5,
 };
 
 export default function BasicModal({ obj }) {
@@ -41,19 +39,27 @@ export default function BasicModal({ obj }) {
             }`}
           </h1>
           <div className="p-4 flex flex-col gap-3">
-            <Paper className="px-2 py-4 w-full flex gap-4">
-              <label>First Name:</label>
-              <p>{obj?.firstName}</p>
-            </Paper>
-            <Paper className="px-2 py-4 w-full flex gap-4">
-              <label>Last Name:</label>
-              <p>{obj?.lastName}</p>
-            </Paper>
-            <Paper className="px-2 py-4 w-full flex gap-4">
+            {obj?.firstName ? (
+              <Paper className="px-6 py-4 w-full flex gap-4">
+                <label>First Name:</label>
+                <p>{obj?.firstName}</p>
+              </Paper>
+            ) : (
+              ""
+            )}
+            {obj?.lastName ? (
+              <Paper className="px-6 py-4 w-full flex gap-4">
+                <label>Last Name:</label>
+                <p>{obj?.lastName}</p>
+              </Paper>
+            ) : (
+              ""
+            )}
+            <Paper className="px-6 py-4 w-full flex gap-4">
               <label>Role:</label>
               <p>{obj?.role}</p>
             </Paper>
-            <Paper className="px-2 py-4 w-full flex gap-4">
+            <Paper className="px-6 py-4 w-full flex gap-4">
               <label>Email:</label>
               <p>{obj?.email}</p>
             </Paper>

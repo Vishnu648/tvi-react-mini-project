@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import SingleUserModal from "./modals/SingleUserModal";
 
 export default function DataTable() {
   const [userData, setuserData] = useState([]);
@@ -17,19 +18,29 @@ export default function DataTable() {
       headerName: "Full name",
       description: "This column has a value getter and is not sortable.",
       sortable: false,
-      width: 160,
+      width: 200,
       valueGetter: (params) =>
         `${params.row.firstName || ""} ${params.row.lastName || ""}`,
     },
     {
       field: "role",
       headerName: "Role",
-      width: 130,
+      width: 200,
     },
     {
       field: "email",
       headerName: "Email",
-      width: 290,
+      width: 320,
+    },
+    {
+      field: "view",
+      headerName: "View",
+      width: 120,
+      renderCell: (e) => (
+        <button>
+          <SingleUserModal obj={e.row} />
+        </button>
+      ),
     },
   ];
 

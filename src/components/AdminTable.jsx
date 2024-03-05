@@ -35,11 +35,21 @@ export default function DataTable() {
       width: 290,
     },
     {
+      field: "view",
+      headerName: "View",
+      width: 120,
+      renderCell: (e) => (
+        <button>
+          <SingleUserModal obj={e.row} />
+        </button>
+      ),
+    },
+    {
       field: "edit",
       headerName: "Edit",
       width: 120,
       renderCell: (e) => (
-        <button onClick={() => console.log(e.row)}>
+        <button>
           <EditModal obj={e.row} userApiCall={userApiCall} />
         </button>
       ),
@@ -51,16 +61,6 @@ export default function DataTable() {
       renderCell: (e) => (
         <button>
           <DeleteModal id={e.row.id} userApiCall={userApiCall} />
-        </button>
-      ),
-    },
-    {
-      field: "view",
-      headerName: "View",
-      width: 120,
-      renderCell: (e) => (
-        <button>
-          <SingleUserModal obj={e.row} />
         </button>
       ),
     },

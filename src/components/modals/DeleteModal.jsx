@@ -38,7 +38,10 @@ export default function BasicModal({ id, userApiCall }) {
       })
       .then((response) => {
         console.log(response);
-        userApiCall();
+        if (response.status == 200) {
+          userApiCall();
+          handleClose();
+        }
       })
       .catch((err) => console.error(err.message));
   };

@@ -49,7 +49,7 @@ export default function DataTable() {
       headerName: "Edit",
       width: 120,
       renderCell: (e) => (
-        <button>
+        <button onClick={() => console.log(e.row)}>
           <EditModal obj={e.row} userApiCall={userApiCall} />
         </button>
       ),

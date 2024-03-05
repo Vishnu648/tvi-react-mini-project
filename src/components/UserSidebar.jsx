@@ -1,4 +1,5 @@
 import React from "react";
+import UpdatePassword from '../components/modals/UpdatePassword'
 
 function UserSidebar() {
   return (
@@ -7,7 +8,8 @@ function UserSidebar() {
         <p className="hover:text-white">Profile</p>
       </div>
       <div className="w-full flex items-center gap-2 h-[48px] px-4 py-3 text-[#686b6d] cursor-pointer text-[1rem] font-normal ">
-        <p className="hover:text-white">Update password</p>
+        {/* <p className="hover:text-white">Update password</p> */}
+        <UpdatePassword/>
       </div>
 
       <div className="text-[#818588] bg-[#343a40] absolute bottom-0 flex flex-col w-full h-[67.2px] p-3">

@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import EditModal from "./modals/EditModal";
 import DeleteModal from "./modals/DeleteModal";
 import SingleUserModal from "./modals/SingleUserModal";
+import { ToastContainer, toast } from "react-toastify";
+import showToastMessage from "./ToastMessager";
 
 export default function DataTable() {
   const [userData, setuserData] = useState([]);
@@ -60,7 +62,11 @@ export default function DataTable() {
       width: 120,
       renderCell: (e) => (
         <button>
-          <DeleteModal id={e.row.id} userApiCall={userApiCall} />
+          <DeleteModal
+            showToastMessage={showToastMessage}
+            id={e.row.id}
+            userApiCall={userApiCall}
+          />
         </button>
       ),
     },
@@ -75,7 +81,7 @@ export default function DataTable() {
         },
       })
       .then((response) => {
-        setuserData(response.data.data);
+        setuserData(response.data.users);
       })
       .catch((error) => {
         console.error(error.message);
@@ -103,6 +109,7 @@ export default function DataTable() {
           pageSizeOptions={[5, 10]}
         />
       </div>
+      <ToastContainer/>
     </div>
   );
 }

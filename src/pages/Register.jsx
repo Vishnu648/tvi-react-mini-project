@@ -7,6 +7,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import showToastMessage from "../components/ToastMessager";
+
 
 function Register() {
   const [firstName, setFirstName] = useState("first");
@@ -45,12 +48,16 @@ function Register() {
           })
           .then((response) => {
             let responseObj = JSON.parse(response.config.data);
-            console.log(response);
             if (response.status === 201) {
               navigate("/login");
             }
           })
-          .catch((err) => console.error(err.message));
+          .catch((err) => {
+            console.error(err.response);
+            if (err.response.status == 409) {
+              showToastMessage("Email already in use!!!");
+            }
+          });
       }
     }
   };
@@ -144,6 +151,7 @@ function Register() {
         </Link>
       </section>
       <AuthFooter />
+      <ToastContainer />
     </div>
   );
 }

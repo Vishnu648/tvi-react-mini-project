@@ -11,6 +11,8 @@ import {
   set_Refresh_Token,
 } from "../Redux/features/tokenSlice";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import showToastMessage from "../components/ToastMessager";
 
 function Login() {
   const dispatch = useDispatch();
@@ -49,7 +51,11 @@ function Login() {
             alert("cannot login");
           }
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => {
+          if (err.response.status == 400) {
+            showToastMessage("Email and Password do not match!!!");
+          }
+        });
     }
   };
 
@@ -102,6 +108,7 @@ function Login() {
         </Link>
       </section>
       <AuthFooter />
+      <ToastContainer />
     </div>
   );
 }

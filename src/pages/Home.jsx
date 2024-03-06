@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
-import { AiTwotoneDashboard } from "react-icons/ai";
+import { AiOutlineDashboard } from "react-icons/ai";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
 import AdminTable from "../components/AdminTable";
 import { Link } from "react-router-dom";
@@ -35,7 +35,7 @@ function Home() {
             CORE
           </div>
           <div className="w-full flex items-center gap-2 h-[48px] px-4 py-3 text-[#686b6d] cursor-pointer text-[1rem] font-normal ">
-            <AiTwotoneDashboard />
+            <AiOutlineDashboard />
             <p className="hover:text-white">Dashboard</p>
           </div>
 

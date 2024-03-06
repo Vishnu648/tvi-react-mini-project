@@ -7,6 +7,7 @@ import { MdDelete } from "react-icons/md";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -20,7 +21,7 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ id, userApiCall }) {
+export default function BasicModal({ id, userApiCall,showToastMessage }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -39,6 +40,7 @@ export default function BasicModal({ id, userApiCall }) {
       .then((response) => {
         console.log(response);
         if (response.status == 200) {
+          showToastMessage("User deleted successfully");
           userApiCall();
           handleClose();
         }

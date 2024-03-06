@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import "../../pages/style.css";
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -17,12 +18,36 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal() {
+export default function BasicModal({ showToastMessage }) {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  let local_accessToken = localStorage.getItem("accessToken");
+
+  const handleChange = () => {
+    const passes = {
+      currentPassword: currentPassword,
+      password: newPassword,
+    };
+
+    axios
+      .put("http://localhost:8000/api/me/update-password", passes, {
+        headers: {
+          genericvalue: "agent",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          showToastMessage("Password updated successfully");
+          handleClose();
+        }
+      })
+      .catch((err) => console.log(err.response));
+  };
 
   return (
     <div className="outline-none">
@@ -59,6 +84,13 @@ export default function BasicModal() {
                 placeholder="********"
               />
             </label>
+
+            <button
+              onClick={handleChange}
+              className="bg-[#007bff] hover:bg-[#0062cc] my-4 py-[6px] px-4 rounded-[3px] text-white"
+            >
+              Change
+            </button>
           </div>
         </Box>
       </Modal>

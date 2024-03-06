@@ -6,10 +6,12 @@ import AdminTable from "../components/AdminTable";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { PiUserPlus } from "react-icons/pi";
 import {
   set_Access_Tokken,
   set_Refresh_Token,
 } from "../Redux/features/tokenSlice";
+
 
 function Home() {
   const tokens = useSelector((state) => state.token.access_token);
@@ -43,7 +45,7 @@ function Home() {
             to="/register"
             className="w-full flex items-center gap-2 h-[48px] px-4 py-3 text-[#686b6d] cursor-pointer text-[1rem] font-normal "
           >
-            <MdOutlineCreateNewFolder />
+            <PiUserPlus />
             <p className="hover:text-white">Create User</p>
           </Link>
 

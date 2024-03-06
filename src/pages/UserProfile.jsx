@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import Paper from "@mui/material/Paper";
 import userDP from "../assets/userDP.png";
 
-
 function UserProfile() {
   const [userData, setuserData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
@@ -69,6 +68,23 @@ function UserProfile() {
     setIsEditing((prev) => !prev);
   };
 
+  const handleImgUpload = (e) => {
+    let dp = e.target.files[0];
+    const formDatas = new FormData();
+    formDatas.append("file", dp);
+
+    const ProfilePicture = {
+      image: formDatas,
+    };
+    console.log(formDatas);
+    // axios
+    //   .post("http://localhost:8000/image/ import", {
+    //     image:formDatas
+    //   })
+    //   .then((res) => console.log(res))
+    //   .catch((err) => console.log(err.message));
+  };
+
   return (
     <div>
       <UserNavbar />
@@ -76,7 +92,14 @@ function UserProfile() {
         <UserSidebar fullName={fullName} />
         <div className="flex flex-col p-6 gap-4 items-center w-full">
           <div className="ml-3 mb-3 h-40 w-40 rounded-full bg-[#343a40]">
-            <img src={userDP} alt="dp" height={100} w={100} />
+            <img
+              src={userDP}
+              alt="dp"
+              height={100}
+              w={100}
+              className="rounded-full"
+            />
+            <input type="file" onChange={handleImgUpload} />
           </div>
           <Paper elevation={2} className="h-11 rounded-md w-full md:w-[48%]">
             {isEditing ? (
@@ -111,30 +134,73 @@ function UserProfile() {
                 readOnly
               />
             )}
-          </Paper>{" "}
-          <Paper elevation={2} className="h-11 rounded-md w-full md:w-[48%]">
-            <input
-              type="text"
-              defaultValue={userData.email}
-              className="w-full h-full text-center outline-none"
-              readOnly
-            />
           </Paper>
           <Paper elevation={2} className="h-11 rounded-md w-full md:w-[48%]">
-            <input
-              type="text"
-              defaultValue={userData.role}
-              className="w-full h-full text-center outline-none"
-              readOnly
-            />
+            {isEditing ? (
+              <input
+                type="text"
+                defaultValue={userData.id}
+                className="w-full h-full text-center outline-none opacity-60"
+                readOnly
+              />
+            ) : (
+              <input
+                type="text"
+                defaultValue={userData.id}
+                className="w-full h-full text-center outline-none"
+                readOnly
+              />
+            )}
+          </Paper>
+          <Paper elevation={2} className="h-11 rounded-md w-full md:w-[48%]">
+            {isEditing ? (
+              <input
+                type="text"
+                defaultValue={userData.email}
+                className="w-full h-full text-center outline-none opacity-60"
+                readOnly
+              />
+            ) : (
+              <input
+                type="text"
+                defaultValue={userData.email}
+                className="w-full h-full text-center outline-none"
+                readOnly
+              />
+            )}
+          </Paper>
+          <Paper elevation={2} className="h-11 rounded-md w-full md:w-[48%]">
+            {isEditing ? (
+              <input
+                type="text"
+                defaultValue={userData.role}
+                className="w-full h-full text-center outline-none opacity-60"
+                readOnly
+              />
+            ) : (
+              <input
+                type="text"
+                defaultValue={userData.role}
+                className="w-full h-full text-center outline-none"
+                readOnly
+              />
+            )}
           </Paper>
           {isEditing ? (
-            <button
-              className="bg-[#007bff] text-white px-3 py-1 rounded-sm"
-              onClick={handleSubmit}
-            >
-              Submit
-            </button>
+            <div className="w-full md:w-[26%] flex justify-between">
+              <button
+                className="bg-black text-white px-3 py-1 rounded-sm"
+                onClick={() => setIsEditing((prev) => !prev)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-[#007bff] text-white px-3 py-1 rounded-sm"
+                onClick={handleSubmit}
+              >
+                Submit
+              </button>
+            </div>
           ) : (
             <button
               className="bg-[#007bff] text-white px-3 py-1 rounded-sm"

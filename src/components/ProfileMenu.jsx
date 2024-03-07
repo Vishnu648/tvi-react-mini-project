@@ -4,6 +4,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import LogoutModal from "./modals/LogoutModal"
 
 export default function bMenu() {
   const navigate = useNavigate();
@@ -45,7 +46,8 @@ export default function bMenu() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        {/* <MenuItem onClick={handleLogout}>Logout</MenuItem> */}
+        <LogoutModal/>
       </Menu>
     </div>
   );

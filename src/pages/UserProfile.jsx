@@ -20,6 +20,7 @@ function UserProfile() {
   const tokens = useSelector((state) => state.token);
   let local_accessToken = localStorage.getItem("accessToken");
   let local_refreshToken = localStorage.getItem("refreshToken");
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
 
   const userApiCall = () => {
     axios
@@ -36,6 +37,10 @@ function UserProfile() {
       .catch((error) => {
         console.error("--", error.message);
       });
+  };
+
+  const toogleSidebar = () => {
+    setSidebarIsOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -94,10 +99,10 @@ function UserProfile() {
 
   return (
     <div>
-      <UserNavbar />
+      <UserNavbar toogleSidebar={toogleSidebar} />
       <div className="flex ">
-        <UserSidebar fullName={fullName} />
-        <div className="flex flex-col p-6 gap-4 items-center w-full">
+        {sidebarIsOpen ? <UserSidebar fullName={fullName} /> : ""}
+        <div className="flex flex-col p-6 gap-4 items-center flex-1">
           <div className="ml-3 mb-3 h-40 w-40 rounded-full bg-[#343a40]">
             <img
               src={userDP}

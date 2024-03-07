@@ -6,6 +6,7 @@ import Modal from "@mui/material/Modal";
 import { MdDelete } from "react-icons/md";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -20,22 +21,25 @@ const style = {
   p: 4,
 };
 
-const handleLogout = () => {
-  localStorage.removeItem("accessToken");
-  handleClose();
-  navigate("/");
-};
-
 export default function BasicModal({ id, userApiCall }) {
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    handleClose();
+    navigate("/");
+  };
 
   const tokens = useSelector((state) => state.token);
   let local_accessToken = localStorage.getItem("accessToken");
   return (
     <div>
-      <MdDelete onClick={handleOpen} size={"20px"} />
+      {/* <MdDelete onClick={handleOpen} size={"20px"} /> */}
+      <p className="px-2 py-1 cursor-pointer" onClick={handleOpen}>
+        Logout
+      </p>
       <Modal
         open={open}
         onClose={handleClose}

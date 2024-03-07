@@ -16,7 +16,7 @@ export default function DataTable() {
 
   const columns = [
     // { field: "id", headerName: "id", width: 200 },
-    // { field: "", headerName: "", width: 10 },
+    { field: "", headerName: "", width: 10 },
     {
       field: "fullName",
       headerName: "Full name",
@@ -29,17 +29,17 @@ export default function DataTable() {
     {
       field: "role",
       headerName: "Role",
-      width: 130,
+      width: 160,
     },
     {
       field: "email",
       headerName: "Email",
-      width: 290,
+      width: 310,
     },
     {
       field: "view",
       headerName: "View",
-      width: 120,
+      width: 135,
       renderCell: (e) => (
         <button>
           <SingleUserModal obj={e.row} />
@@ -49,7 +49,7 @@ export default function DataTable() {
     {
       field: "edit",
       headerName: "Edit",
-      width: 120,
+      width: 135,
       renderCell: (e) => (
         <button onClick={() => console.log(e.row)}>
           <EditModal obj={e.row} userApiCall={userApiCall} />
@@ -59,7 +59,7 @@ export default function DataTable() {
     {
       field: "delete",
       headerName: "Delete",
-      width: 120,
+      width: 135,
       renderCell: (e) => (
         <button>
           <DeleteModal
@@ -93,7 +93,7 @@ export default function DataTable() {
   }, []);
 
   return (
-    <div style={{ height: 400, borderRadius: "4px" }}>
+    <div style={{ height: 400, borderRadius: "4px" }} className="w-full">
       <div className="bg-[#e9ecef] h-[50px] rounded-t-[4px] flex items-center px-4 text-[#212529]">
         User Data
       </div>

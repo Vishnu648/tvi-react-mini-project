@@ -12,26 +12,25 @@ import {
   set_Refresh_Token,
 } from "../Redux/features/tokenSlice";
 
-
 function Home() {
   const tokens = useSelector((state) => state.token.access_token);
   const local_refreshToken = localStorage.getItem("refreshToken");
 
-  // useEffect(() => {
-  //   // setInterval(() => {
-  //   axios
-  //     .post("http://localhost:8000/api/refresh-token", {
-  //       refreshToken: tokens.refreshToken || local_refreshToken,
-  //     })
-  //     .then((res) => dispatch(set_Access_Tokken(res.data.refresh_token)))
-  //     .catch((err) => err.message);
-  //   // }, 2000);
-  // }, []);
+  useEffect(() => {
+    setInterval(() => {
+      axios
+        .post("http://localhost:8000/api/refresh-token", {
+          refreshToken: tokens.refreshToken || local_refreshToken,
+        })
+        .then((res) => dispatch(set_Access_Tokken(res.data.refresh_token)))
+        .catch((err) => err.message);
+    }, 3600000);
+  }, []);
 
   return (
-    <div>
+    <div className="w-screen">
       <Navbar />
-      <section className="flex">
+      <section className="flex w-full">
         <nav className="bg-[#212529] relative w-[225px] h-[92vh]">
           <div className="w-full h-[58px] px-4 pt-7 pb-3 text-[#585b5e] font-medium text-[13px]">
             CORE
@@ -54,7 +53,7 @@ function Home() {
             <h2>Admin</h2>
           </div>
         </nav>
-        <section className="px-6 flex-1">
+        <section className="px-6 flex-1 overflow-scroll">
           <p className="text-[35px] mb-[.5rem] mt-[1.5rem] text-[#212529] leading-[1.2]">
             Dashboard
           </p>

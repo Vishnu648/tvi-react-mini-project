@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 import UserNavbar from "../components/UserNavbar";
 import UserSidebar from "../components/UserSidebar";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Paper from "@mui/material/Paper";
 import userDP from "../assets/userDP.png";
+import {
+  set_Access_Tokken,
+  set_Refresh_Token,
+} from "../Redux/features/tokenSlice";
 
 function UserProfile() {
   const [userData, setuserData] = useState({});
@@ -37,7 +41,10 @@ function UserProfile() {
   useEffect(() => {
     userApiCall();
     setInterval(() => {
-      axios.post("http://localhost:8000/api/refresh-token", local_refreshToken);
+      axios
+        .post("http://localhost:8000/api/refresh-token", local_refreshToken)
+        .then((res) => dispatch(set_Access_Tokken(res.data.refresh_token)))
+        .catch((err) => err.message);
     }, 3600000);
   }, []);
 

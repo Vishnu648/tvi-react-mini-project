@@ -5,7 +5,7 @@ import { PiUserPlus } from "react-icons/pi";
 
 function AdminSidebar() {
   return (
-    <nav className="bg-[#212529] relative w-[225px] h-[92vh]">
+    <nav className="bg-[#212529] relative w-[225px] h-[92vh] transition ease-in-out duration-500">
       <div className="w-full h-[58px] px-4 pt-7 pb-3 text-[#585b5e] font-medium text-[13px]">
         CORE
       </div>

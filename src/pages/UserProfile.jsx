@@ -5,6 +5,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import Paper from "@mui/material/Paper";
 import userDP from "../assets/userDP.png";
+import ImageUpload from "../components/ImageUpload";
 import {
   set_Access_Tokken,
   set_Refresh_Token,
@@ -32,7 +33,7 @@ function UserProfile() {
       })
       .then((response) => {
         setuserData(response.data.data);
-        // console.log(response.data.data);
+        console.log(response.data.data);
       })
       .catch((error) => {
         console.error("--", error.message);
@@ -111,8 +112,9 @@ function UserProfile() {
               w={100}
               className="rounded-full"
             />
-            <input type="file" onChange={handleImgUpload} />
+            {/* <input type="file" onChange={handleImgUpload} /> */}
           </div>
+            <ImageUpload />
           <Paper elevation={2} className="h-11 rounded-md w-full md:w-[48%]">
             {isEditing ? (
               <input

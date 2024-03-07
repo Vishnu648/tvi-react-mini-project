@@ -33,7 +33,6 @@ function Home() {
     setSidebarIsOpen((prev) => !prev);
   };
 
-
   return (
     <div className="w-screen">
       <Navbar toogleSidebar={toogleSidebar} />

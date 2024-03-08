@@ -85,10 +85,10 @@ function Login() {
               placeholder="Enter password"
             />
           </label>
-          <label className="flex gap-2 text-[#2a2e32] text-sm invisible">
+          {/* <label className="flex gap-2 text-[#2a2e32] text-sm invisible">
             <input type="checkbox" />
             Remember Password
-          </label>
+          </label> */}
           <div className="flex w-full items-center justify-between">
             <Link to="/recover-password">
               <p className="hover:underline cursor-pointer text-[13px] text-[#007bff]">

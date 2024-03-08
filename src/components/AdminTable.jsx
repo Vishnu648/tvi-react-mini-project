@@ -11,8 +11,8 @@ import Pagination from "../components/Pagination";
 
 export default function DataTable() {
   const [userData, setuserData] = useState([]);
-  const [pageCount, setPageCount] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPageNo, setCurrentPageNo] = useState(1);
 
   const tokens = useSelector((state) => state.token);
   let local_accessToken = localStorage.getItem("accessToken");
@@ -77,7 +77,7 @@ export default function DataTable() {
 
   const userApiCall = () => {
     axios
-      .get("http://localhost:8000/api/users", {
+      .get(`http://localhost:8000/api/users?page=${currentPageNo}`, {
         headers: {
           genericvalue: "admin",
           Authorization: tokens.access_token || local_accessToken,
@@ -85,8 +85,8 @@ export default function DataTable() {
       })
       .then((response) => {
         setuserData(response.data.users);
-        setPageCount(response.data.totalCount);
-        console.log(response);
+        setTotalCount(response.data.totalCount);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error(error.message);
@@ -96,6 +96,12 @@ export default function DataTable() {
   useEffect(() => {
     userApiCall();
   }, []);
+
+  const selectedPage = (pageNo) => {
+    console.log(pageNo);
+    setCurrentPageNo(pageNo);
+    userApiCall();
+  };
 
   return (
     <div style={{ height: 400, borderRadius: "4px" }} className="w-full">
@@ -115,7 +121,7 @@ export default function DataTable() {
         />
       </div>
       <ToastContainer />
-      <Pagination pageCount={pageCount} />
+      <Pagination pages={2} selectedPage={selectedPage} />
     </div>
   );
 }

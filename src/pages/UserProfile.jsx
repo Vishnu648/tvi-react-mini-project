@@ -115,7 +115,7 @@ function UserProfile() {
               className="rounded-full"
             />
           </div>
-          {/* {isEditing ? <ImageUpload /> : ""} */}
+          {isEditing ? <ImageUpload /> : ""}
           <Paper elevation={2} className="h-11 rounded-md w-full md:w-[48%]">
             {isEditing ? (
               <input

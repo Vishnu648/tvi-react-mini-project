@@ -7,9 +7,12 @@ import DeleteModal from "./modals/DeleteModal";
 import SingleUserModal from "./modals/SingleUserModal";
 import { ToastContainer, toast } from "react-toastify";
 import showToastMessage from "./ToastMessager";
+import Pagination from "../components/Pagination";
 
 export default function DataTable() {
   const [userData, setuserData] = useState([]);
+  const [pageCount, setPageCount] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const tokens = useSelector((state) => state.token);
   let local_accessToken = localStorage.getItem("accessToken");
@@ -82,6 +85,8 @@ export default function DataTable() {
       })
       .then((response) => {
         setuserData(response.data.users);
+        setPageCount(response.data.totalCount);
+        console.log(response);
       })
       .catch((error) => {
         console.error(error.message);
@@ -109,7 +114,8 @@ export default function DataTable() {
           pageSizeOptions={[5, 10]}
         />
       </div>
-      <ToastContainer/>
+      <ToastContainer />
+      <Pagination pageCount={pageCount} />
     </div>
   );
 }

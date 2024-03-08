@@ -3,12 +3,15 @@ import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import SingleUserModal from "./modals/SingleUserModal";
+import Pagination from "../components/Pagination";
 
 export default function DataTable() {
   const [userData, setuserData] = useState([]);
 
   const tokens = useSelector((state) => state.token);
   let local_accessToken = localStorage.getItem("accessToken");
+  const [pageCount, setPageCount] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const columns = [
     // { field: "id", headerName: "id", width: 200 },
@@ -18,14 +21,14 @@ export default function DataTable() {
       headerName: "Full name",
       description: "This column has a value getter and is not sortable.",
       sortable: false,
-      width: 200,
+      width: 250,
       valueGetter: (params) =>
         `${params.row.firstName || ""} ${params.row.lastName || ""}`,
     },
     {
       field: "role",
       headerName: "Role",
-      width: 200,
+      width: 250,
     },
     {
       field: "email",
@@ -53,7 +56,9 @@ export default function DataTable() {
         },
       })
       .then((response) => {
-        setuserData(response.data.data);
+        setuserData(response.data.users);
+        setPageCount(response.data.totalCount);
+        console.log(response);
       })
       .catch((error) => {
         console.error(error.message);
@@ -81,6 +86,7 @@ export default function DataTable() {
           pageSizeOptions={[5, 10]}
         />
       </div>
+      <Pagination pageCount={pageCount} />
     </div>
   );
 }

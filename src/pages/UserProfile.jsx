@@ -58,27 +58,29 @@ function UserProfile() {
     const details = {
       firstName: firstName,
       lastName: lastName,
-      file: { userDP },
+      // imageURL: { userDP },
     };
 
-    axios
-      .put("http://localhost:8000/api/me/update-user", details, {
-        headers: {
-          genericvalue: "agent",
-          Authorization: tokens.access_token || local_accessToken,
-        },
-      })
-      .then((response) => {
-        {
-          console.log("respnose", response);
-        }
-      })
-      .catch((error) => {
-        console.error("**", error.message);
-      });
-    userApiCall();
+    console.log(details);
 
-    setIsEditing((prev) => !prev);
+    // axios
+    //   .put("http://localhost:8000/api/me/update-user", details, {
+    //     headers: {
+    //       genericvalue: "agent",
+    //       Authorization: tokens.access_token || local_accessToken,
+    //     },
+    //   })
+    //   .then((response) => {
+    //     {
+    //       console.log("respnose", response);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error("**", error.message);
+    //   });
+    // userApiCall();
+
+    // setIsEditing((prev) => !prev);
   };
 
   const handleImgUpload = (e) => {
@@ -112,9 +114,8 @@ function UserProfile() {
               w={100}
               className="rounded-full"
             />
-            {/* <input type="file" onChange={handleImgUpload} /> */}
           </div>
-            <ImageUpload />
+          {/* {isEditing ? <ImageUpload /> : ""} */}
           <Paper elevation={2} className="h-11 rounded-md w-full md:w-[48%]">
             {isEditing ? (
               <input

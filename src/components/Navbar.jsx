@@ -11,18 +11,14 @@ function Navbar({ toogleSidebar }) {
   const handleSearch = (e) => {
     e.preventDefault();
     axios
-      .post(
-        `http://localhost:8000/api/user/:search`,
-        { search: { searchText } },
-        {
-          headers: {
-            genericvalue: "admin",
-            Authorization: local_accessToken,
-          },
-        }
-      )
+      .post(`http://localhost:8000/api/user/first`, {
+        headers: {
+          genericvalue: "admin",
+          Authorization: local_accessToken,
+        },
+      })
       .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err.message));
   };
 
   return (

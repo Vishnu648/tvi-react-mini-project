@@ -104,23 +104,28 @@ export default function DataTable() {
   };
 
   return (
-    <div style={{ height: 400, borderRadius: "4px" }} className="w-full">
-      <div className="bg-[#e9ecef] h-[50px] rounded-t-[4px] flex items-center px-4 text-[#212529]">
-        User Data
+    <div>
+      <div
+        style={{ borderRadius: "4px" }}
+        className="w-full md:h-[60vh] md:overflow-scroll mb-6"
+      >
+        <div className="bg-[#e9ecef] h-[50px] rounded-t-[4px] flex items-center px-4 text-[#212529]">
+          User Data
+        </div>
+        <div className="border flex-1">
+          <DataGrid
+            rows={userData}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 10 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+          />
+        </div>
+        <ToastContainer />
       </div>
-      <div className="border flex-1">
-        <DataGrid
-          rows={userData}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-        />
-      </div>
-      <ToastContainer />
       <Pagination pages={2} selectedPage={selectedPage} />
     </div>
   );

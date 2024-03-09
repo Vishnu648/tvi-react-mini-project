@@ -63,24 +63,24 @@ function UserProfile() {
 
     console.log(details);
 
-    // axios
-    //   .put("http://localhost:8000/api/me/update-user", details, {
-    //     headers: {
-    //       genericvalue: "agent",
-    //       Authorization: tokens.access_token || local_accessToken,
-    //     },
-    //   })
-    //   .then((response) => {
-    //     {
-    //       console.log("respnose", response);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error("**", error.message);
-    //   });
-    // userApiCall();
+    axios
+      .put("http://localhost:8000/api/me/update-user", details, {
+        headers: {
+          genericvalue: "agent",
+          Authorization: tokens.access_token || local_accessToken,
+        },
+      })
+      .then((response) => {
+        {
+          console.log("respnose", response);
+        }
+      })
+      .catch((error) => {
+        console.error("**", error.message);
+      });
+    userApiCall();
 
-    // setIsEditing((prev) => !prev);
+    setIsEditing((prev) => !prev);
   };
 
   const handleImgUpload = (e) => {

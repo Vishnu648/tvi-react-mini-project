@@ -11,11 +11,11 @@ export default function DataTable() {
   const tokens = useSelector((state) => state.token);
   let local_accessToken = localStorage.getItem("accessToken");
   const [pageCount, setPageCount] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPageNo, setCurrentPageNo] = useState(1);
 
   const columns = [
     // { field: "id", headerName: "id", width: 200 },
-    // { field: "", headerName: "", width: 10 },
+    { field: "", headerName: "", width: 10 },
     {
       field: "fullName",
       headerName: "Full name",
@@ -49,7 +49,7 @@ export default function DataTable() {
 
   const userApiCall = () => {
     axios
-      .get("http://localhost:8000/api/users", {
+      .get(`http://localhost:8000/api/users?page=${currentPageNo}`, {
         headers: {
           genericvalue: "supervisor",
           Authorization: tokens.access_token || local_accessToken,
@@ -69,24 +69,35 @@ export default function DataTable() {
     userApiCall();
   }, []);
 
+  const selectedPage = (pageNo) => {
+    console.log(pageNo);
+    setCurrentPageNo(pageNo);
+    userApiCall();
+  };
+
   return (
-    <div style={{ height: 400, borderRadius: "4px" }}>
-      <div className="bg-[#e9ecef] h-[50px] rounded-t-[4px] flex items-center px-4 text-[#212529]">
-        User Data
+    <div> 
+      <div
+        style={{ borderRadius: "4px" }}
+        className="w-full md:h-[60vh] md:overflow-scroll mb-6"
+      >
+        <div className="bg-[#e9ecef] h-[50px] rounded-t-[4px] flex items-center px-4 text-[#212529]">
+          User Data
+        </div>
+        <div className="border flex-1">
+          <DataGrid
+            rows={userData}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 10 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+          />
+        </div>
       </div>
-      <div className="border flex-1">
-        <DataGrid
-          rows={userData}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-        />
-      </div>
-      <Pagination pageCount={pageCount} />
+      <Pagination pages={2} selectedPage={selectedPage} />
     </div>
   );
 }

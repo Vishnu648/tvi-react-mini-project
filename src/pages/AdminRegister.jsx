@@ -49,7 +49,7 @@ function AdminRegister() {
             let responseObj = JSON.parse(response.config.data);
             console.log(response);
             if (response.status === 201) {
-              navigate("/login");
+              navigate("/home");
             }
           })
           .catch((err) => {
@@ -145,8 +145,8 @@ function AdminRegister() {
             Create Account
           </button>
         </form>
-        <Link to="/login">
-          <SubFooter message={"Have an account? Go to login"} />
+        <Link to="/home">
+          <SubFooter message={"Back to Dashboard"} />
         </Link>
       </section>
       <AuthFooter />

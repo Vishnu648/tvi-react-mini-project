@@ -16,12 +16,17 @@ function UserProfile() {
   const [isEditing, setIsEditing] = useState(false);
   const [firstName, setFirstName] = useState(userData.firstName);
   const [lastName, setLastName] = useState(userData.lastName);
+  const [imagePath, setImagePath] = useState("");
   const fullName = `${userData.firstName} ${userData.lastName}`;
 
   const tokens = useSelector((state) => state.token);
   let local_accessToken = localStorage.getItem("accessToken");
   let local_refreshToken = localStorage.getItem("refreshToken");
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
+
+  const imageSetter = (path) => {
+    setImagePath(path);
+  };
 
   const userApiCall = () => {
     axios
@@ -33,6 +38,7 @@ function UserProfile() {
       })
       .then((response) => {
         setuserData(response.data.data);
+        setImagePath(response.data.data.imageURL)
         console.log(response.data.data);
       })
       .catch((error) => {
@@ -58,7 +64,7 @@ function UserProfile() {
     const details = {
       firstName: firstName,
       lastName: lastName,
-      // imageURL: { userDP },
+      imageURL: imagePath,
     };
 
     console.log(details);
@@ -83,21 +89,9 @@ function UserProfile() {
     setIsEditing((prev) => !prev);
   };
 
-  const handleImgUpload = (e) => {
-    let dp = e.target.files[0];
-    const formDatas = new FormData();
-    formDatas.append("file", dp);
-
-    const ProfilePicture = {
-      image: formDatas,
-    };
-    console.log(formDatas);
-    // axios
-    //   .post("http://localhost:8000/image/ import", {
-    //     image:formDatas
-    //   })
-    //   .then((res) => console.log(res))
-    //   .catch((err) => console.log(err.message));
+  const handleCancel = () => {
+    setIsEditing((prev) => !prev);
+    console.log(imagePath)
   };
 
   return (
@@ -108,14 +102,14 @@ function UserProfile() {
         <div className="flex flex-col p-6 gap-4 items-center flex-1">
           <div className="ml-3 mb-3 h-40 w-40 rounded-full bg-[#343a40]">
             <img
-              src={userDP}
+              src={imagePath ? imagePath : userDP}
               alt="dp"
               height={100}
               w={100}
               className="rounded-full"
             />
           </div>
-          {isEditing ? <ImageUpload /> : ""}
+          {isEditing ? <ImageUpload imageSetter={imageSetter} /> : ""}
           <Paper elevation={2} className="h-11 rounded-md w-full md:w-[48%]">
             {isEditing ? (
               <input
@@ -205,7 +199,7 @@ function UserProfile() {
             <div className="w-full md:w-[26%] flex justify-between">
               <button
                 className="bg-black text-white px-3 py-1 rounded-sm"
-                onClick={() => setIsEditing((prev) => !prev)}
+                onClick={handleCancel}
               >
                 Cancel
               </button>

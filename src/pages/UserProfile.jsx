@@ -10,6 +10,7 @@ import {
   set_Access_Tokken,
   set_Refresh_Token,
 } from "../Redux/features/tokenSlice";
+import showToastMessage from "../components/ToastMessager";
 
 function UserProfile() {
   const [userData, setuserData] = useState({});
@@ -38,8 +39,8 @@ function UserProfile() {
       })
       .then((response) => {
         setuserData(response.data.data);
-        setImagePath(response.data.data.imageURL)
-        console.log(response.data.data);
+        setImagePath(response.data.data.imageURL);
+        // console.log(response.data.data);
       })
       .catch((error) => {
         console.error("--", error.message);
@@ -79,6 +80,9 @@ function UserProfile() {
       .then((response) => {
         {
           console.log("respnose", response);
+          if (response.status == 200) {
+            showToastMessage("details updated successfully!!!");
+          }
         }
       })
       .catch((error) => {
@@ -91,7 +95,7 @@ function UserProfile() {
 
   const handleCancel = () => {
     setIsEditing((prev) => !prev);
-    console.log(imagePath)
+    console.log(imagePath);
   };
 
   return (
@@ -100,13 +104,11 @@ function UserProfile() {
       <div className="flex ">
         {sidebarIsOpen ? <UserSidebar fullName={fullName} /> : ""}
         <div className="flex flex-col p-6 gap-4 items-center flex-1">
-          <div className="ml-3 mb-3 h-40 w-40 rounded-full bg-[#343a40]">
+          <div className="ml-3 h-[180px] w-[180px] object-contain flex items-center justify-center">
             <img
               src={imagePath ? imagePath : userDP}
               alt="dp"
-              height={100}
-              w={100}
-              className="rounded-full"
+              className="rounded-full h-full w-full"
             />
           </div>
           {isEditing ? <ImageUpload imageSetter={imageSetter} /> : ""}

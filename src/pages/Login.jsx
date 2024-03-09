@@ -53,7 +53,7 @@ function Login() {
         })
         .catch((err) => {
           if (err.response.status == 400) {
-            showToastMessage("Email and Password do not match!!!");
+            showToastMessage("Incorrect email and/or password!!!");
           }
         });
     }

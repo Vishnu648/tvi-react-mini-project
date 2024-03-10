@@ -18,8 +18,10 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const tokens = useSelector((state) => state.token.access_token);
-  const [email, setEmail] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("admin@12345");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailValid, setEmailValid] = useState(true);
+  const [passwordValid, setPasswordValid] = useState(true);
 
   const handleLogin = (e) => {
     const credentials = {
@@ -59,6 +61,27 @@ function Login() {
     }
   };
 
+  const hanldeEmailChange = (e) => {
+    const inputEmail = e.target.value;
+    setEmail(inputEmail);
+    setEmailValid(validateEmail(inputEmail));
+  };
+
+  const validateEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(email);
+  };
+
+  const handlePasswordChange = (e) => {
+    const inputPassword = e.target.value;
+    setPassword(inputPassword);
+    if(inputPassword.length<8){
+      setPasswordValid(false)
+    }else{
+      setPasswordValid(true)
+    }
+  };
+
   return (
     <div className="bg-[#007bff] w-screen h-screen flex flex-col relative items-center pt-12">
       <section className="w-[85%] md:w-[70%] xl:w-[441px] h-[462px] relative bg-white rounded-md">
@@ -70,9 +93,13 @@ function Login() {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={hanldeEmailChange}
               placeholder="Enter email address"
+              style={{ borderColor: emailValid ? "inherit" : "red" }}
             />
+            {emailValid ? null : (
+              <p style={{ color: "red" }}>Invalid email format</p>
+            )}
           </label>
 
           <label id="Label">
@@ -81,9 +108,13 @@ function Login() {
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               placeholder="Enter password"
+              style={{ borderColor: passwordValid ? "inherit" : "red" }}
             />
+            {passwordValid ? null : (
+              <p style={{ color: "red" }}>Password must be at least 8 characters</p>
+            )}
           </label>
           {/* <label className="flex gap-2 text-[#2a2e32] text-sm invisible">
             <input type="checkbox" />

@@ -39,6 +39,7 @@ function UserProfile() {
       })
       .then((response) => {
         setuserData(response.data.data);
+        console.log(response.data.data);
         setImagePath(response.data.data.imageURL);
         // console.log(response.data.data);
       })

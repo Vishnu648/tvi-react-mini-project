@@ -25,6 +25,7 @@ export default function BasicModal({ showToastMessage }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   let local_accessToken = localStorage.getItem("accessToken");
+  const [passwordValid, setPasswordValid] = useState(true);
 
   const handleChange = () => {
     const passes = {
@@ -42,13 +43,28 @@ export default function BasicModal({ showToastMessage }) {
       .then((res) => {
         console.log(res);
         if (res.status == 200) {
+          setNewPassword("");
+          setCurrentPassword("");
           showToastMessage("Password updated successfully");
           handleClose();
         }
       })
-      .catch((err) => console.log(err.response));
+      .catch((err) => {
+        if (err.response.status == 400) {
+          showToastMessage("Current password is incorrect");
+        }
+      });
   };
 
+  const handlePasswordChange = (e) => {
+    const inputPassword = e.target.value;
+    setNewPassword(inputPassword);
+    if (inputPassword.length < 8) {
+      setPasswordValid(false);
+    } else {
+      setPasswordValid(true);
+    }
+  };
   return (
     <div className="outline-none">
       <p onClick={handleOpen} className="hover:text-white">
@@ -80,9 +96,14 @@ export default function BasicModal({ showToastMessage }) {
               <input
                 type="password"
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={handlePasswordChange}
                 placeholder="********"
               />
+              {passwordValid ? null : (
+                <p style={{ color: "red" }}>
+                  Password must be at least 8 characters
+                </p>
+              )}
             </label>
 
             <button

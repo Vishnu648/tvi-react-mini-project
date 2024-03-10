@@ -47,9 +47,9 @@ export default function DataTable() {
     },
   ];
 
-  const userApiCall = () => {
+  const userApiCall = (pn = 1) => {
     axios
-      .get(`http://localhost:8000/api/users?page=${currentPageNo}`, {
+      .get(`http://localhost:8000/api/users?page=${pn}`, {
         headers: {
           genericvalue: "supervisor",
           Authorization: tokens.access_token || local_accessToken,
@@ -72,11 +72,11 @@ export default function DataTable() {
   const selectedPage = (pageNo) => {
     console.log(pageNo);
     setCurrentPageNo(pageNo);
-    userApiCall();
+    userApiCall(pageNo);
   };
 
   return (
-    <div> 
+    <div>
       <div
         style={{ borderRadius: "4px" }}
         className="w-full md:h-[60vh] md:overflow-scroll mb-6"

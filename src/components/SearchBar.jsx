@@ -20,7 +20,7 @@ function SearchBar() {
   };
 
   return (
-    <form onSubmit={handleSearch} className="items-center md:flex hidden">
+    <form onSubmit={handleSearch} className="">
       <input
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}

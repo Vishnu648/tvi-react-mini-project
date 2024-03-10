@@ -38,7 +38,7 @@ function Home() {
       <Navbar toogleSidebar={toogleSidebar} />
       <section className="flex w-full">
         <div
-          className={`transition-all duration-300 ${
+          className={`transition-all duration-500 ${
             sidebarIsOpen ? "w-[225px]" : "w-0"
           } overflow-hidden`}
         >

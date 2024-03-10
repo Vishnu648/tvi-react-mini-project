@@ -14,7 +14,10 @@ function Navbar({ toogleSidebar }) {
           <RxHamburgerMenu />
         </div>
         <div className="flex gap-3 md:gap-7 items-center mr-2">
+          <div className="items-center md:flex hidden">
+
           <SearchBar />
+          </div>
           <ProfileMenu />
           <div className="p-2 md:hidden cursor-pointer" onClick={toogleSidebar}>
             <RxHamburgerMenu />

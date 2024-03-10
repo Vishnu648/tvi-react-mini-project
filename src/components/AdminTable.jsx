@@ -8,6 +8,7 @@ import SingleUserModal from "./modals/SingleUserModal";
 import { ToastContainer, toast } from "react-toastify";
 import showToastMessage from "./ToastMessager";
 import Pagination from "../components/Pagination";
+import SearchBar from "./SearchBar";
 
 export default function DataTable() {
   const [userData, setuserData] = useState([]);
@@ -75,9 +76,9 @@ export default function DataTable() {
     },
   ];
 
-  const userApiCall = () => {
+  const userApiCall = (pn = 1) => {
     axios
-      .get(`http://localhost:8000/api/users?page=${currentPageNo}`, {
+      .get(`http://localhost:8000/api/users?page=${pn}`, {
         headers: {
           genericvalue: "admin",
           Authorization: tokens.access_token || local_accessToken,
@@ -86,7 +87,7 @@ export default function DataTable() {
       .then((response) => {
         setuserData(response.data.users);
         setTotalCount(response.data.totalCount);
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch((error) => {
         console.error(error.message);
@@ -100,7 +101,7 @@ export default function DataTable() {
   const selectedPage = (pageNo) => {
     console.log(pageNo);
     setCurrentPageNo(pageNo);
-    userApiCall();
+    userApiCall(pageNo);
   };
 
   return (
@@ -109,8 +110,9 @@ export default function DataTable() {
         style={{ borderRadius: "4px" }}
         className="w-full md:h-[60vh] md:overflow-scroll mb-6"
       >
-        <div className="bg-[#e9ecef] h-[50px] rounded-t-[4px] flex items-center px-4 text-[#212529]">
+        <div className="bg-[#e9ecef] md:h-[50px] h-[60px] md:py-0 rounded-t-[4px] flex flex-col justify-between items-center md:hidden px-4 text-[#212529]">
           User Data
+          <SearchBar />
         </div>
         <div className="border flex-1">
           <DataGrid

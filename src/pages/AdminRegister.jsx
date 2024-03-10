@@ -11,15 +11,21 @@ import { ToastContainer, toast } from "react-toastify";
 import showToastMessage from "../components/ToastMessager";
 
 function AdminRegister() {
-  const [firstName, setFirstName] = useState("first");
-  const [lastName, setLastName] = useState("last");
-  const [email, setEmail] = useState("email@gmail.com");
-  const [password, setPassword] = useState("12345678");
-  const [confirmPassword, setConfirmPassword] = useState("12345678");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("agent");
   const tokens = useSelector((state) => state.token);
   let local_accessToken = localStorage.getItem("accessToken");
   const navigate = useNavigate();
+
+  const [firstValidatoin, setFirstValidatoin] = useState(true);
+  const [lastValidatoin, setLastValidatoin] = useState(true);
+  const [emailValid, setEmailValid] = useState(true);
+  const [passwordValid, setPasswordValid] = useState(true);
+  const [passwordMatch, setPasswordMatch] = useState(true);
 
   const handleCreate = (e) => {
     e.preventDefault();
@@ -54,10 +60,61 @@ function AdminRegister() {
           })
           .catch((err) => {
             if (err.response.status == 409) {
-              showToastMessage('Email already in use!!!')
+              showToastMessage("Email already in use!!!");
             }
           });
       }
+    }
+  };
+
+  const handleFirstNameChange = (e) => {
+    const inputFirstName = e.target.value;
+    setFirstName(inputFirstName);
+    if (inputFirstName.length < 2) {
+      setFirstValidatoin(false);
+    } else {
+      setFirstValidatoin(true);
+    }
+  };
+
+  const handleSecondNameChange = (e) => {
+    const inputSecondName = e.target.value;
+    setLastName(inputSecondName);
+    if (inputSecondName.length < 2) {
+      setLastValidatoin(false);
+    } else {
+      setLastValidatoin(true);
+    }
+  };
+
+  const handleEmailChange = (e) => {
+    const inputEmail = e.target.value;
+    setEmail(inputEmail);
+    setEmailValid(validateEmail(inputEmail));
+  };
+
+  const validateEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(email);
+  };
+
+  const handlePasswordChange = (e) => {
+    const inputPassword = e.target.value;
+    setPassword(inputPassword);
+    if (inputPassword.length < 8) {
+      setPasswordValid(false);
+    } else {
+      setPasswordValid(true);
+    }
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const inputConfirmPassword = e.target.value;
+    setConfirmPassword(inputConfirmPassword);
+    if (password != inputConfirmPassword) {
+      setPasswordMatch(false);
+    } else {
+      setPasswordMatch(true);
     }
   };
 
@@ -71,21 +128,27 @@ function AdminRegister() {
               First Name
               <br />{" "}
               <input
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={handleFirstNameChange}
                 type="text"
                 value={firstName}
                 placeholder="Enter first name"
               />
+              {firstValidatoin ? null : (
+                <p style={{ color: "red" }}>FirstName too short </p>
+              )}
             </label>
             <label id="Label">
               Last Name
               <br />{" "}
               <input
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={handleSecondNameChange}
                 type="text"
                 value={lastName}
                 placeholder="Enter last name"
               />
+              {lastValidatoin ? null : (
+                <p style={{ color: "red" }}>LastName too short </p>
+              )}
             </label>
           </div>
 
@@ -96,9 +159,12 @@ function AdminRegister() {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
                 placeholder="Enter email address"
               />
+              {emailValid ? null : (
+                <p style={{ color: "red" }}>Invalid email format</p>
+              )}
             </label>
 
             <label htmlFor="role" className="flex gap-2">
@@ -108,9 +174,9 @@ function AdminRegister() {
                 id="role"
                 onClick={(e) => setRole(e.target.value)}
               >
+                <option value="agent">Agent</option>
                 <option value="qa">QA</option>
                 <option value="qc">Qc</option>
-                <option value="agent">Agent</option>
                 <option value="supervisor">supervisor</option>
               </select>
             </label>
@@ -123,9 +189,14 @@ function AdminRegister() {
               <input
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handlePasswordChange}
                 placeholder="Enter password"
               />
+              {passwordValid ? null : (
+                <p style={{ color: "red" }}>
+                  Password must be at least 8 characters
+                </p>
+              )}
             </label>
             <label id="Label">
               Confirm Password
@@ -133,9 +204,12 @@ function AdminRegister() {
               <input
                 type="password"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={handleConfirmPasswordChange}
                 placeholder="Confirm password"
               />
+              {passwordMatch ? null : (
+                <p style={{ color: "red" }}>Password do not match</p>
+              )}
             </label>
           </div>
           <button

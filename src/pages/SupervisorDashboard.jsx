@@ -14,7 +14,11 @@ function SupervisorDashboard() {
     <div>
       <Navbar toogleSidebar={toogleSidebar} />
       <section className="flex">
-        {sidebarIsOpen ? (
+        <div
+          className={`transition-all duration-500 ${
+            sidebarIsOpen ? "w-[225px]" : "w-0"
+          } overflow-hidden`}
+        >
           <nav className="bg-[#212529] relative w-[225px] h-[92vh]">
             <div className="w-full h-[58px] px-4 pt-7 pb-3 text-[#585b5e] font-medium text-[13px]">
               CORE
@@ -29,9 +33,7 @@ function SupervisorDashboard() {
               <h2>Supervisor</h2>
             </div>
           </nav>
-        ) : (
-          ""
-        )}
+        </div>
         <section className="px-6 flex-1 h-[600px] overflow-scroll">
           <p className="text-[35px] mb-[.5rem] mt-[1.5rem] text-[#212529] leading-[1.2]">
             Dashboard

@@ -103,7 +103,13 @@ function UserProfile() {
     <div>
       <UserNavbar toogleSidebar={toogleSidebar} />
       <div className="flex ">
-        {sidebarIsOpen ? <UserSidebar fullName={fullName} /> : ""}
+        <div
+          className={`transition-all duration-500 ${
+            sidebarIsOpen ? "w-[225px]" : "w-0"
+          } overflow-hidden`}
+        >
+          <UserSidebar fullName={fullName} />
+        </div>
         <div className="flex flex-col p-6 gap-4 items-center flex-1">
           <div className="ml-3 h-[180px] w-[180px] object-contain flex items-center justify-center">
             <img

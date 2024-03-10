@@ -37,7 +37,14 @@ function Home() {
     <div className="w-screen">
       <Navbar toogleSidebar={toogleSidebar} />
       <section className="flex w-full">
-        {sidebarIsOpen ? <AdminSidebar /> : ""}
+        <div
+          className={`transition-all duration-300 ${
+            sidebarIsOpen ? "w-[225px]" : "w-0"
+          } overflow-hidden`}
+        >
+          <AdminSidebar />
+        </div>
+        {/* {sidebarIsOpen ? <AdminSidebar /> : ""} */}
         <section className="px-6 flex-1 overflow-scroll">
           <p className="text-[35px] mb-[.5rem] mt-[1.5rem] text-[#212529] leading-[1.2]">
             Dashboard

@@ -75,10 +75,10 @@ function Login() {
   const handlePasswordChange = (e) => {
     const inputPassword = e.target.value;
     setPassword(inputPassword);
-    if(inputPassword.length<8){
-      setPasswordValid(false)
-    }else{
-      setPasswordValid(true)
+    if (inputPassword.length < 8) {
+      setPasswordValid(false);
+    } else {
+      setPasswordValid(true);
     }
   };
 
@@ -113,7 +113,9 @@ function Login() {
               style={{ borderColor: passwordValid ? "inherit" : "red" }}
             />
             {passwordValid ? null : (
-              <p style={{ color: "red" }}>Password must be at least 8 characters</p>
+              <p style={{ color: "red" }}>
+                Password must be at least 8 characters
+              </p>
             )}
           </label>
           {/* <label className="flex gap-2 text-[#2a2e32] text-sm invisible">

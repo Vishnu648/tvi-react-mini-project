@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import { AiOutlineDashboard } from "react-icons/ai";
@@ -6,10 +6,17 @@ import SupervisorTable from "../components/SuporvisorTable";
 
 function SupervisorDashboard() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
+  let local_role = localStorage.getItem("role");
 
   const toogleSidebar = () => {
     setSidebarIsOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    console.log(local_role)
+
+  }, [])
+  
   return (
     <div>
       <Navbar toogleSidebar={toogleSidebar} />

@@ -28,6 +28,7 @@ export default function BasicModal({ id, userApiCall }) {
   const handleClose = () => setOpen(false);
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("role");
     handleClose();
     navigate("/");
   };

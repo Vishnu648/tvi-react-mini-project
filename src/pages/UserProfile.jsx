@@ -39,7 +39,7 @@ function UserProfile() {
       })
       .then((response) => {
         setuserData(response.data.data);
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setImagePath(response.data.data.imageURL);
         // console.log(response.data.data);
       })
@@ -69,8 +69,6 @@ function UserProfile() {
       imageURL: imagePath,
     };
 
-    console.log(details);
-
     axios
       .put("http://localhost:8000/api/me/update-user", details, {
         headers: {
@@ -96,7 +94,6 @@ function UserProfile() {
 
   const handleCancel = () => {
     setIsEditing((prev) => !prev);
-    console.log(imagePath);
   };
 
   return (

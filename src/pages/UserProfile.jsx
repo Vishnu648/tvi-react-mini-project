@@ -11,8 +11,10 @@ import {
   set_Refresh_Token,
 } from "../Redux/features/tokenSlice";
 import showToastMessage from "../components/ToastMessager";
+import { useNavigate } from "react-router-dom";
 
 function UserProfile() {
+  const navigate = useNavigate();
   const [userData, setuserData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [firstName, setFirstName] = useState(userData.firstName);
@@ -24,6 +26,7 @@ function UserProfile() {
   let local_accessToken = localStorage.getItem("accessToken");
   let local_refreshToken = localStorage.getItem("refreshToken");
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
+  let local_role = localStorage.getItem("role");
 
   const imageSetter = (path) => {
     setImagePath(path);
@@ -53,6 +56,9 @@ function UserProfile() {
   };
 
   useEffect(() => {
+    if (local_role != "agent") {
+      navigate(-1);
+    }
     userApiCall();
     setInterval(() => {
       axios

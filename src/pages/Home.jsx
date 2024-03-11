@@ -12,23 +12,21 @@ import {
   set_Access_Tokken,
   set_Refresh_Token,
 } from "../Redux/features/tokenSlice";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
   const tokens = useSelector((state) => state.token.access_token);
   const local_refreshToken = localStorage.getItem("refreshToken");
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
+  let local_accessToken = localStorage.getItem("accessToken");
+  let local_role = localStorage.getItem("role");
 
-
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     axios
-  //       .post("http://localhost:8000/api/refresh-token", {
-  //         refreshToken: tokens.refreshToken || local_refreshToken,
-  //       })
-  //       .then((res) => dispatch(set_Access_Tokken(res.data.refresh_token)))
-  //       .catch((err) => err.message);
-  //   }, 3600000);
-  // }, []);
+  useEffect(() => {
+    if (local_role != "admin") {
+      navigate(-1);
+    }
+  }, []);
 
   const toogleSidebar = () => {
     setSidebarIsOpen((prev) => !prev);

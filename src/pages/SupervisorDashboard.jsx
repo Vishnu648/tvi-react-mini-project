@@ -3,8 +3,10 @@ import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import { AiOutlineDashboard } from "react-icons/ai";
 import SupervisorTable from "../components/SuporvisorTable";
+import { useNavigate } from "react-router-dom";
 
 function SupervisorDashboard() {
+  const navigate = useNavigate();
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
   let local_role = localStorage.getItem("role");
 
@@ -13,10 +15,11 @@ function SupervisorDashboard() {
   };
 
   useEffect(() => {
-    console.log(local_role)
+    if (local_role != "supervisor") {
+      navigate(-1);
+    }
+  }, []);
 
-  }, [])
-  
   return (
     <div>
       <Navbar toogleSidebar={toogleSidebar} />

@@ -6,19 +6,20 @@ import { useSelector } from "react-redux";
 function SearchBar() {
   const tokens = useSelector((state) => state.token.access_token);
   let local_accessToken = localStorage.getItem("accessToken");
-  const [searchText, setSearchText] = useState("vjishnu");
+  const [searchText, setSearchText] = useState("");
+  const [searchData, setSearchData] = useState({});
 
   const handleSearch = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:8000/api/user/${searchText}`, {
+      .get(`http://localhost:8000/api/users?search=${searchText}`, {
         headers: {
           genericvalue: "admin",
           Authorization: tokens.access_token || local_accessToken,
         },
       })
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err.message));
+      .then((res) => setSearchData(res.data.users))
+      .catch((err) => console.error("--", err));
   };
 
   return (

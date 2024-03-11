@@ -12,6 +12,8 @@ import SupervisorDashboard from "../pages/SupervisorDashboard";
 import { ProtectedRoute } from "../utils/ProtectedRoute";
 
 function Router() {
+  let local_role = localStorage.getItem("role");
+
   return (
     <BrowserRouter>
       <Routes>
@@ -24,11 +26,7 @@ function Router() {
         <Route path="/recover-password" element={<PasswordRecovery />} />
         <Route path="/otp" element={<Otp />} />
         <Route path="/create-password" element={<NewPassword />} />
-        <Route
-          path="/home"
-          element={<ProtectedRoute element={Home} />}
-          // element={<Home />}
-        />
+        <Route path="/home" element={<ProtectedRoute element={Home} />} />
         <Route
           path="/user"
           element={<ProtectedRoute element={UserProfile} />}

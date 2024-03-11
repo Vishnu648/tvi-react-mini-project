@@ -30,7 +30,7 @@ export default function BasicModal({ id, userApiCall }) {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("role");
     handleClose();
-    navigate("/");
+    navigate("/login");
   };
 
   const tokens = useSelector((state) => state.token);

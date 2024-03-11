@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AuthFooter from "../components/auth/AuthFooter";
 import AuthHeading from "../components/auth/AuthHeading";
 import SubFooter from "../components/auth/SubFooter";
@@ -22,6 +22,13 @@ function Login() {
   const [password, setPassword] = useState("admin@12345");
   const [emailValid, setEmailValid] = useState(true);
   const [passwordValid, setPasswordValid] = useState(true);
+  let local_accessToken = localStorage.getItem("accessToken");
+  let local_role = localStorage.getItem("role");
+
+  // useEffect(() => {
+  //   console.log(local_accessToken);
+  //   console.log(local_role);
+  // }, []);
 
   const handleLogin = (e) => {
     const credentials = {
@@ -42,9 +49,12 @@ function Login() {
           dispatch(set_Refresh_Token(response.data.refresh_token));
           if (response.status === 200) {
             localStorage.setItem("role", response.data.role);
+            localStorage.setItem(
+              "local_accessToken",
+              response.data.access_token
+            );
             if (responseRole == "admin") {
               navigate("/home");
-              console.log(response);
             } else if (responseRole == "agent") {
               navigate("/user");
             } else if (responseRole == "supervisor") {

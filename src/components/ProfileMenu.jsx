@@ -18,7 +18,7 @@ export default function bMenu() {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("role");
     handleClose();
-    navigate("/");
+    navigate("/login");
   };
 
   const handleClose = () => {

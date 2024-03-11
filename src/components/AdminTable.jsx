@@ -17,6 +17,7 @@ export default function DataTable() {
 
   const tokens = useSelector((state) => state.token);
   let local_accessToken = localStorage.getItem("accessToken");
+  let local_refreshToken = localStorage.getItem("refreshToken");
 
   const columns = [
     // { field: "id", headerName: "id", width: 200 },
@@ -87,7 +88,7 @@ export default function DataTable() {
       .then((response) => {
         setuserData(response.data.users);
         setTotalCount(response.data.totalCount);
-        // console.log(response.data);
+        // console.log(response.data.totalCount);
       })
       .catch((error) => {
         console.error(error.message);
@@ -99,7 +100,7 @@ export default function DataTable() {
   }, []);
 
   const selectedPage = (pageNo) => {
-    console.log(pageNo);
+    // console.log(pageNo);
     setCurrentPageNo(pageNo);
     userApiCall(pageNo);
   };
@@ -128,7 +129,10 @@ export default function DataTable() {
         </div>
         <ToastContainer />
       </div>
-      <Pagination pages={2} selectedPage={selectedPage} />
+      <Pagination
+        pages={Math.ceil(totalCount / 10)}
+        selectedPage={selectedPage}
+      />
     </div>
   );
 }

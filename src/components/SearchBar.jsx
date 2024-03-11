@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 function SearchBar() {
+  const tokens = useSelector((state) => state.token.access_token);
   let local_accessToken = localStorage.getItem("accessToken");
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState("vjishnu");
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -12,7 +14,7 @@ function SearchBar() {
       .post(`http://localhost:8000/api/user/${searchText}`, {
         headers: {
           genericvalue: "admin",
-          Authorization: local_accessToken,
+          Authorization: tokens.access_token || local_accessToken,
         },
       })
       .then((res) => console.log(res))
@@ -20,7 +22,7 @@ function SearchBar() {
   };
 
   return (
-    <form onSubmit={handleSearch} className="">
+    <form onSubmit={handleSearch} className="flex items-center">
       <input
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}

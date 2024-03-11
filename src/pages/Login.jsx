@@ -18,8 +18,8 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const tokens = useSelector((state) => state.token.access_token);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@gmail.com");
+  const [password, setPassword] = useState("admin@12345");
   const [emailValid, setEmailValid] = useState(true);
   const [passwordValid, setPasswordValid] = useState(true);
 

@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { GrView } from "react-icons/gr";
 import { Paper } from "@mui/material";
+import userDP from "../../assets/userDP.png";
 
 const style = {
   position: "absolute",
@@ -33,11 +34,20 @@ export default function BasicModal({ obj }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} className="rounded-lg">
-          <h1 className="text-3xl mb-5">
-            {`${obj?.firstName || obj?.role} ${
-              obj.lastName ? obj.lastName : ""
-            }`}
-          </h1>
+          <div className="flex justify-around items-center">
+            <div className="border w-16 h-16 rounded-full object-contain flex items-center justify-center">
+              <img
+                src={obj.imageURL ? obj.imageURL : userDP}
+                alt="dp"
+                className="rounded-full h-full w-full"
+              />
+            </div>
+            <h1 className="text-3xl">
+              {`${obj?.firstName || obj?.role} ${
+                obj.lastName ? obj.lastName : ""
+              }`}
+            </h1>
+          </div>
           <div className="p-4 flex flex-col gap-3">
             {obj?.firstName ? (
               <Paper className="px-6 py-4 w-full flex gap-4">

@@ -21,6 +21,7 @@ function Home() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
   let local_accessToken = localStorage.getItem("accessToken");
   let local_role = localStorage.getItem("role");
+  const [newUserData, setnewUserData] = useState({});
 
   useEffect(() => {
     if (local_role != "admin") {
@@ -32,9 +33,17 @@ function Home() {
     setSidebarIsOpen((prev) => !prev);
   };
 
+  const searchDataFunction = (obj) => {
+    setnewUserData(obj);
+    console.log("from home--", obj);
+  };
+
   return (
     <div className="w-screen">
-      <Navbar toogleSidebar={toogleSidebar} />
+      <Navbar
+        toogleSidebar={toogleSidebar}
+        searchDataFunction={searchDataFunction}
+      />
       <section className="flex w-full">
         <div
           className={`transition-all duration-500 ${
@@ -43,7 +52,6 @@ function Home() {
         >
           <AdminSidebar />
         </div>
-        {/* {sidebarIsOpen ? <AdminSidebar /> : ""} */}
         <section className="px-6 flex-1 overflow-scroll">
           <p className="text-[35px] mb-[.5rem] mt-[1.5rem] text-[#212529] leading-[1.2]">
             Dashboard
@@ -51,7 +59,7 @@ function Home() {
           <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
             Dashboard
           </div>
-          <AdminTable />
+          <AdminTable newUserData={newUserData} />
         </section>
       </section>
     </div>

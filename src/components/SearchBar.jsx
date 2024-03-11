@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-function SearchBar() {
+function SearchBar({ searchDataFunction }) {
   const tokens = useSelector((state) => state.token.access_token);
   let local_accessToken = localStorage.getItem("accessToken");
   const [searchText, setSearchText] = useState("");
@@ -12,13 +12,20 @@ function SearchBar() {
   const handleSearch = (e) => {
     e.preventDefault();
     axios
-      .get(`http://localhost:8000/api/users?search=${searchText}`, {
-        headers: {
-          genericvalue: "admin",
-          Authorization: tokens.access_token || local_accessToken,
-        },
+      .get(
+        `http://localhost:8000/api/users?search=${searchText.toLowerCase()}`,
+        {
+          headers: {
+            genericvalue: "admin",
+            Authorization: tokens.access_token || local_accessToken,
+          },
+        }
+      )
+      .then((res) => {
+        // console.log(res.data.users)
+        setSearchData(res.data.users);
+        searchDataFunction(res.data.users);
       })
-      .then((res) => setSearchData(res.data.users))
       .catch((err) => console.error("--", err));
   };
 

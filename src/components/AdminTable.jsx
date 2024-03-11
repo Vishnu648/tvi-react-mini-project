@@ -10,7 +10,7 @@ import showToastMessage from "./ToastMessager";
 import Pagination from "../components/Pagination";
 import SearchBar from "./SearchBar";
 
-export default function DataTable() {
+export default function DataTable({ newUserData }) {
   const [userData, setuserData] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPageNo, setCurrentPageNo] = useState(1);
@@ -78,6 +78,8 @@ export default function DataTable() {
   ];
 
   const userApiCall = (pn = 1) => {
+    // newUserData ? setuserData(newUserData) : "";
+
     axios
       .get(`http://localhost:8000/api/users?page=${pn}`, {
         headers: {
@@ -88,7 +90,6 @@ export default function DataTable() {
       .then((response) => {
         setuserData(response.data.users);
         setTotalCount(response.data.totalCount);
-        // console.log(response.data.totalCount);
       })
       .catch((error) => {
         console.error(error.message);
@@ -100,7 +101,6 @@ export default function DataTable() {
   }, []);
 
   const selectedPage = (pageNo) => {
-    // console.log(pageNo);
     setCurrentPageNo(pageNo);
     userApiCall(pageNo);
   };

@@ -10,6 +10,7 @@ import axios from "axios";
 function Login() {
   const [email, setEmail] = useState("");
   const [emailValid, setEmailValid] = useState(true);
+  const [emailNotFound, setEmailNotFound] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,7 +27,11 @@ function Login() {
             navigate("/otp");
           }
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => {
+          if (err.response.status == 400) {
+            setEmailNotFound(true);
+          }
+        });
     }
   };
 
@@ -59,8 +64,11 @@ function Login() {
               type="email"
               placeholder="Enter email address"
             />
-             {emailValid ? null : (
+            {emailValid ? null : (
               <p style={{ color: "red" }}>Invalid email format</p>
+            )}
+            {!emailNotFound ? null : (
+              <p style={{ color: "red" }}>Email not found</p>
             )}
           </label>
           <div className="flex w-full mt-6 items-center justify-between">

@@ -9,6 +9,7 @@ import axios from "axios";
 function Login() {
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
+  const [otpValid, setOtpValid] = useState(true);
   let local_recoveryEmail = localStorage.getItem("recoveryEmail");
 
   const handleOtpVerification = () => {
@@ -21,11 +22,21 @@ function Login() {
         .post("http://localhost:8000/api/me/verifyotp", verifyOtp)
         .then((res) => {
           if (res.status == 200) {
-            localStorage.setItem("otpAccessToken",res.data.accessToken);
+            localStorage.setItem("otpAccessToken", res.data.accessToken);
             navigate("/create-password");
           }
         })
         .catch((err) => console.log(err.message));
+    }
+  };
+
+  const handleOtpChange = (e) => {
+    const inputOtp = e.target.value;
+    setOtp(inputOtp);
+    if (inputOtp.length < 6) {
+      setOtpValid(false);
+    } else {
+      setOtpValid(true);
     }
   };
 
@@ -40,10 +51,13 @@ function Login() {
             <br />{" "}
             <input
               value={otp}
-              onChange={(e) => setOtp(e.target.value)}
+              onChange={handleOtpChange}
               type="email"
               placeholder="0A98XY"
             />
+            {otpValid ? null : (
+              <p style={{ color: "red" }}>OTP has 6 characters</p>
+            )}
           </label>
           <div className="flex w-full mt-6 items-center justify-between">
             <p className="hover:underline cursor-pointer text-[13px] text-[#007bff]"></p>

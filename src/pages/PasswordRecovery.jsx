@@ -9,6 +9,8 @@ import axios from "axios";
 
 function Login() {
   const [email, setEmail] = useState("");
+  const [emailValid, setEmailValid] = useState(true);
+
   const navigate = useNavigate();
 
   const handleGenerateOtp = () => {
@@ -28,6 +30,17 @@ function Login() {
     }
   };
 
+  const hanldeEmailChange = (e) => {
+    const inputEmail = e.target.value;
+    setEmail(inputEmail);
+    setEmailValid(validateEmail(inputEmail));
+  };
+
+  const validateEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(email);
+  };
+
   return (
     <div className="bg-[#007bff] w-screen h-screen flex flex-col relative items-center pt-12">
       <section className="w-[85%] md:w-[70%] xl:w-[441px] h-[392px] relative bg-white rounded-md">
@@ -42,10 +55,13 @@ function Login() {
             <br />{" "}
             <input
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={hanldeEmailChange}
               type="email"
               placeholder="Enter email address"
             />
+             {emailValid ? null : (
+              <p style={{ color: "red" }}>Invalid email format</p>
+            )}
           </label>
           <div className="flex w-full mt-6 items-center justify-between">
             <Link to="/login">

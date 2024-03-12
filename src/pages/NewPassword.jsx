@@ -5,12 +5,16 @@ import SubFooter from "../components/auth/SubFooter";
 import "./style.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import showToastMessage from "../components/ToastMessager";
+import { ToastContainer, toast } from "react-toastify";
 
 function Login() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
   let local_otpToken = localStorage.getItem("otpAccessToken");
+  const [passwordValid, setPasswordValid] = useState(true);
+  const [passwordMatch, setPasswordMatch] = useState(true);
 
   const handleCreatePassword = (e) => {
     e.preventDefault();
@@ -28,11 +32,34 @@ function Login() {
           })
           .then((res) => {
             if (res.status == 200) {
-              navigate("/login");
+              showToastMessage("Password changed successfully");
+              setTimeout(() => {
+                navigate("/login");
+              }, 3000);
             }
           })
           .catch((err) => console.log(err.message));
       }
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    const inputPassword = e.target.value;
+    setPassword(inputPassword);
+    if (inputPassword.length < 8) {
+      setPasswordValid(false);
+    } else {
+      setPasswordValid(true);
+    }
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const inputConfirmPassword = e.target.value;
+    setConfirmPassword(inputConfirmPassword);
+    if (password != inputConfirmPassword) {
+      setPasswordMatch(false);
+    } else {
+      setPasswordMatch(true);
     }
   };
 
@@ -46,10 +73,15 @@ function Login() {
             <br />{" "}
             <input
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               type="password"
               placeholder="Enter new password"
             />
+            {passwordValid ? null : (
+              <p style={{ color: "red" }}>
+                Password must be at least 8 characters
+              </p>
+            )}
           </label>
 
           <label id="Label">
@@ -57,10 +89,13 @@ function Login() {
             <br />{" "}
             <input
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={handleConfirmPasswordChange}
               type="password"
               placeholder="Confirm password"
             />
+            {passwordMatch ? null : (
+              <p style={{ color: "red" }}>Password do not match</p>
+            )}
           </label>
 
           <div className="flex w-full items-center justify-between">
@@ -78,6 +113,7 @@ function Login() {
         </Link>
       </section>
       <AuthFooter />
+      <ToastContainer />
     </div>
   );
 }

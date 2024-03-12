@@ -25,10 +25,18 @@ function Login() {
   let local_accessToken = localStorage.getItem("accessToken");
   let local_role = localStorage.getItem("role");
 
-  // useEffect(() => {
-  //   console.log(local_accessToken);
-  //   console.log(local_role);
-  // }, []);
+  useEffect(() => {
+    console.log("lc", local_role);
+    if (local_role) {
+      if (local_role == "admin") {
+        navigate("/home");
+      } else if (local_role == "agent") {
+        navigate("/user");
+      } else if (local_role == "supervisor") {
+        navigate("/supervisor");
+      }
+    }
+  }, []);
 
   const handleLogin = (e) => {
     const credentials = {

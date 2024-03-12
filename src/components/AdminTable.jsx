@@ -79,7 +79,7 @@ export default function DataTable({ newUserData }) {
 
   const userApiCall = (pn = 1) => {
     // newUserData ? setuserData(newUserData) : "";
-
+    
     axios
       .get(`http://localhost:8000/api/users?page=${pn}`, {
         headers: {

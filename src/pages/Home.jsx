@@ -59,7 +59,10 @@ function Home() {
           <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
             Dashboard
           </div>
-          <AdminTable newUserData={newUserData} />
+          <AdminTable
+            newUserData={newUserData}
+            searchDataFunction={searchDataFunction}
+          />
         </section>
       </section>
     </div>

@@ -10,7 +10,7 @@ import showToastMessage from "./ToastMessager";
 import Pagination from "../components/Pagination";
 import SearchBar from "./SearchBar";
 
-export default function DataTable({ newUserData }) {
+export default function DataTable({ newUserData, searchDataFunction }) {
   const [userData, setuserData] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPageNo, setCurrentPageNo] = useState(1);
@@ -78,8 +78,6 @@ export default function DataTable({ newUserData }) {
   ];
 
   const userApiCall = (pn = 1) => {
-    // newUserData ? setuserData(newUserData) : "";
-    
     axios
       .get(`http://localhost:8000/api/users?page=${pn}`, {
         headers: {
@@ -113,11 +111,11 @@ export default function DataTable({ newUserData }) {
       >
         <div className="bg-[#e9ecef] md:h-[50px] h-[60px] md:py-0 rounded-t-[4px] flex flex-col justify-between items-center md:hidden px-4 text-[#212529]">
           User Data
-          <SearchBar />
+          <SearchBar searchDataFunction={searchDataFunction} />
         </div>
         <div className="border flex-1">
           <DataGrid
-            rows={userData}
+            rows={newUserData.length > 0 ? newUserData : userData}
             columns={columns}
             initialState={{
               pagination: {

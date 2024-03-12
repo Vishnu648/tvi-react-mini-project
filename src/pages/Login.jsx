@@ -26,7 +26,7 @@ function Login() {
   let local_role = localStorage.getItem("role");
 
   useEffect(() => {
-    console.log("lc", local_role);
+    // console.log("lc", local_role);
     if (local_role) {
       if (local_role == "admin") {
         navigate("/home");

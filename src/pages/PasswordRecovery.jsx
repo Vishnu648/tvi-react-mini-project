@@ -5,17 +5,26 @@ import SubFooter from "../components/auth/SubFooter";
 import "./style.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
   const [email, setEmail] = useState("");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const handleGenerateOtp = () => {
-    if(email){
-      console.log(email);
-      navigate('/otp')
-    }else{
-      console.log('----');
+    const recoveryPassword = {
+      email: email,
+    };
+    if (email) {
+      axios
+        .post("http://localhost:8000/api/me/forgotpassword", recoveryPassword)
+        .then((res) => {
+          if (res.status == 200) {
+            localStorage.setItem("recoveryEmail", email);
+            navigate("/otp");
+          }
+        })
+        .catch((err) => console.log(err.message));
     }
   };
 

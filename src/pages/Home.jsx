@@ -35,7 +35,7 @@ function Home() {
 
   const searchDataFunction = (obj) => {
     setnewUserData(obj);
-    console.log("from home--", obj);
+    // console.log("from home--", obj);
   };
 
   return (

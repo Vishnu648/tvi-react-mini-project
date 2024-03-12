@@ -4,17 +4,30 @@ import AuthHeading from "../components/auth/AuthHeading";
 import SubFooter from "../components/auth/SubFooter";
 import "./style.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
   const [otp, setOtp] = useState("");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  let local_recoveryEmail = localStorage.getItem("recoveryEmail");
 
-  const handleOtpVerification=() => {
-    if(otp){
-      navigate('/create-password');
+  const handleOtpVerification = () => {
+    const verifyOtp = {
+      otp: otp,
+      email: local_recoveryEmail,
+    };
+    if (otp) {
+      axios
+        .post("http://localhost:8000/api/me/verifyotp", verifyOtp)
+        .then((res) => {
+          if (res.status == 200) {
+            localStorage.setItem("otpAccessToken",res.data.accessToken);
+            navigate("/create-password");
+          }
+        })
+        .catch((err) => console.log(err.message));
     }
-  }
-  
+  };
 
   return (
     <div className="bg-[#007bff] w-screen h-screen flex flex-col relative items-center pt-12">

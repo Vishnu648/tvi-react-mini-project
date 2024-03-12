@@ -3,18 +3,35 @@ import AuthFooter from "../components/auth/AuthFooter";
 import AuthHeading from "../components/auth/AuthHeading";
 import SubFooter from "../components/auth/SubFooter";
 import "./style.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+  let local_otpToken = localStorage.getItem("otpAccessToken");
 
   const handleCreatePassword = (e) => {
     e.preventDefault();
     if (password && confirmPassword) {
       if (password == confirmPassword) {
-        navigate("/login");
+        const details = {
+          password: password,
+          confirmPassword: confirmPassword,
+        };
+        axios
+          .post("http://localhost:8000/api/me/changepassword", details, {
+            headers: {
+              Authorization: local_otpToken,
+            },
+          })
+          .then((res) => {
+            if (res.status == 200) {
+              navigate("/login");
+            }
+          })
+          .catch((err) => console.log(err.message));
       }
     }
   };
@@ -56,7 +73,9 @@ function Login() {
             </button>
           </div>
         </form>
-        <SubFooter message={"Need an account? Sign up!"} />
+        <Link to="/login">
+          <SubFooter message={"Need an account? Sign up!"} />
+        </Link>
       </section>
       <AuthFooter />
     </div>

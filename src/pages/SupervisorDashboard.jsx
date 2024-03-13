@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { AiOutlineDashboard } from "react-icons/ai";
 import SupervisorTable from "../components/SuporvisorTable";
 import { useNavigate } from "react-router-dom";
+import AreaChartt from "../components/charts/AreaChart";
+import BarChartt from "../components/charts/BarChart";
 
 function SupervisorDashboard() {
   const navigate = useNavigate();
@@ -50,6 +52,10 @@ function SupervisorDashboard() {
           </p>
           <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
             Dashboard
+          </div>
+          <div className="flex flex-col lg:flex-row gap-3 justify-between items-center p-5 my-8 overflow-scroll border rounded-md">
+            <AreaChartt />
+            <BarChartt />
           </div>
           <SupervisorTable />
         </section>

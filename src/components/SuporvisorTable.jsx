@@ -81,9 +81,9 @@ export default function DataTable() {
         style={{ borderRadius: "4px" }}
         className="w-full md:h-[60vh] md:overflow-scroll mb-6"
       >
-        <div className="bg-[#e9ecef] h-[50px] rounded-t-[4px] flex items-center px-4 text-[#212529]">
-          User Data
-        </div>
+        <h2 className="p-3 border w-full text-center bg-[#f7f7f7]">
+            User Data
+          </h2>
         <div className="border flex-1">
           <DataGrid
             rows={userData}

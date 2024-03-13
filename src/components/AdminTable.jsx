@@ -107,13 +107,16 @@ export default function DataTable({ newUserData, searchDataFunction }) {
     <div>
       <div
         style={{ borderRadius: "4px" }}
-        className="w-full md:h-[60vh] md:overflow-scroll mb-6"
+        className="w-full md:h-[59vh] md:overflow-scroll mb-6"
       >
         <div className="bg-[#e9ecef] md:h-[50px] h-[60px] md:py-0 rounded-t-[4px] flex flex-col justify-between items-center md:hidden px-4 text-[#212529]">
           User Data
           <SearchBar searchDataFunction={searchDataFunction} />
         </div>
         <div className="border flex-1">
+          <h2 className="p-3 border w-full text-center bg-[#f7f7f7]">
+            User Data
+          </h2>
           <DataGrid
             rows={newUserData.length > 0 ? newUserData : userData}
             columns={columns}

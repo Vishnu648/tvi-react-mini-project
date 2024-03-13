@@ -84,7 +84,7 @@ function UserProfile() {
       })
       .then((response) => {
         {
-          console.log("respnose", response);
+          // console.log("respnose", response);
           if (response.status == 200) {
             showToastMessage("details updated successfully!!!");
           }
@@ -113,8 +113,8 @@ function UserProfile() {
         >
           <UserSidebar fullName={fullName} />
         </div>
-        <div className="flex flex-col p-6 gap-4 items-center flex-1">
-          <div className="ml-3 h-[180px] w-[180px] object-contain flex items-center justify-center">
+        <div className="flex flex-col border p-6 gap-3 items-center flex-1">
+          <div className="ml-3 h-[160px] w-[160px]  object-contain flex items-center justify-center">
             <img
               src={imagePath ? imagePath : userDP}
               alt="dp"

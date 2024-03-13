@@ -38,7 +38,7 @@ export default function BasicModal({ id, userApiCall,showToastMessage }) {
         },
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.status == 200) {
           showToastMessage("User deleted successfully");
           userApiCall();

@@ -58,7 +58,7 @@ export default function DataTable() {
       .then((response) => {
         setuserData(response.data.users);
         setPageCount(response.data.totalCount);
-        console.log(response);
+        // console.log(response);
       })
       .catch((error) => {
         console.error(error.message);
@@ -70,7 +70,7 @@ export default function DataTable() {
   }, []);
 
   const selectedPage = (pageNo) => {
-    console.log(pageNo);
+    // console.log(pageNo);
     setCurrentPageNo(pageNo);
     userApiCall(pageNo);
   };

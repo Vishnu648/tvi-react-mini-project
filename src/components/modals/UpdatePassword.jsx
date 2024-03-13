@@ -41,7 +41,7 @@ export default function BasicModal({ showToastMessage }) {
         },
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.status == 200) {
           setNewPassword("");
           setCurrentPassword("");

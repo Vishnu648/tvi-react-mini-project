@@ -53,7 +53,7 @@ function AdminRegister() {
           })
           .then((response) => {
             let responseObj = JSON.parse(response.config.data);
-            console.log(response);
+            // console.log(response);
             if (response.status === 201) {
               navigate("/home");
             }

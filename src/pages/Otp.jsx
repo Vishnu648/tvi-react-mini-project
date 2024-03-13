@@ -23,6 +23,8 @@ function Login() {
         .then((res) => {
           if (res.status == 200) {
             localStorage.setItem("otpAccessToken", res.data.accessToken);
+            localStorage.removeItem("recoveryEmail");
+
             navigate("/create-password");
           }
         })

@@ -56,7 +56,7 @@ export default function DataTable({ newUserData, searchDataFunction }) {
       headerName: "Edit",
       width: 135,
       renderCell: (e) => (
-        <button onClick={() => console.log(e.row)}>
+        <button>
           <EditModal obj={e.row} userApiCall={userApiCall} />
         </button>
       ),

@@ -79,7 +79,7 @@ export default function App() {
         <Tooltip />
         <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
 
-        <Bar dataKey="uv" fill="#8884d8" />
+        <Bar dataKey="uv" fill="#007bff" />
       </BarChart>
     </div>
   );

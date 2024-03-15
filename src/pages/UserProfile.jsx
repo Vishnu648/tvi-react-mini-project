@@ -94,6 +94,7 @@ function UserProfile() {
   };
 
   const handleCancel = () => {
+    setImagePath(userData.imageURL)
     setIsEditing((prev) => !prev);
   };
 
@@ -107,7 +108,6 @@ function UserProfile() {
 
   return (
     <div>
-      {console.log(dp)}
       <UserNavbar toogleSidebar={toogleSidebar} />
       <div className="flex ">
         <div

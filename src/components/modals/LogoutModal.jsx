@@ -1,11 +1,8 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { MdDelete } from "react-icons/md";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const style = {
@@ -32,9 +29,6 @@ export default function BasicModal({ id, userApiCall }) {
     handleClose();
     navigate("/login");
   };
-
-  const tokens = useSelector((state) => state.token);
-  let local_accessToken = localStorage.getItem("accessToken");
   return (
     <div>
       {/* <MdDelete onClick={handleOpen} size={"20px"} /> */}

@@ -1,7 +1,5 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import LogoutModal from "./modals/LogoutModal"

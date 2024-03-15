@@ -2,14 +2,11 @@ import React, { useState, useEffect } from "react";
 import UserNavbar from "../components/UserNavbar";
 import UserSidebar from "../components/UserSidebar";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Paper from "@mui/material/Paper";
 import userDP from "../assets/userDP.png";
 import ImageUpload from "../components/ImageUpload";
-import {
-  set_Access_Tokken,
-  set_Refresh_Token,
-} from "../Redux/features/tokenSlice";
+import { set_Access_Tokken } from "../Redux/features/tokenSlice";
 import showToastMessage from "../components/ToastMessager";
 import { useNavigate } from "react-router-dom";
 
@@ -42,9 +39,7 @@ function UserProfile() {
       })
       .then((response) => {
         setuserData(response.data.data);
-        // console.log(response.data.data);
         setImagePath(response.data.data.imageURL);
-        // console.log(response.data.data);
       })
       .catch((error) => {
         console.error("--", error.message);
@@ -102,8 +97,17 @@ function UserProfile() {
     setIsEditing((prev) => !prev);
   };
 
+  let words = fullName.split(" ");
+
+  let dp = words
+    .map((word) => word[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
   return (
     <div>
+      {console.log(dp)}
       <UserNavbar toogleSidebar={toogleSidebar} />
       <div className="flex ">
         <div
@@ -114,12 +118,12 @@ function UserProfile() {
           <UserSidebar fullName={fullName} />
         </div>
         <div className="flex flex-col border p-6 gap-3 items-center flex-1">
-          <div className="ml-3 h-[160px] w-[160px]  object-contain flex items-center justify-center">
-            <img
-              src={imagePath ? imagePath : userDP}
-              alt="dp"
-              className="rounded-full h-full w-full"
-            />
+          <div className="ml-3 h-[160px] w-[160px] border rounded-full bg-slate-600 object-contain flex items-center justify-center">
+            {imagePath ? (
+              <img src={imagePath} className="rounded-full h-full w-full" />
+            ) : (
+              <p className="text-white text-[4rem]">{dp || "UN"}</p>
+            )}
           </div>
           {isEditing ? <ImageUpload imageSetter={imageSetter} /> : ""}
           <Paper elevation={2} className="h-11 rounded-md w-full md:w-[48%]">

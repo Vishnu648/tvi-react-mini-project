@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { Link } from "react-router-dom";
 import { AiOutlineDashboard } from "react-icons/ai";
 import SupervisorTable from "../components/SuporvisorTable";
 import { useNavigate } from "react-router-dom";

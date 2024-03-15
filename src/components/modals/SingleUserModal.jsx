@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { GrView } from "react-icons/gr";
@@ -21,6 +21,19 @@ export default function BasicModal({ obj }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [fullName, setFullName] = useState("");
+
+  useEffect(() => {
+    setFullName(`${obj.firstName} ${obj.lastName}`);
+  }, []);
+
+  let words = fullName.split(" ");
+
+  let dp = words
+    .map((word) => word[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 
   return (
     <div>
@@ -35,12 +48,16 @@ export default function BasicModal({ obj }) {
       >
         <Box sx={style} className="rounded-lg">
           <div className="flex justify-around items-center">
-            <div className="border w-16 h-16 rounded-full object-contain flex items-center justify-center">
-              <img
-                src={obj.imageURL ? obj.imageURL : userDP}
-                alt="dp"
-                className="rounded-full h-full w-full"
-              />
+            <div className="border w-16 h-16 rounded-full bg-slate-600 object-contain flex items-center justify-center">
+              {obj.imageURL ? (
+                <img
+                  src={obj.imageURL}
+                  alt="dp"
+                  className="rounded-full h-full w-full"
+                />
+              ) : (
+                <p className="text-white text-[2rem]">{dp || "UN"}</p>
+              )}
             </div>
             <h1 className="text-3xl">
               {`${obj?.firstName || obj?.role} ${

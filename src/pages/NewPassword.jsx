@@ -6,7 +6,7 @@ import "./style.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import showToastMessage from "../components/ToastMessager";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 function Login() {
   const [password, setPassword] = useState("");

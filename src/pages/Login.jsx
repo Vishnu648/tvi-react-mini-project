@@ -5,24 +5,22 @@ import SubFooter from "../components/auth/SubFooter";
 import "./style.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   set_Access_Tokken,
   set_Refresh_Token,
 } from "../Redux/features/tokenSlice";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import showToastMessage from "../components/ToastMessager";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const tokens = useSelector((state) => state.token.access_token);
   const [email, setEmail] = useState("admin@gmail.com");
   const [password, setPassword] = useState("admin@12345");
   const [emailValid, setEmailValid] = useState(true);
   const [passwordValid, setPasswordValid] = useState(true);
-  let local_accessToken = localStorage.getItem("accessToken");
   let local_role = localStorage.getItem("role");
 
   useEffect(() => {

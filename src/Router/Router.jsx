@@ -12,7 +12,6 @@ import SupervisorDashboard from "../pages/SupervisorDashboard";
 import { ProtectedRoute } from "../utils/ProtectedRoute";
 
 function Router() {
-  let local_role = localStorage.getItem("role");
 
   return (
     <BrowserRouter>

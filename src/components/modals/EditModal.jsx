@@ -44,7 +44,7 @@ export default function BasicModal({ obj, userApiCall }) {
     };
 
     axios
-      .put(`http://localhost:8000/api/update/${obj.id}`, newDetails, {
+      .put(`http://localhost:8000/api/update/${obj._id}`, newDetails, {
         headers: {
           genericvalue: "admin",
           Authorization: tokens.access_token || local_accessToken,

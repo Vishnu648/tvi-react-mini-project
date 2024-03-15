@@ -10,6 +10,7 @@ export default function App({ imageSetter }) {
       const reader = new FileReader();
       reader.onload = () => {
         setImgage(reader.result);
+        // console.log(reader.result);
         imageSetter(reader.result);
       };
       reader.readAsDataURL(file);

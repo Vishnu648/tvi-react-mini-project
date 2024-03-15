@@ -69,7 +69,7 @@ export default function DataTable({ newUserData, searchDataFunction }) {
         <button>
           <DeleteModal
             showToastMessage={showToastMessage}
-            id={e.row.id}
+            id={e.row._id}
             userApiCall={userApiCall}
           />
         </button>
@@ -104,7 +104,7 @@ export default function DataTable({ newUserData, searchDataFunction }) {
   };
 
   return (
-    <div>
+    <div className="mb-6">
       <div
         style={{ borderRadius: "4px" }}
         className="w-full md:h-[59vh] md:overflow-scroll mb-6"
@@ -119,6 +119,7 @@ export default function DataTable({ newUserData, searchDataFunction }) {
           </h2>
           <DataGrid
             rows={newUserData.length > 0 ? newUserData : userData}
+            getRowId={row=>row._id}
             columns={columns}
             initialState={{
               pagination: {

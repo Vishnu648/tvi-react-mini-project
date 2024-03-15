@@ -18,7 +18,7 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("admin@12345");
+  const [password, setPassword] = useState("admin@123");
   const [emailValid, setEmailValid] = useState(true);
   const [passwordValid, setPasswordValid] = useState(true);
   let local_role = localStorage.getItem("role");
@@ -60,7 +60,7 @@ function Login() {
               response.data.access_token
             );
             if (responseRole == "admin") {
-              navigate("/home");
+              // navigate("/home");
             } else if (responseRole == "agent") {
               navigate("/user");
             } else if (responseRole == "supervisor") {
@@ -74,6 +74,7 @@ function Login() {
           if (err.response.status == 400) {
             showToastMessage("Incorrect email and/or password!!!");
           }
+          console.log(err.message);
         });
     }
   };

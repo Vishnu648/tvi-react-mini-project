@@ -22,9 +22,16 @@ export default function BasicModal({ obj }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [fullName, setFullName] = useState("");
+  const [imagePath, setImagePath] = useState("");
 
   useEffect(() => {
+    console.log(obj);
     setFullName(`${obj.firstName} ${obj.lastName}`);
+
+    const base64String = btoa(
+      String.fromCharCode(...new Uint8Array(obj?.image?.data))
+    );
+    setImagePath(base64String);
   }, []);
 
   let words = fullName.split(" ");
@@ -49,9 +56,9 @@ export default function BasicModal({ obj }) {
         <Box sx={style} className="rounded-lg">
           <div className="flex justify-around items-center">
             <div className="border w-16 h-16 rounded-full bg-slate-600 object-contain flex items-center justify-center">
-              {obj.imageURL ? (
+              {imagePath ? (
                 <img
-                  src={obj.imageURL}
+                  src={`data:image/png;base64,${imagePath}`}
                   alt="dp"
                   className="rounded-full h-full w-full"
                 />

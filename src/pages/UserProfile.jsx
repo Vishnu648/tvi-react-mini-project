@@ -26,7 +26,12 @@ function UserProfile() {
   let local_role = localStorage.getItem("role");
 
   const imageSetter = (path) => {
-    setImagePath(path);
+    console.log(path);
+    const encoder = new TextEncoder();
+    const inputString = path;
+    const buffer = encoder.encode(inputString);
+    console.log(buffer);
+    setImagePath(buffer);
   };
 
   const userApiCall = () => {
@@ -38,11 +43,19 @@ function UserProfile() {
         },
       })
       .then((response) => {
-        setuserData(response.data.data);
-        setImagePath(response.data.data.imageURL);
+        setuserData(response.data.result);
+        console.log(response.data.result);
+
+        const base64String = btoa(
+          String.fromCharCode(
+            ...new Uint8Array(response.data.result?.image?.data)
+          )
+        );
+        console.log("base", base64String);
+        setImagePath(base64String);
       })
       .catch((error) => {
-        console.error("--", error.message);
+        console.error(error.message);
       });
   };
 
@@ -67,7 +80,7 @@ function UserProfile() {
     const details = {
       firstName: firstName,
       lastName: lastName,
-      imageURL: imagePath,
+      image: imagePath,
     };
 
     axios
@@ -79,7 +92,6 @@ function UserProfile() {
       })
       .then((response) => {
         {
-          // console.log("respnose", response);
           if (response.status == 200) {
             showToastMessage("details updated successfully!!!");
           }
@@ -94,7 +106,7 @@ function UserProfile() {
   };
 
   const handleCancel = () => {
-    setImagePath(userData.imageURL)
+    setImagePath(userData.imageURL);
     setIsEditing((prev) => !prev);
   };
 
@@ -120,7 +132,10 @@ function UserProfile() {
         <div className="flex flex-col border p-6 gap-3 items-center flex-1">
           <div className="ml-3 h-[160px] w-[160px] border rounded-full bg-slate-600 object-contain flex items-center justify-center">
             {imagePath ? (
-              <img src={imagePath} className="rounded-full h-full w-full" />
+              <img
+                src={`data:image/png;base64,${imagePath}`}
+                className="rounded-full object-fill h-full w-full"
+              />
             ) : (
               <p className="text-white text-[4rem]">{dp || "UN"}</p>
             )}
@@ -164,14 +179,14 @@ function UserProfile() {
             {isEditing ? (
               <input
                 type="text"
-                defaultValue={userData.id}
+                defaultValue={userData._id}
                 className="w-full h-full text-center outline-none opacity-60"
                 readOnly
               />
             ) : (
               <input
                 type="text"
-                defaultValue={userData.id}
+                defaultValue={userData._id}
                 className="w-full h-full text-center outline-none"
                 readOnly
               />

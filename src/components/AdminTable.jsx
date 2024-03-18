@@ -119,7 +119,7 @@ export default function DataTable({ newUserData, searchDataFunction }) {
           </h2>
           <DataGrid
             rows={newUserData.length > 0 ? newUserData : userData}
-            getRowId={row=>row._id}
+            getRowId={(row) => row._id}
             columns={columns}
             initialState={{
               pagination: {
@@ -131,10 +131,14 @@ export default function DataTable({ newUserData, searchDataFunction }) {
         </div>
         <ToastContainer />
       </div>
-      <Pagination
-        pages={Math.ceil(totalCount / 10)}
-        selectedPage={selectedPage}
-      />
+      {totalCount > 10 ? (
+        <Pagination
+          pages={Math.ceil(totalCount / 10)}
+          selectedPage={selectedPage}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

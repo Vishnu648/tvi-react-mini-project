@@ -25,7 +25,7 @@ export default function BasicModal({ obj }) {
   const [imagePath, setImagePath] = useState("");
 
   useEffect(() => {
-    console.log(obj);
+    // console.log(obj);
     setFullName(`${obj.firstName} ${obj.lastName}`);
 
     const base64String = btoa(

@@ -26,11 +26,10 @@ function UserProfile() {
   let local_role = localStorage.getItem("role");
 
   const imageSetter = (path) => {
-    console.log(path);
     const encoder = new TextEncoder();
     const inputString = path;
     const buffer = encoder.encode(inputString);
-    console.log(buffer);
+    // console.log('buffered img',buffer);
     setImagePath(buffer);
   };
 
@@ -44,14 +43,13 @@ function UserProfile() {
       })
       .then((response) => {
         setuserData(response.data.result);
-        console.log(response.data.result);
+        // console.log(response.data.result);
 
         const base64String = btoa(
           String.fromCharCode(
             ...new Uint8Array(response.data.result?.image?.data)
           )
         );
-        console.log("base", base64String);
         setImagePath(base64String);
       })
       .catch((error) => {

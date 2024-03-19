@@ -26,6 +26,7 @@ function Home() {
   let local_role = localStorage.getItem("role");
   const [newUserData, setnewUserData] = useState({});
   const [sidebarOption, setSidebarOption] = useState("products");
+  const [selectedProductId, setSelectedProductId] = useState("");
 
   useEffect(() => {
     if (local_role != "admin") {
@@ -42,9 +43,9 @@ function Home() {
     // console.log("from home--", obj);
   };
 
-  const selectedOption = (opt) => {
+  const selectedOption = (opt, id) => {
     setSidebarOption(opt);
-    console.log(opt);
+    setSelectedProductId(id);
   };
 
   return (
@@ -71,7 +72,10 @@ function Home() {
             /* console.log("create_user") */
           }
         ) : sidebarOption == "product" ? (
-          <SingleProduct/>
+          <SingleProduct
+            id={selectedProductId}
+            selectedOption={selectedOption}
+          />
         ) : sidebarOption == "products" ? (
           <AddProducts selectedOption={selectedOption} />
         ) : (

@@ -63,7 +63,7 @@ export default function BasicModal() {
       });
 
     console.log("-- ~ handleAddProduct ~ details:", details);
-    // handleClose()
+    handleClose()
   };
 
   return (

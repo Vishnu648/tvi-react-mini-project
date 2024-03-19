@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 import AdminDashboard from "../components/AdminDashboard";
 import AddProducts from "./Products";
+import SingleProduct from "./SingleProduct";
 
 function Home() {
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ function Home() {
 
   const selectedOption = (opt) => {
     setSidebarOption(opt);
+    console.log(opt);
   };
 
   return (
@@ -68,8 +70,10 @@ function Home() {
           {
             /* console.log("create_user") */
           }
+        ) : sidebarOption == "product" ? (
+          <SingleProduct/>
         ) : sidebarOption == "products" ? (
-          <AddProducts />
+          <AddProducts selectedOption={selectedOption} />
         ) : (
           console.log("not defined")
         )}

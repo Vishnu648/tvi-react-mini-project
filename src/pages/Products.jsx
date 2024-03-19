@@ -2,31 +2,47 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import productImg from "../assets/productImg.jpg";
 import AddProducts from "../components/modals/AddProducts";
+import Pagination from '../components/Pagination'
 
-function AddProduct() {
+function AddProduct({selectedOption}) {
   let local_accessToken = localStorage.getItem("accessToken");
-  const [products, setProducts] = useState({});
+  const [products, setProducts] = useState([]);
+  const [imgUrl, setImgUrl] = useState("");
+  const [totalCount, setTotalCount] = useState(0);
 
-  useEffect(() => {
+  const productApiCall = (pn = 1) => {
     axios
-      .get("http://localhost:8000/api/getProdt", {
+      .get(`http://localhost:8000/api/getProdt?page=${pn}`, {
         headers: {
           genericvalue: "admin",
           Authorization: local_accessToken,
         },
       })
-      .then((res) => setProducts(res.data.products))
+      .then((res) => {
+        setProducts(res.data.products);
+        setTotalCount(res.data.totalCount);
+        // console.log(res.data);
+      })
       .catch((err) => console.log("error-", err.message));
+  };
+
+  useEffect(() => {
+    productApiCall();
   }, []);
 
   const bufferToString = (bfr) => {
     const base64String = btoa(String.fromCharCode(...new Uint8Array(bfr)));
 
-    console.log(base64String);
+    setImgUrl(base64String);
   };
 
+  const selectedPage = (pageNo) => {
+    productApiCall(pageNo);
+  };
+  
+
   return (
-    <section className="px-6 flex-1 overflow-scroll h-[92vh]">
+    <section className="px-6 flex-1 overflow-scroll h-[92vh] pb-5">
       <div className=" mb-[.5rem] mt-[1.5rem] leading-[1.2] flex justify-between  ">
         <p className="text-[35px]  text-[#212529] ">Products</p>
         <AddProducts />
@@ -34,11 +50,15 @@ function AddProduct() {
       <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
         Products
       </div>
-      <div className="flex flex-wrap lg:flex-row gap-3 justify-between items-center p-5 my-8 overflow-scroll border rounded-md">
+      <div className="h-[53vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-between items-center p-5 my-8 overflow-scroll border rounded-md border-[#343a40]">
         {products.map((p, i) => (
-          <div key={p._id} className="border rounded-md gap-5 cursor-pointer">
-            {p.image?.data ? bufferToString(p.image?.data) : null}
-            <img src={productImg} alt="product" className="h-40 w-full" />
+          <div onClick={()=>selectedOption('product')} key={p._id} className="border rounded-md gap-5 object-cover cursor-pointer" >
+            {/* {p.image?.data ? bufferToString(p.image?.data) : null} */}
+            <img
+              src={imgUrl ? imgUrl : productImg}
+              alt="product"
+              className="h-40 w-full"
+            />
             <div className="p-2">
               <p>{p.productName}</p>
               <p>${p.productPrice}</p>
@@ -46,6 +66,14 @@ function AddProduct() {
           </div>
         ))}
       </div>
+      {totalCount > 10 ? (
+        <Pagination
+          pages={Math.ceil(totalCount / 10)}
+          selectedPage={selectedPage}
+        />
+      ) : (
+        ""
+      )}
     </section>
   );
 }

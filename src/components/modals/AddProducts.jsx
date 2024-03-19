@@ -1,8 +1,9 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import ImageUpload from "../ImageUpload";
+import axios from "axios";
 const style = {
   position: "absolute",
   top: "50%",
@@ -14,14 +15,55 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+import userDP from "../../assets/userDP.png";
 
 export default function BasicModal() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [proImg, setProImg] = useState("");
+  const [proName, setProName] = useState("");
+  const [proPrice, setProPrice] = useState("");
+  const [proCategory, setProCategory] = useState("");
+  const [proAvailability, setProAvailability] = useState("");
+  const [proQuanity, setProQuanity] = useState("");
+  const [proDetails, setProDetails] = useState("");
+  const [proCode, setProCode] = useState("");
+  let local_accessToken = localStorage.getItem("accessToken");
 
   const imageSetter = (path) => {
     console.log(path);
+  };
+
+  const handleAddProduct = (e) => {
+    e.preventDefault();
+    const details = {
+      availability: proAvailability,
+      category: proCategory,
+      productDetails: proDetails,
+      productName: proName,
+      productPrice: proPrice,
+      quantity: proQuanity,
+      productCode: proCode,
+    //   image: userDP,
+
+    };
+    axios
+      .post("http://localhost:8000/api/addProdt", details, {
+        headers: {
+          genericvalue: "admin",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+
+    console.log("-- ~ handleAddProduct ~ details:", details);
+    // handleClose()
   };
 
   return (
@@ -43,15 +85,20 @@ export default function BasicModal() {
             Add Product
           </Typography>
           <form className=" p-5 flex flex-col gap-5">
-            <ImageUpload imageSetter={imageSetter} />
+            <div className=" flex gap-2 items-center ">
+              <div className="h-20 w-20 border rounded-full flex items-center justify-center">
+                img
+              </div>
+              <ImageUpload imageSetter={imageSetter} />
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <label id="Label">
                 Product Name
                 <br />
                 <input
-                  //   onChange={(e) => setFirstName(e.target.value)}
+                  onChange={(e) => setProName(e.target.value)}
                   type="text"
-                  //   defaultValue={obj.firstName}
+                  value={proName}
                   placeholder="product name"
                 />
               </label>
@@ -59,10 +106,9 @@ export default function BasicModal() {
                 Product Price
                 <br />{" "}
                 <input
-                  //   onChange={(e) => setLastName(e.target.value)}
+                  onChange={(e) => setProPrice(e.target.value)}
                   type="text"
-                  //   defaultValue={obj.lastName}
-                  // value={lastName}
+                  value={proPrice}
                   placeholder="product price"
                 />
               </label>
@@ -74,10 +120,19 @@ export default function BasicModal() {
                 <br />
                 <input
                   type="text"
-                  //   defaultValue={obj.email}
-                  // value={email}
-                  //   onChange={(e) => setEmail(e.target.value)}
+                  value={proCategory}
+                  onChange={(e) => setProCategory(e.target.value)}
                   placeholder="Category"
+                />
+              </label>
+              <label id="Label">
+                Product Code
+                <br />
+                <input
+                  type="text"
+                  value={proCode}
+                  onChange={(e) => setProCode(e.target.value)}
+                  placeholder="product code"
                 />
               </label>
             </div>
@@ -87,20 +142,19 @@ export default function BasicModal() {
                 Availability
                 <br />
                 <input
-                  //   onChange={(e) => setFirstName(e.target.value)}
+                  onChange={(e) => setProAvailability(e.target.value)}
+                  value={proAvailability}
                   type="text"
-                  //   defaultValue={obj.firstName}
                   placeholder="yes/no"
                 />
               </label>
               <label id="Label">
                 Quantity
-                <br />{" "}
+                <br />
                 <input
-                  //   onChange={(e) => setLastName(e.target.value)}
+                  onChange={(e) => setProQuanity(e.target.value)}
                   type="text"
-                  //   defaultValue={obj.lastName}
-                  // value={lastName}
+                  value={proQuanity}
                   placeholder="00"
                 />
               </label>
@@ -111,17 +165,18 @@ export default function BasicModal() {
                 Product Details
                 <br />
                 <textarea
-                  // type="text"
-                  //   defaultValue={obj.email}
-                  // value={email}
-                  //   onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => setProDetails(e.target.value)}
+                  value={proDetails}
                   placeholder="this product is used for ..."
-                  className="p-2"
+                  className="p-2 border rounded-sm"
                 />
               </label>
             </div>
 
-            <button className="bg-[#007bff] hover:bg-[#0062cc] my-4 py-[6px] px-4 rounded-[3px] text-white">
+            <button
+              onClick={handleAddProduct}
+              className="bg-[#007bff] hover:bg-[#0062cc] my-4 py-[6px] px-4 rounded-[3px] text-white"
+            >
               Add
             </button>
           </form>

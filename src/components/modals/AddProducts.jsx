@@ -10,7 +10,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 545,
-  height: '85%',
+  height: "85%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -18,18 +18,20 @@ const style = {
 };
 import userDP from "../../assets/userDP.png";
 
-export default function BasicModal() {
+export default function BasicModal({productApiCall}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [proImg, setProImg] = useState("");
-  const [proName, setProName] = useState("");
-  const [proPrice, setProPrice] = useState("");
-  const [proCategory, setProCategory] = useState("");
-  const [proAvailability, setProAvailability] = useState("");
-  const [proQuanity, setProQuanity] = useState("");
-  const [proDetails, setProDetails] = useState("");
-  const [proCode, setProCode] = useState("");
+  const [proName, setProName] = useState("Asus Tuf A15");
+  const [proPrice, setProPrice] = useState("80000");
+  const [proCategory, setProCategory] = useState("laptop");
+  const [proAvailability, setProAvailability] = useState("yes");
+  const [proQuanity, setProQuanity] = useState("3");
+  const [proDetails, setProDetails] = useState(
+    "Featuring a speedy IPS-level panel up to 144Hz, the TUF Gaming A15 is perfect for fast-paced gaming. With adaptive sync, the display's refresh rate synchronizes with the GPU's frame rate to reduce lag, minimize stuttering, and eliminate visual tearing for ultra-smooth and immersive gameplay."
+  );
+  const [proCode, setProCode] = useState("121212");
   let local_accessToken = localStorage.getItem("accessToken");
 
   const imageSetter = (path) => {
@@ -46,8 +48,7 @@ export default function BasicModal() {
       productPrice: proPrice,
       quantity: proQuanity,
       productCode: proCode,
-    //   image: userDP,
-
+      //   image: userDP,
     };
     axios
       .post("http://localhost:8000/api/addProdt", details, {
@@ -57,6 +58,7 @@ export default function BasicModal() {
         },
       })
       .then((response) => {
+        productApiCall()
         console.log(response);
       })
       .catch((err) => {
@@ -64,7 +66,7 @@ export default function BasicModal() {
       });
 
     console.log("-- ~ handleAddProduct ~ details:", details);
-    handleClose()
+    handleClose();
   };
 
   return (

@@ -23,7 +23,7 @@ function UserProfile() {
   let local_role = localStorage.getItem("role");
 
   const optionSetter = (opt, obj) => {
-    console.log(obj);
+    // console.log(obj);
     setSelectedOption(opt);
     setSelectedProduct(obj);
   };

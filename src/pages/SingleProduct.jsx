@@ -68,17 +68,17 @@ function SingleProduct({ obj, selectedOption }) {
           <div className="flex flex-col gap-6 justify-between h-[300px]">
             {productDetails ? (
               <div className=" flex flex-col">
-                <p className="text-2xl">
+                <p className="text-2xl font-extrabold">
                   {productDetails.productName
                     ? productDetails.productName.toUpperCase()
                     : ""}
                 </p>
-                <p className="text-3xl">₹{productDetails?.productPrice}</p>
-                <p className="text-xl">{productDetails?.productCode}</p>
+                <p className="text-3xl font-thin">₹{productDetails?.productPrice}</p>
+                <p className="">Code-{productDetails?.productCode}</p>
                 <p className="text-4xl">
-                  {productDetails?.productAvailability}
+                  {productDetails?.availability}
                 </p>
-                <p className="text-2xl ">{productDetails?.productDetails}</p>
+                <p className=" ">{productDetails?.productDetails}</p>
               </div>
             ) : (
               ""

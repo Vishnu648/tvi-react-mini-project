@@ -52,15 +52,17 @@ export default function BasicModal({ obj }) {
       //   image: userDP,
     };
 
-    // axios
-    //   .put(`http://localhost:8000/api/updateProdt/${obj._id}`,details, {
-    //     headers: {
-    //       genericvalue: "admin",
-    //       Authorization: local_accessToken,
-    //     },
-    //   })
-    //   .then((res) => console.log(res))
-    //   .catch((err) => console.log(err.message));
+    axios
+      .put(`http://localhost:8000/api/updateProdt/${obj._id}`, details, {
+        headers: {
+          genericvalue: "admin",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => {
+        res.status == "200" ? handleClose() : console.log('res-',res);
+      })
+      .catch((err) => console.log(err.message));
   };
 
   return (

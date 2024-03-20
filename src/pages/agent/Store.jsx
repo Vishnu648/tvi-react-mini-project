@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Pagination from "../../components/Pagination";
 import productImg from "../../assets/productImg.jpg";
+import { MdOutlineFavoriteBorder } from "react-icons/md";
 
-function Store({optionSetter}) {
+function Store({ optionSetter }) {
   let local_accessToken = localStorage.getItem("accessToken");
   const [products, setProducts] = useState([]);
   const [imgUrl, setImgUrl] = useState("");
@@ -29,7 +30,6 @@ function Store({optionSetter}) {
     productApiCall();
   }, []);
 
-
   const selectedPage = (pageNo) => {
     productApiCall(pageNo);
   };
@@ -45,19 +45,25 @@ function Store({optionSetter}) {
       <div className="h-[53vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-between items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         {products.map((p, i) => (
           <div
-            onClick={() => optionSetter("product", p)}
+            // onClick={() => optionSetter("product", p)}
             key={p._id}
-            className="border shadow-md hover:shadow-2xl rounded-md gap-5 object-cover cursor-pointer"
+            className="border shadow-md hover:shadow-2xl relative rounded-md gap-5 object-cover cursor-pointer"
           >
-            {/* {p.image?.data ? bufferToString(p.image?.data) : null} */}
-            <img
-              src={imgUrl ? imgUrl : productImg}
-              alt="product"
-              className="h-40 w-full"
-            />
-            <div className="p-2">
-              <p>{p.productName}</p>
-              <p>${p.productPrice}</p>
+            <div className="absolute top-1 right-1 " onClick={()=>console.log('add to favorite')} >
+              <MdOutlineFavoriteBorder />
+            </div>
+
+            <div onClick={() => optionSetter("product", p)}>
+              {/* {p.image?.data ? bufferToString(p.image?.data) : null} */}
+              <img
+                src={imgUrl ? imgUrl : productImg}
+                alt="product"
+                className="h-36 mt-5 w-full"
+              />
+              <div className="p-2">
+                <p>{p.productName}</p>
+                <p>${p.productPrice}</p>
+              </div>
             </div>
           </div>
         ))}

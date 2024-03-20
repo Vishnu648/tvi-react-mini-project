@@ -1,43 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import ImageUpload from "../ImageUpload";
+import ImageUpload from "../../ImageUpload";
+import { MdEdit } from "react-icons/md";
 import axios from "axios";
+
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 545,
-  height: '85%',
+  height: "85%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
-import userDP from "../../assets/userDP.png";
 
-export default function BasicModal() {
+export default function BasicModal({ obj }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [proImg, setProImg] = useState("");
-  const [proName, setProName] = useState("");
-  const [proPrice, setProPrice] = useState("");
-  const [proCategory, setProCategory] = useState("");
-  const [proAvailability, setProAvailability] = useState("");
-  const [proQuanity, setProQuanity] = useState("");
-  const [proDetails, setProDetails] = useState("");
-  const [proCode, setProCode] = useState("");
+  const [proName, setProName] = useState(obj?.productName);
+  const [proPrice, setProPrice] = useState(obj?.productPrice);
+  const [proCategory, setProCategory] = useState(obj?.category);
+  const [proAvailability, setProAvailability] = useState(obj?.availability);
+  const [proQuanity, setProQuanity] = useState(obj?.quantity);
+  const [proDetails, setProDetails] = useState(obj?.productDetails);
+  const [proCode, setProCode] = useState(obj?.productCode);
   let local_accessToken = localStorage.getItem("accessToken");
 
   const imageSetter = (path) => {
     console.log(path);
   };
 
-  const handleAddProduct = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+
     const details = {
       availability: proAvailability,
       category: proCategory,
@@ -46,35 +49,16 @@ export default function BasicModal() {
       productPrice: proPrice,
       quantity: proQuanity,
       productCode: proCode,
-    //   image: userDP,
-
+      //   image: userDP,
     };
-    axios
-      .post("http://localhost:8000/api/addProdt", details, {
-        headers: {
-          genericvalue: "admin",
-          Authorization: local_accessToken,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
 
-    console.log("-- ~ handleAddProduct ~ details:", details);
-    handleClose()
+    console.log("handlesubmit", details);
   };
 
   return (
     <div>
-      <button
-        className="bg-[#6b6b6b] hover:bg-[#616161] my-4 py-[6px] px-3 rounded-[3px] text-white"
-        onClick={handleOpen}
-      >
-        Add Products
-      </button>
+      <MdEdit onClick={handleOpen} className="text-2xl cursor-pointer" />
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -175,10 +159,10 @@ export default function BasicModal() {
             </div>
 
             <button
-              onClick={handleAddProduct}
+              onClick={handleSubmit}
               className="bg-[#007bff] hover:bg-[#0062cc] my-4 py-[6px] px-4 rounded-[3px] text-white"
             >
-              Add
+              Submit
             </button>
           </form>
         </Box>

@@ -73,7 +73,7 @@ function Home() {
           }
         ) : sidebarOption == "product" ? (
           <SingleProduct
-            id={selectedProductId}
+            obj={selectedProductId}
             selectedOption={selectedOption}
           />
         ) : sidebarOption == "products" ? (

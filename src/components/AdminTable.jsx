@@ -19,6 +19,24 @@ export default function DataTable({ newUserData, searchDataFunction }) {
   let local_accessToken = localStorage.getItem("accessToken");
   let local_refreshToken = localStorage.getItem("refreshToken");
 
+  const handleDelete = (id) => {
+    axios
+      .delete(`http://localhost:8000/api/delete/${id}`, {
+        headers: {
+          genericvalue: "admin",
+          Authorization: tokens.access_token || local_accessToken,
+        },
+      })
+      .then((response) => {
+        // console.log(response);
+        if (response.status == 200) {
+          showToastMessage("User deleted successfully");
+          userApiCall();
+        }
+      })
+      .catch((err) => console.error(err.message));
+  };
+
   const columns = [
     // { field: "id", headerName: "id", width: 200 },
     { field: "", headerName: "", width: 10 },
@@ -71,6 +89,8 @@ export default function DataTable({ newUserData, searchDataFunction }) {
             showToastMessage={showToastMessage}
             id={e.row._id}
             userApiCall={userApiCall}
+            handleDelete={handleDelete}
+            message={"Are you sure, you want to delete this user?"}
           />
         </button>
       ),

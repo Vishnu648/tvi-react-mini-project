@@ -6,16 +6,29 @@ import showToastMessage from "../components/ToastMessager";
 function UserSidebar({ fullName, optionSetter }) {
   return (
     <div className="w-[225px] bg-[#212529] relative h-[92vh]">
-      <div className="w-full flex items-center gap-2 h-[48px] px-4 py-3 text-[#686b6d] cursor-pointer text-[1rem] font-normal ">
+      <button className="w-full flex items-center gap-2 h-[48px] px-4 py-3 text-[#686b6d]  focus:text-white cursor-pointer text-[1rem] font-normal ">
         <p className="hover:text-white" onClick={() => optionSetter("store")}>
           Store
         </p>
-      </div>{" "}
-      <div className="w-full flex items-center gap-2 h-[48px] px-4 py-3 text-[#686b6d] cursor-pointer text-[1rem] font-normal ">
+      </button>{" "}
+      <button className="w-full flex items-center gap-2 h-[48px] px-4 py-3 text-[#686b6d]  focus:text-white cursor-pointer text-[1rem] font-normal ">
         <p className="hover:text-white" onClick={() => optionSetter("profile")}>
           Profile
         </p>
-      </div>
+      </button>
+      <button className="w-full flex items-center gap-2 h-[48px] px-4 py-3 text-[#686b6d]  focus:text-white cursor-pointer text-[1rem] font-normal ">
+        <p className="hover:text-white" onClick={() => optionSetter("cart")}>
+          Cart
+        </p>
+      </button>
+      <button className="w-full flex items-center gap-2 h-[48px] px-4 py-3 text-[#686b6d] focus:text-white cursor-pointer text-[1rem] font-normal ">
+        <p
+          className="hover:text-white"
+          onClick={() => optionSetter("wishlist")}
+        >
+          WhishList
+        </p>
+      </button>
       <div className="w-full flex items-center gap-2 h-[48px] px-4 py-3 text-[#686b6d] cursor-pointer text-[1rem] font-normal ">
         {/* <p className="hover:text-white">Update password</p> */}
         <UpdatePassword showToastMessage={showToastMessage} />

@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import Profile from "./agent/Profile";
 import Store from "./agent/Store";
 import Product from "../pages/agent/Product";
+import Cart from "./agent/Cart";
+import WishList from "./agent/WishList";
 
 function UserProfile() {
   const navigate = useNavigate();
@@ -87,6 +89,10 @@ function UserProfile() {
           <Store optionSetter={optionSetter} />
         ) : selectedOption == "product" ? (
           <Product optionSetter={optionSetter} obj={selectedProduct} />
+        ) : selectedOption == "cart" ? (
+          <Cart />
+        ) : selectedOption == "wishlist" ? (
+          <WishList />
         ) : (
           console.log("undefined-------")
         )}

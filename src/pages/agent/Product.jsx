@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { FaCartPlus } from "react-icons/fa";
+import { AiFillThunderbolt } from "react-icons/ai";
 
 function Product({ selectedProduct, obj, optionSetter }) {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function Product({ selectedProduct, obj, optionSetter }) {
       })
       .then((res) => {
         setProductDetails(res.data.result);
-        console.log(res.data.result);
+        // console.log(res.data.result);
       })
       .catch((err) => console.log(err.message));
   }, []);
@@ -36,6 +37,11 @@ function Product({ selectedProduct, obj, optionSetter }) {
       .then((res) => console.log(res))
       .catch((err) => console.log(err.message));
   };
+
+  const handlePurchase=() => {
+    console.log('purchase');
+  }
+  
 
   return (
     <section className="px-6 flex-1 overflow-scroll h-[92vh] pb-5">
@@ -74,19 +80,37 @@ function Product({ selectedProduct, obj, optionSetter }) {
                 <p className="text-3xl font-thin">
                   ₹{productDetails?.productPrice}
                 </p>
-                <p className="">{productDetails?.productCode}</p>
-                {/* <p className="text-4xl">
-                  {productDetails?.availability}
-                </p> */}
+                {/* <p className="">{productDetails?.productCode}</p> */}
+                {productDetails?.availability == "yes" ? (
+                  <p className="text-sm m-4 text-gray-600">
+                    only {obj.quantity} left
+                  </p>
+                ) : (
+                  <p className="text-red-500 m-4">OUT OF STOCK</p>
+                )}
                 <p className="">{productDetails?.productDetails}</p>
               </div>
             ) : (
               ""
             )}
-            <div className="text-4xl cursor-pointer" onClick={handleAddToCart}>
-              <FaCartPlus />
-            </div>
           </div>
+        </div>
+      </div>
+      <div className=" flex justify-evenly">
+        <div
+          className="flex items-center cursor-pointer rounded-md bg-[#ff9f00] hover:bg-[#ff9f39] text-white justify-center  w-40 py-3"
+          onClick={handleAddToCart}
+        >
+          <FaCartPlus size={"25px"} />
+          ADD TO CART
+        </div>
+
+        <div
+          onClick={handlePurchase}
+          className="flex items-center cursor-pointer rounded-lg bg-[#fb641b] hover:bg-[#fb643e] justify-center text-white w-40 py-3"
+        >
+          <AiFillThunderbolt />
+          BUY NOW
         </div>
       </div>
     </section>

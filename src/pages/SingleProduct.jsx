@@ -62,10 +62,10 @@ function SingleProduct({ obj, selectedOption }) {
           : ""}
       </div>
 
-      <div className="flex flex-col md:flex-row gap-3 justify-start  my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
+      <div className="flex flex-col md:flex-row gap-3 justify-start pb-10 md:h-[52vh] my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         <img src={demoProImg} alt="pdt" className="h-80 w-52 object-fill" />
         <div className=" w-full overflow-scroll h-full p-2">
-          <div className="flex flex-col gap-6 justify-between h-[300px]">
+          <div className="flex flex-col gap-6 justify-between h-full">
             {productDetails ? (
               <div className=" flex flex-col">
                 <p className="text-2xl font-extrabold">
@@ -73,26 +73,34 @@ function SingleProduct({ obj, selectedOption }) {
                     ? productDetails.productName.toUpperCase()
                     : ""}
                 </p>
-                <p className="text-3xl font-thin">₹{productDetails?.productPrice}</p>
-                <p className="">Code-{productDetails?.productCode}</p>
-                <p className="text-4xl">
-                  {productDetails?.availability}
+                <p className="text-3xl font-thin">
+                  ₹{productDetails?.productPrice}
                 </p>
+                <p className="">Code :- {productDetails?.productCode}</p>
+
+                {productDetails?.availability == "yes" ? (
+                  <p className="text-sm m-4 text-gray-600">
+                    only {obj.quantity} left
+                  </p>
+                ) : (
+                  <p className="text-red-500 m-4">OUT OF STOCK</p>
+                )}
+
                 <p className=" ">{productDetails?.productDetails}</p>
               </div>
             ) : (
               ""
             )}
-            <div className="flex justify-between">
-              <DeleteModal
-                message="Are you sure, you want to delete this Product?"
-                id={obj._id}
-                handleDelete={handleDelete}
-              />
-              <EditModal obj={obj} />
-            </div>
           </div>
         </div>
+      </div>
+      <div className="flex justify-between">
+        <DeleteModal
+          message="Are you sure, you want to delete this Product?"
+          id={obj._id}
+          handleDelete={handleDelete}
+        />
+        <EditModal obj={obj} />
       </div>
     </section>
   );

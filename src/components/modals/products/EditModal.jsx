@@ -9,10 +9,10 @@ import axios from "axios";
 
 const style = {
   position: "absolute",
-  top: "50%",
+  top: "52%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 545,
+  width: '60vw',
   height: "85%",
   bgcolor: "background.paper",
   border: "2px solid #000",
@@ -77,7 +77,7 @@ export default function BasicModal({ obj }) {
       >
         <Box sx={style} className="rounded-lg overflow-scroll">
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Add Product
+            Edit Product
           </Typography>
           <form className=" p-5 flex flex-col gap-5">
             <div className=" flex gap-2 items-center ">

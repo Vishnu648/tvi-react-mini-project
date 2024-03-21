@@ -5,13 +5,16 @@ import axios from "axios";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { FaCartPlus } from "react-icons/fa";
 import { AiFillThunderbolt } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
 function Product({ selectedProduct, obj, optionSetter }) {
   const navigate = useNavigate();
   let local_accessToken = localStorage.getItem("accessToken");
   const [productDetails, setProductDetails] = useState({});
+  const tokens = useSelector((state) => state.token);
+  const [imagePath, setImagePath] = useState("");
 
-  useEffect(() => {
+  const productApiCall = () => {
     axios
       .get(`http://localhost:8000/api/get-one/${obj._id}`, {
         headers: {
@@ -20,28 +23,62 @@ function Product({ selectedProduct, obj, optionSetter }) {
         },
       })
       .then((res) => {
-        setProductDetails(res.data.result);
-        // console.log(res.data.result);
+        {
+          setProductDetails(res.data.result);
+          console.log(res.data.result);
+
+          const base64String = btoa(
+            String.fromCharCode(...new Uint8Array(res.data.result?.image?.data))
+          );
+          setImagePath(base64String);
+          // console.log(base64String)
+        }
       })
       .catch((err) => console.log(err.message));
+  };
+
+  useEffect(() => {
+    // console.log(obj);
+    productApiCall();
   }, []);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
+    let details = {};
+    e.preventDefault();
     axios
-      .post(`http://localhost:8000/api/add-to-cart/${obj._id}`, {
-        headers: {
-          genericvalue: "agent",
-          Authorization: local_accessToken,
-        },
-      })
+      .post(
+        `http://localhost:8000/api/add-to-cart/${productDetails._id}`,
+        details,
+        {
+          headers: {
+            genericvalue: "admin",
+            Authorization: local_accessToken,
+          },
+        }
+      )
       .then((res) => console.log(res))
       .catch((err) => console.log(err.message));
   };
 
-  const handlePurchase=() => {
-    console.log('purchase');
-  }
-  
+  const handlePurchase = () => {
+    console.log("purchase");
+  };
+
+  const handleAddToWishlist = (id) => {
+    axios
+      .post(
+        `http://localhost:8000/api/add-to-wishlist/${id}`,
+        {},
+        {
+          headers: {
+            genericvalue: "agent",
+            Authorization: local_accessToken,
+          },
+        }
+      )
+      .then((res) => console.log(res.data.message))
+      .catch((err) => console.log(err.message));
+  };
 
   return (
     <section className="px-6 flex-1 overflow-scroll h-[92vh] pb-5">
@@ -61,10 +98,14 @@ function Product({ selectedProduct, obj, optionSetter }) {
       </div>
 
       <div className="flex flex-col md:flex-row gap-3 justify-start  my-8 overflow-scroll border rounded-md border-[#e9ecef] relative">
-        <img src={demoProImg} alt="pdt" className="h-80 w-52 object-fill" />
+        <img
+          src={imagePath ? `data:image/png;base64,${imagePath}` : demoProImg}
+          alt="pdt"
+          className="h-80 w-52 object-fill"
+        />
         <div
           className="absolute top-1 right-1 text-2xl cursor-pointer"
-          onClick={() => console.log("add to favorite")}
+          onClick={() => handleAddToWishlist(productDetails._id)}
         >
           <MdOutlineFavoriteBorder />
         </div>
@@ -82,9 +123,15 @@ function Product({ selectedProduct, obj, optionSetter }) {
                 </p>
                 {/* <p className="">{productDetails?.productCode}</p> */}
                 {productDetails?.availability == "yes" ? (
-                  <p className="text-sm m-4 text-gray-600">
-                    only {obj.quantity} left
-                  </p>
+                  obj.quantity <= 5 ? (
+                    <p className="text-sm m-4 text-gray-600 text-red-500">
+                      only {obj.quantity} left
+                    </p>
+                  ) : (
+                    <p className="text-sm m-4 text-gray-600">
+                      only {obj.quantity} left
+                    </p>
+                  )
                 ) : (
                   <p className="text-red-500 m-4">OUT OF STOCK</p>
                 )}

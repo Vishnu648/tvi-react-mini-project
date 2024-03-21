@@ -12,7 +12,7 @@ const style = {
   top: "52%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: '60vw',
+  width: "60vw",
   height: "85%",
   bgcolor: "background.paper",
   border: "2px solid #000",
@@ -20,7 +20,7 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ obj }) {
+export default function BasicModal({ obj, productApiCall }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -60,7 +60,12 @@ export default function BasicModal({ obj }) {
         },
       })
       .then((res) => {
-        res.status == "200" ? handleClose() : console.log('res-',res);
+        if (res.status == "200") {
+          handleClose();
+          productApiCall();
+        } else {
+          console.log("res--", res);
+        }
       })
       .catch((err) => console.log(err.message));
   };

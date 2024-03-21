@@ -71,10 +71,10 @@ function Login() {
           }
         })
         .catch((err) => {
-          if (err.response.status == 400) {
+          if (err?.response?.status == 400) {
             showToastMessage("Incorrect email and/or password!!!");
           }
-          console.log(err.message);
+          console.log('error-',err.message);
         });
     }
   };

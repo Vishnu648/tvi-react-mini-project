@@ -9,8 +9,9 @@ function SingleProduct({ obj, selectedOption }) {
   const navigate = useNavigate();
   let local_accessToken = localStorage.getItem("accessToken");
   const [productDetails, setProductDetails] = useState({});
+  const [imagePath, setImagePath] = useState("");
 
-  useEffect(() => {
+  const productApiCall = () => {
     axios
       .get(`http://localhost:8000/api/get-one/${obj._id}`, {
         headers: {
@@ -20,9 +21,19 @@ function SingleProduct({ obj, selectedOption }) {
       })
       .then((res) => {
         setProductDetails(res.data.result);
+        console.log(res.data.result)
+
+        const base64String = btoa(
+          String.fromCharCode(...new Uint8Array(res.data.result?.image?.data))
+        );
+        setImagePath(base64String);
         // console.log(res.data.result);
       })
       .catch((err) => console.log(err.message));
+  };
+
+  useEffect(() => {
+    productApiCall();
   }, []);
 
   const handleDelete = () => {
@@ -63,7 +74,11 @@ function SingleProduct({ obj, selectedOption }) {
       </div>
 
       <div className="flex flex-col md:flex-row gap-3 justify-start pb-10 md:h-[52vh] my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
-        <img src={demoProImg} alt="pdt" className="h-80 w-52 object-fill" />
+        <img
+          src={imagePath ? `data:image/png;base64,${imagePath}` : demoProImg}
+          alt="pdt"
+          className="h-80 w-52 object-fill"
+        />
         <div className=" w-full overflow-scroll h-full p-2">
           <div className="flex flex-col gap-6 justify-between h-full">
             {productDetails ? (
@@ -100,7 +115,7 @@ function SingleProduct({ obj, selectedOption }) {
           id={obj._id}
           handleDelete={handleDelete}
         />
-        <EditModal obj={obj} />
+        <EditModal obj={obj} productApiCall={productApiCall} />
       </div>
     </section>
   );

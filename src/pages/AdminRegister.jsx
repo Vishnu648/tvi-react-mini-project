@@ -41,7 +41,7 @@ function AdminRegister() {
       firstName.length > 0 &&
       lastName.length > 0 &&
       password.length > 0 &&
-      confirmPassword > 0
+      confirmPassword.length > 0
     ) {
       if (password == confirmPassword) {
         axios
@@ -61,6 +61,8 @@ function AdminRegister() {
           .catch((err) => {
             if (err.response.status == 409) {
               showToastMessage("Email already in use!!!");
+            } else {
+              console.log(err.message);
             }
           });
       }

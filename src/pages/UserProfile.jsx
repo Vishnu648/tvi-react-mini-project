@@ -15,7 +15,7 @@ function UserProfile() {
   const navigate = useNavigate();
   const [userData, setuserData] = useState({});
   const [selectedProduct, setSelectedProduct] = useState();
-  const [selectedOption, setSelectedOption] = useState("cart");
+  const [selectedOption, setSelectedOption] = useState("store");
   const fullName = `${userData.firstName} ${userData.lastName}`;
 
   const tokens = useSelector((state) => state.token);
@@ -23,11 +23,13 @@ function UserProfile() {
   let local_refreshToken = localStorage.getItem("refreshToken");
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
   let local_role = localStorage.getItem("role");
+  const [selectedPage, setSelectedPage] = useState("");
 
-  const optionSetter = (opt, obj) => {
+  const optionSetter = (opt, obj, page) => {
     // console.log(obj);
     setSelectedOption(opt);
     setSelectedProduct(obj);
+    setSelectedPage(page);
   };
 
   const userApiCall = () => {
@@ -89,9 +91,13 @@ function UserProfile() {
         ) : selectedOption == "store" ? (
           <Store optionSetter={optionSetter} />
         ) : selectedOption == "product" ? (
-          <Product optionSetter={optionSetter} obj={selectedProduct} />
+          <Product
+            optionSetter={optionSetter}
+            obj={selectedProduct}
+            selectedPage={selectedPage}
+          />
         ) : selectedOption == "cart" ? (
-          <Cart />
+          <Cart optionSetter={optionSetter} />
         ) : selectedOption == "wishlist" ? (
           <WishList />
         ) : (

@@ -3,32 +3,10 @@ import React, { useState, useEffect } from "react";
 import productImg from "../../assets/productImg.jpg";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 
-function Cart() {
+function Cart({ optionSetter }) {
   let local_accessToken = localStorage.getItem("accessToken");
   const [imagePath, setImagePath] = useState("");
   const [productDetails, setProductDetails] = useState([]);
-
-  const getEachProduct = (id) => {
-    console.log(id);
-    axios
-      .get(`http://localhost:8000/api/get-one/${id}`, {
-        headers: {
-          genericvalue: "admin",
-          Authorization: local_accessToken,
-        },
-      })
-      .then((res) => {
-        setProductDetails((prev) => [...prev, res.data.result]);
-        // console.log(res.data.result);
-
-        const base64String = btoa(
-          String.fromCharCode(...new Uint8Array(res.data.result?.image?.data))
-        );
-        setImagePath(base64String);
-        // console.log(res.data.result);
-      })
-      .catch((err) => console.log(err.message));
-  };
 
   const cartApiCall = () => {
     axios
@@ -39,9 +17,7 @@ function Cart() {
         },
       })
       .then((res) => {
-        let cart = res.data.cartItems;
-        console.log("cart size-", cart.length);
-        cart.map((c) => getEachProduct(c.product));
+        setProductDetails(res.data.cartItems);
       })
       .catch((err) => console.log(err.message));
   };
@@ -49,6 +25,22 @@ function Cart() {
   useEffect(() => {
     cartApiCall();
   }, []);
+
+  const handleAddToWishlist = (id) => {
+    axios
+      .post(
+        `http://localhost:8000/api/add-to-wishlist/${id}`,
+        {},
+        {
+          headers: {
+            genericvalue: "agent",
+            Authorization: local_accessToken,
+          },
+        }
+      )
+      .then((res) => console.log(res.data.message))
+      .catch((err) => console.log(err.message));
+  };
 
   return (
     <section className="px-6 flex-1 overflow-scroll h-[92vh] pb-5">
@@ -58,7 +50,7 @@ function Cart() {
       <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
         Cart
       </div>
-      <div className="h-[53vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-between items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
+      <div className="h-[53vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         {productDetails.map((p, i) => (
           <div
             // onClick={() => optionSetter("product", p)}
@@ -67,12 +59,12 @@ function Cart() {
           >
             <div
               className="absolute top-1 right-1 "
-              onClick={() => console.log("add to wishlist")}
+              onClick={() => handleAddToWishlist(p._id)}
             >
               <MdOutlineFavoriteBorder />
             </div>
 
-            <div onClick={() => optionSetter("product", p)}>
+            <div onClick={() => optionSetter("product", p, "cartDetails")}>
               {/* {p.image?.data ? bufferToString(p.image?.data) : null} */}
               <img
                 src={productImg}

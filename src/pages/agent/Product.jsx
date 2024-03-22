@@ -7,7 +7,7 @@ import { FaCartPlus } from "react-icons/fa";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { useSelector } from "react-redux";
 
-function Product({ selectedProduct, obj, optionSetter }) {
+function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   const navigate = useNavigate();
   let local_accessToken = localStorage.getItem("accessToken");
   const [productDetails, setProductDetails] = useState({});
@@ -15,13 +15,19 @@ function Product({ selectedProduct, obj, optionSetter }) {
   const [imagePath, setImagePath] = useState("");
 
   const productApiCall = () => {
+    console.log("obj--", obj);
     axios
-      .get(`http://localhost:8000/api/get-one/${obj._id}`, {
-        headers: {
-          genericvalue: "admin",
-          Authorization: local_accessToken,
-        },
-      })
+      .get(
+        `http://localhost:8000/api/get-one/${
+          selectedPage == "cartDetails" ? obj.product : obj._id
+        }`,
+        {
+          headers: {
+            genericvalue: "admin",
+            Authorization: local_accessToken,
+          },
+        }
+      )
       .then((res) => {
         {
           setProductDetails(res.data.result);
@@ -85,7 +91,11 @@ function Product({ selectedProduct, obj, optionSetter }) {
       <div className=" mb-[.5rem] mt-[1.5rem] leading-[1.2] flex justify-between  ">
         {/* <p className="text-[35px]  text-[#212529] ">Product</p> */}
         <button
-          onClick={() => optionSetter("store")}
+          onClick={() => {
+            selectedPage == "cartDetails"
+              ? optionSetter("cart")
+              : optionSetter("store");
+          }}
           className="bg-[#343a40] text-white px-4 py-2 rounded-md"
         >
           Back
@@ -124,7 +134,7 @@ function Product({ selectedProduct, obj, optionSetter }) {
                 {/* <p className="">{productDetails?.productCode}</p> */}
                 {productDetails?.availability == "yes" ? (
                   obj.quantity <= 5 ? (
-                    <p className="text-sm m-4 text-gray-600 text-red-500">
+                    <p className="text-sm m-4 text-red-500">
                       only {obj.quantity} left
                     </p>
                   ) : (

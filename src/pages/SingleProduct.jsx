@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import demoProImg from "../assets/demoProImg.jpg";
+import productImg from "../assets/productImg.jpg";
 import DeleteModal from "../components/modals/DeleteModal";
 import EditModal from "../components/modals/products/EditModal";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +22,7 @@ function SingleProduct({ obj, selectedOption }) {
       })
       .then((res) => {
         setProductDetails(res.data.result);
-        console.log(res.data.result)
+        console.log(res.data.result);
 
         const base64String = btoa(
           String.fromCharCode(...new Uint8Array(res.data.result?.image?.data))
@@ -75,9 +76,9 @@ function SingleProduct({ obj, selectedOption }) {
 
       <div className="flex flex-col md:flex-row gap-3 justify-start pb-10 md:h-[52vh] my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         <img
-          src={imagePath ? `data:image/png;base64,${imagePath}` : demoProImg}
+          src={imagePath ? `data:image/png;base64,${imagePath}` : productImg}
           alt="pdt"
-          className="h-80 w-52 object-fill"
+          className="h-80 w-52 object-cover"
         />
         <div className=" w-full overflow-scroll h-full p-2">
           <div className="flex flex-col gap-6 justify-between h-full">
@@ -91,12 +92,18 @@ function SingleProduct({ obj, selectedOption }) {
                 <p className="text-3xl font-thin">
                   ₹{productDetails?.productPrice}
                 </p>
-                <p className="">Code :- {productDetails?.productCode}</p>
+                {/* <p className="">Code :- {productDetails?.productCode}</p> */}
 
                 {productDetails?.availability == "yes" ? (
-                  <p className="text-sm m-4 text-gray-600">
-                    only {obj.quantity} left
-                  </p>
+                  obj.quantity <= 5 ? (
+                    <p className="text-sm m-4 text-red-500">
+                      only {obj.quantity} left
+                    </p>
+                  ) : (
+                    <p className="text-sm m-4 text-gray-600">
+                      only {obj.quantity} left
+                    </p>
+                  )
                 ) : (
                   <p className="text-red-500 m-4">OUT OF STOCK</p>
                 )}

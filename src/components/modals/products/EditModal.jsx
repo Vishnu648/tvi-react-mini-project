@@ -6,6 +6,7 @@ import Modal from "@mui/material/Modal";
 import ImageUpload from "../../ImageUpload";
 import { MdEdit } from "react-icons/md";
 import axios from "axios";
+import productImg from "../../../assets/productImg.jpg";
 
 const style = {
   position: "absolute",
@@ -24,7 +25,7 @@ export default function BasicModal({ obj, productApiCall }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [proImg, setProImg] = useState("");
+  const [imagePath, setImagePath] = useState("");
   const [proName, setProName] = useState(obj?.productName);
   const [proPrice, setProPrice] = useState(obj?.productPrice);
   const [proCategory, setProCategory] = useState(obj?.category);
@@ -35,8 +36,18 @@ export default function BasicModal({ obj, productApiCall }) {
   let local_accessToken = localStorage.getItem("accessToken");
 
   const imageSetter = (path) => {
+    // console.log(path);
+    setImagePath(path);
     console.log(path);
   };
+
+  useEffect(() => {
+    const base64String = btoa(
+      String.fromCharCode(...new Uint8Array(obj?.image?.data))
+    );
+    setImagePath(base64String);
+    // console.log(base64String);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,7 +60,7 @@ export default function BasicModal({ obj, productApiCall }) {
       productPrice: proPrice,
       quantity: proQuanity,
       productCode: proCode,
-      //   image: userDP,
+      // image: imagePath,
     };
 
     axios
@@ -86,8 +97,16 @@ export default function BasicModal({ obj, productApiCall }) {
           </Typography>
           <form className=" p-5 flex flex-col gap-5">
             <div className=" flex gap-2 items-center ">
-              <div className="h-20 w-20 border rounded-full flex items-center justify-center">
-                img
+              <div className="h-28 w-28 border rounded-full flex items-center justify-center">
+                <img
+                  src={
+                    imagePath
+                      ? `data:image/png;base64,${imagePath}`
+                      : productImg
+                  }
+                  alt="pdt"
+                  className="h-full w-full object-cover rounded-full"
+                />
               </div>
               <ImageUpload imageSetter={imageSetter} />
             </div>

@@ -9,6 +9,10 @@ function WishList() {
       <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
         WishList
       </div>
+
+      <div className="h-[53vh]  flex flex-wrap lg:flex-row gap-3 justify-center md:justify-between items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
+        
+      </div>
     </section>
   );
 }

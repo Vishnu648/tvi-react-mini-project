@@ -133,13 +133,13 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
                 </p>
                 {/* <p className="">{productDetails?.productCode}</p> */}
                 {productDetails?.availability == "yes" ? (
-                  obj.quantity <= 5 ? (
+                  obj.stock <= 5 ? (
                     <p className="text-sm m-4 text-red-500">
-                      only {obj.quantity} left
+                      only {obj.stock} left
                     </p>
                   ) : (
                     <p className="text-sm m-4 text-gray-600">
-                      only {obj.quantity} left
+                      only {obj.stock} left
                     </p>
                   )
                 ) : (

@@ -78,7 +78,7 @@ function SingleProduct({ obj, selectedOption }) {
         <img
           src={imagePath ? `data:image/png;base64,${imagePath}` : productImg}
           alt="pdt"
-          className="h-80 w-52 object-cover"
+          className="h-80 w-52 object-contain"
         />
         <div className=" w-full overflow-scroll h-full p-2">
           <div className="flex flex-col gap-6 justify-between h-full">
@@ -95,13 +95,13 @@ function SingleProduct({ obj, selectedOption }) {
                 {/* <p className="">Code :- {productDetails?.productCode}</p> */}
 
                 {productDetails?.availability == "yes" ? (
-                  obj.quantity <= 5 ? (
+                  obj.stock <= 5 ? (
                     <p className="text-sm m-4 text-red-500">
-                      only {obj.quantity} left
+                      only {obj.stock} left
                     </p>
                   ) : (
                     <p className="text-sm m-4 text-gray-600">
-                      only {obj.quantity} left
+                      only {obj.stock} left
                     </p>
                   )
                 ) : (

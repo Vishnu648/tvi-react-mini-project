@@ -18,7 +18,7 @@ const style = {
 };
 import userDP from "../../assets/userDP.png";
 
-export default function BasicModal({productApiCall}) {
+export default function BasicModal({ productApiCall }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -27,7 +27,7 @@ export default function BasicModal({productApiCall}) {
   const [proPrice, setProPrice] = useState("80000");
   const [proCategory, setProCategory] = useState("laptop");
   const [proAvailability, setProAvailability] = useState("yes");
-  const [proQuanity, setProQuanity] = useState("3");
+  const [proStock, setProStock] = useState("3");
   const [proDetails, setProDetails] = useState(
     "Featuring a speedy IPS-level panel up to 144Hz, the TUF Gaming A15 is perfect for fast-paced gaming. With adaptive sync, the display's refresh rate synchronizes with the GPU's frame rate to reduce lag, minimize stuttering, and eliminate visual tearing for ultra-smooth and immersive gameplay."
   );
@@ -46,7 +46,7 @@ export default function BasicModal({productApiCall}) {
       productDetails: proDetails,
       productName: proName,
       productPrice: proPrice,
-      quantity: proQuanity,
+      stock: proStock,
       productCode: proCode,
       //   image: userDP,
     };
@@ -58,7 +58,7 @@ export default function BasicModal({productApiCall}) {
         },
       })
       .then((response) => {
-        productApiCall()
+        productApiCall();
         console.log(response);
       })
       .catch((err) => {
@@ -152,12 +152,12 @@ export default function BasicModal({productApiCall}) {
                 />
               </label>
               <label id="Label">
-                Quantity
+                Stock
                 <br />
                 <input
-                  onChange={(e) => setProQuanity(e.target.value)}
+                  onChange={(e) => setProStock(e.target.value)}
                   type="text"
-                  value={proQuanity}
+                  value={proStock}
                   placeholder="00"
                 />
               </label>

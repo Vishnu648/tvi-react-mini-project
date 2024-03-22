@@ -30,7 +30,7 @@ export default function BasicModal({ obj, productApiCall }) {
   const [proPrice, setProPrice] = useState(obj?.productPrice);
   const [proCategory, setProCategory] = useState(obj?.category);
   const [proAvailability, setProAvailability] = useState(obj?.availability);
-  const [proQuanity, setProQuanity] = useState(obj?.quantity);
+  const [proStock, setProStock] = useState(obj?.stock);
   const [proDetails, setProDetails] = useState(obj?.productDetails);
   const [proCode, setProCode] = useState(obj?.productCode);
   let local_accessToken = localStorage.getItem("accessToken");
@@ -58,7 +58,7 @@ export default function BasicModal({ obj, productApiCall }) {
       productDetails: proDetails,
       productName: proName,
       productPrice: proPrice,
-      quantity: proQuanity,
+      stock: setProStock,
       productCode: proCode,
       // image: imagePath,
     };
@@ -97,7 +97,7 @@ export default function BasicModal({ obj, productApiCall }) {
           </Typography>
           <form className=" p-5 flex flex-col gap-5">
             <div className=" flex gap-2 items-center ">
-              <div className="h-28 w-28 border rounded-full flex items-center justify-center">
+              <div className="h-28 w-28 p-2 flex items-center justify-center">
                 <img
                   src={
                     imagePath
@@ -105,7 +105,7 @@ export default function BasicModal({ obj, productApiCall }) {
                       : productImg
                   }
                   alt="pdt"
-                  className="h-full w-full object-cover rounded-full"
+                  className="h-full w-full object-contain "
                 />
               </div>
               <ImageUpload imageSetter={imageSetter} />
@@ -168,12 +168,12 @@ export default function BasicModal({ obj, productApiCall }) {
                 />
               </label>
               <label id="Label">
-                Quantity
+                Stock
                 <br />
                 <input
-                  onChange={(e) => setProQuanity(e.target.value)}
+                  onChange={(e) => setProStock(e.target.value)}
                   type="text"
-                  value={proQuanity}
+                  value={proStock}
                   placeholder="00"
                 />
               </label>

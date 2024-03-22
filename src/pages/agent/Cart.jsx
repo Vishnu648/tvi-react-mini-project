@@ -18,6 +18,7 @@ function Cart({ optionSetter }) {
       })
       .then((res) => {
         setProductDetails(res.data.cartItems);
+        console.log(res.data.cartItems);
       })
       .catch((err) => console.log(err.message));
   };

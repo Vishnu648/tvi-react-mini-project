@@ -108,7 +108,7 @@ function SingleProduct({ obj, selectedOption }) {
                   <p className="text-red-500 m-4">OUT OF STOCK</p>
                 )}
 
-                <p className=" ">{productDetails?.productDetails}</p>
+                <p className="text-justify">{productDetails?.productDetails}</p>
               </div>
             ) : (
               ""

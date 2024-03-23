@@ -37,11 +37,11 @@ function Login() {
   }, []);
 
   const handleLogin = (e) => {
+    e.preventDefault();
     const credentials = {
       email: email,
       password: password,
     };
-    e.preventDefault();
     if (email.length > 0 && password.length > 0) {
       axios
         .post("http://localhost:8000/api/login", credentials, {
@@ -60,7 +60,7 @@ function Login() {
               response.data.access_token
             );
             if (responseRole == "admin") {
-              // navigate("/home");
+              navigate("/home");
             } else if (responseRole == "agent") {
               navigate("/user");
             } else if (responseRole == "supervisor") {
@@ -74,7 +74,7 @@ function Login() {
           if (err?.response?.status == 400) {
             showToastMessage("Incorrect email and/or password!!!");
           }
-          console.log('error-',err.message);
+          console.log("error-", err.message);
         });
     }
   };

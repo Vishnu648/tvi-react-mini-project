@@ -12,6 +12,7 @@ const tokenSlice = createSlice({
     set_Access_Tokken: (state, action) => {
       state.access_token = action.payload;
       localStorage.setItem("accessToken", action.payload);
+      console.log('*-----------accesstoken set');
     },
     set_Refresh_Token: (state, action) => {
       state.refresh_token = action.payload;

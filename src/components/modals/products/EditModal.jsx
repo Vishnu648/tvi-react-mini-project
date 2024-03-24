@@ -36,9 +36,8 @@ export default function BasicModal({ obj, productApiCall }) {
   let local_accessToken = localStorage.getItem("accessToken");
 
   const imageSetter = (path) => {
-    // console.log(path);
     setImagePath(path);
-    console.log(path);
+    // console.log(path);
   };
 
   useEffect(() => {
@@ -58,13 +57,24 @@ export default function BasicModal({ obj, productApiCall }) {
       productDetails: proDetails,
       productName: proName,
       productPrice: proPrice,
-      stock: setProStock,
+      stock: proStock,
       productCode: proCode,
-      // image: imagePath,
+      image: imagePath,
     };
 
+    const formData = new FormData();
+    formData.append("availability", proAvailability);
+    formData.append("category", proCategory);
+    formData.append("productDetails", proDetails);
+    formData.append("productName", proName);
+    formData.append("productPrice", proPrice);
+    formData.append("stock", proStock);
+    formData.append("productCode", proCode);
+    // formData.append("image", imagePath);
+    
+
     axios
-      .put(`http://localhost:8000/api/updateProdt/${obj._id}`, details, {
+      .put(`http://localhost:8000/api/updateProdt/${obj._id}`, formData, {
         headers: {
           genericvalue: "admin",
           Authorization: local_accessToken,

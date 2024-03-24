@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import demoProImg from "../../assets/demoProImg.jpg";
+import productImg from "../../assets/productImg.jpg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
@@ -19,7 +19,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
     axios
       .get(
         `http://localhost:8000/api/get-one/${
-          selectedPage == "cartDetails" ? obj.product : obj._id
+          selectedPage == "cartDetails" || selectedPage == 'wishDetails' ? obj.product : obj._id
         }`,
         {
           headers: {
@@ -94,6 +94,8 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
           onClick={() => {
             selectedPage == "cartDetails"
               ? optionSetter("cart")
+              : selectedPage == "wishDetails"
+              ? optionSetter("wishlist")
               : optionSetter("store");
           }}
           className="bg-[#343a40] text-white px-4 py-2 rounded-md"
@@ -109,9 +111,9 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
 
       <div className="flex flex-col md:flex-row gap-3 justify-start  my-8 overflow-scroll border rounded-md border-[#e9ecef] relative">
         <img
-          src={imagePath ? `data:image/png;base64,${imagePath}` : demoProImg}
+          src={imagePath ? `data:image/png;base64,${imagePath}` : productImg}
           alt="pdt"
-          className="h-80 w-52 object-fill"
+          className="h-80 w-52 object-contain"
         />
         <div
           className="absolute top-1 right-1 text-2xl cursor-pointer"
@@ -145,7 +147,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
                 ) : (
                   <p className="text-red-500 m-4">OUT OF STOCK</p>
                 )}
-                <p className="">{productDetails?.productDetails}</p>
+                <p className="text-justify">{productDetails?.productDetails}</p>
               </div>
             ) : (
               ""

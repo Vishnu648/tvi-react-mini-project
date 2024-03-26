@@ -70,7 +70,7 @@ export default function BasicModal({ obj, productApiCall }) {
     formData.append("productPrice", proPrice);
     formData.append("stock", proStock);
     formData.append("productCode", proCode);
-    // formData.append("image", imagePath);
+    formData.append("image", imagePath);
     
 
     axios

@@ -59,20 +59,20 @@ function Store({ optionSetter }) {
       <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
         Products
       </div>
-      <div className="h-[53vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
+      <div className="h-[55vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         {products.map((p, i) => {
-           const base64String = p.image?.data
-           ? btoa(String.fromCharCode(...new Uint8Array(p.image?.data)))
-           : null;
-         const imgUrl = base64String
-           ? `data:image/jpeg;base64,${base64String}`
-           : productImg;
-          
+          const base64String = p.image?.data
+            ? btoa(String.fromCharCode(...new Uint8Array(p.image?.data)))
+            : null;
+          const imgUrl = base64String
+            ? `data:image/jpeg;base64,${base64String}`
+            : productImg;
+
           return (
             <div
               // onClick={() => optionSetter("product", p)}
               key={p._id}
-              className="border shadow-md hover:shadow-2xl hover:scale-[1.01] rounded-md gap-5 object-cover cursor-pointer"
+              className="border shadow-md hover:shadow-2xl relative rounded-md gap-5 object-cover cursor-pointer hover:scale-[1.01]"
             >
               <div
                 className="absolute top-1 right-1 "
@@ -81,7 +81,7 @@ function Store({ optionSetter }) {
                 <MdOutlineFavoriteBorder />
               </div>
 
-              <div onClick={() => optionSetter("product", p)}>
+              <div onClick={() => optionSetter("product", p, "storeDetails")}>
                 {/* {p.image?.data ? bufferToString(p.image?.data) : null} */}
                 <img
                   src={imgUrl ? imgUrl : productImg}

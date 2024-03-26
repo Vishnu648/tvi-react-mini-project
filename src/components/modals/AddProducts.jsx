@@ -33,9 +33,11 @@ export default function BasicModal({ productApiCall }) {
   );
   const [proCode, setProCode] = useState("121212");
   let local_accessToken = localStorage.getItem("accessToken");
+  const [imagePath, setImagePath] = useState("");
 
   const imageSetter = (path) => {
-    console.log(path);
+    // console.log(path);
+    setImagePath(path);
   };
 
   const handleAddProduct = (e) => {
@@ -50,8 +52,19 @@ export default function BasicModal({ productApiCall }) {
       productCode: proCode,
       //   image: userDP,
     };
+
+    const formData = new FormData();
+    formData.append("availability", proAvailability);
+    formData.append("category", proCategory);
+    formData.append("productDetails", proDetails);
+    formData.append("productName", proName);
+    formData.append("productPrice", proPrice);
+    formData.append("stock", proStock);
+    formData.append("productCode", proCode);
+    formData.append("image", imagePath);
+
     axios
-      .post("http://localhost:8000/api/addProdt", details, {
+      .post("http://localhost:8000/api/addProdt", formData, {
         headers: {
           genericvalue: "admin",
           Authorization: local_accessToken,

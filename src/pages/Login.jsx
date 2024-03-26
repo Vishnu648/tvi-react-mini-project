@@ -17,8 +17,8 @@ import showToastMessage from "../components/ToastMessager";
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("admin@123");
+  const [email, setEmail] = useState("sample@gmail.com");
+  const [password, setPassword] = useState("12345678");
   const [emailValid, setEmailValid] = useState(true);
   const [passwordValid, setPasswordValid] = useState(true);
   let local_role = localStorage.getItem("role");

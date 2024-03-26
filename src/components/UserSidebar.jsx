@@ -26,7 +26,7 @@ function UserSidebar({ fullName, optionSetter }) {
           className="hover:text-white"
           onClick={() => optionSetter("wishlist")}
         >
-          WhishList
+          WishList
         </p>
       </button>
       <div className="w-full flex items-center gap-2 h-[48px] px-4 py-3 text-[#686b6d] cursor-pointer text-[1rem] font-normal ">

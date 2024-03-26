@@ -19,7 +19,9 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
     axios
       .get(
         `http://localhost:8000/api/get-one/${
-          selectedPage == "cartDetails" || selectedPage == 'wishDetails' ? obj.product : obj._id
+          selectedPage == "cartDetails" || selectedPage == "wishDetails"
+            ? obj.product
+            : obj._id
         }`,
         {
           headers: {
@@ -84,6 +86,16 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
       )
       .then((res) => console.log(res.data.message))
       .catch((err) => console.log(err.message));
+  };
+
+  const handleRemoveFromCart = () => {
+    axios.delete(`http://localhost:8000/api/delete-cart/${productDetails._id}`,{
+      headers:{
+        genericvalue: "agent",
+        Authorization: local_accessToken,
+      }
+    }).then(res=>console.log(res))
+    .catch(err=>console.log(err.message))
   };
 
   return (
@@ -156,13 +168,23 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
         </div>
       </div>
       <div className=" flex justify-evenly">
-        <div
-          className="flex items-center cursor-pointer rounded-md bg-[#ff9f00] hover:bg-[#ff9f39] text-white justify-center  w-40 py-3"
-          onClick={handleAddToCart}
-        >
-          <FaCartPlus size={"25px"} />
-          ADD TO CART
-        </div>
+        {selectedPage == "cartDetails" ? (
+          <div
+            className="flex items-center cursor-pointer rounded-md bg-[#ff9f00] hover:bg-[#ff9f39] text-white justify-center  w-40 py-3"
+            onClick={handleRemoveFromCart}
+          >
+            <FaCartPlus size={"25px"} />
+            Remove product
+          </div>
+        ) : (
+          <div
+            className="flex items-center cursor-pointer rounded-md bg-[#ff9f00] hover:bg-[#ff9f39] text-white justify-center  w-40 py-3 "
+            onClick={handleAddToCart}
+          >
+            <FaCartPlus size={"25px"} />
+            ADD TO CART
+          </div>
+        )}
 
         <div
           onClick={handlePurchase}

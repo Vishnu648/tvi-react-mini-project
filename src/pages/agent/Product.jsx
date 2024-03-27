@@ -20,7 +20,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
       .get(
         `http://localhost:8000/api/get-one/${
           selectedPage == "cartDetails" || selectedPage == "wishDetails"
-            ? obj.product
+            ? obj.productId
             : obj._id
         }`,
         {

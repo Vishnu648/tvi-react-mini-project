@@ -34,10 +34,23 @@ export default function BasicModal({ obj, productApiCall }) {
   const [proDetails, setProDetails] = useState(obj?.productDetails);
   const [proCode, setProCode] = useState(obj?.productCode);
   let local_accessToken = localStorage.getItem("accessToken");
+  const [selectedImg, setSelectedImg] = useState("");
 
   const imageSetter = (path) => {
-    setImagePath(path);
+    const details = {
+      image: path,
+    };
+    setSelectedImg(path);
     // console.log(path);
+    axios
+      .post("http://localhost:8000/image/import", details, {
+        headers: {
+          genericvalue: "admin",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err.message));
   };
 
   useEffect(() => {
@@ -51,16 +64,16 @@ export default function BasicModal({ obj, productApiCall }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const details = {
-      availability: proAvailability,
-      category: proCategory,
-      productDetails: proDetails,
-      productName: proName,
-      productPrice: proPrice,
-      stock: proStock,
-      productCode: proCode,
-      image: imagePath,
-    };
+    // const details = {
+    //   availability: proAvailability,
+    //   category: proCategory,
+    //   productDetails: proDetails,
+    //   productName: proName,
+    //   productPrice: proPrice,
+    //   stock: proStock,
+    //   productCode: proCode,
+    //   image: imagePath,
+    // };
 
     const formData = new FormData();
     formData.append("availability", proAvailability);
@@ -70,8 +83,7 @@ export default function BasicModal({ obj, productApiCall }) {
     formData.append("productPrice", proPrice);
     formData.append("stock", proStock);
     formData.append("productCode", proCode);
-    formData.append("image", imagePath);
-    
+    formData.append("imageURL", selectedImg);
 
     axios
       .put(`http://localhost:8000/api/updateProdt/${obj._id}`, formData, {
@@ -108,15 +120,23 @@ export default function BasicModal({ obj, productApiCall }) {
           <form className=" p-5 flex flex-col gap-5">
             <div className=" flex gap-2 items-center ">
               <div className="h-28 w-28 p-2 flex items-center justify-center">
-                <img
-                  src={
-                    imagePath
-                      ? `data:image/png;base64,${imagePath}`
-                      : productImg
-                  }
-                  alt="pdt"
-                  className="h-full w-full object-contain "
-                />
+                {selectedImg ? (
+                  <img
+                    src={selectedImg ? `${selectedImg}` : productImg}
+                    alt="pdt"
+                    className="h-full w-full object-contain rounded-lg"
+                  />
+                ) : (
+                  <img
+                    src={
+                      imagePath
+                        ? `data:image/png;base64,${imagePath}`
+                        : productImg
+                    }
+                    alt="pdt"
+                    className="h-full w-full object-contain rounded-lg"
+                  />
+                )}
               </div>
               <ImageUpload imageSetter={imageSetter} />
             </div>

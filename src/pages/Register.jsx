@@ -41,7 +41,7 @@ function Register() {
       firstName.length > 0 &&
       lastName.length > 0 &&
       password.length > 0 &&
-      confirmPassword > 0
+      confirmPassword.length > 0
     ) {
       if (password == confirmPassword) {
         axios

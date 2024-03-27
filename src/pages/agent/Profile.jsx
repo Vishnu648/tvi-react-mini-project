@@ -22,13 +22,18 @@ function Profile() {
   let local_refreshToken = localStorage.getItem("refreshToken");
 
   let local_role = localStorage.getItem("role");
+  const [selectedImg, setSelectedImg] = useState("");
+
 
   const imageSetter = (path) => {
-    const encoder = new TextEncoder();
-    const inputString = path;
-    const buffer = encoder.encode(inputString);
-    // console.log('buffered img',buffer);
-    setImagePath(buffer);
+
+    const details = {
+      image: path,
+    };
+
+    setSelectedImg(path);
+
+    
   };
   
   const userApiCall = () => {
@@ -98,7 +103,7 @@ function Profile() {
   };
 
   const handleCancel = () => {
-    setImagePath(userData.imageURL);
+    // setImagePath(userData.imageURL);
     setIsEditing((prev) => !prev);
   };
 

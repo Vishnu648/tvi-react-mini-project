@@ -81,7 +81,10 @@ function Store({ optionSetter }) {
                 <MdOutlineFavoriteBorder />
               </div>
 
-              <div onClick={() => optionSetter("product", p, "storeDetails")}>
+              <div
+                onClick={() => optionSetter("product", p, "storeDetails")}
+                className="w-36"
+              >
                 {/* {p.image?.data ? bufferToString(p.image?.data) : null} */}
                 <img
                   src={imgUrl ? imgUrl : productImg}

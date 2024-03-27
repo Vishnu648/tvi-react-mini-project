@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -16,6 +16,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+import productImg from '../../assets/productImg.jpg'
 import userDP from "../../assets/userDP.png";
 
 export default function BasicModal({ productApiCall }) {
@@ -34,24 +35,31 @@ export default function BasicModal({ productApiCall }) {
   const [proCode, setProCode] = useState("121212");
   let local_accessToken = localStorage.getItem("accessToken");
   const [imagePath, setImagePath] = useState("");
+  const [selectedImg, setSelectedImg] = useState("");
+
 
   const imageSetter = (path) => {
     // console.log(path);
-    setImagePath(path);
+    setSelectedImg(path);
   };
+
+
 
   const handleAddProduct = (e) => {
     e.preventDefault();
-    const details = {
-      availability: proAvailability,
-      category: proCategory,
-      productDetails: proDetails,
-      productName: proName,
-      productPrice: proPrice,
-      stock: proStock,
-      productCode: proCode,
-      //   image: userDP,
-    };
+    // const details = {
+    //   availability: proAvailability,
+    //   category: proCategory,
+    //   productDetails: proDetails,
+    //   productName: proName,
+    //   productPrice: proPrice,
+    //   stock: proStock,
+    //   productCode: proCode,
+    //   //   image: userDP,
+    // };
+
+  
+  
 
     const formData = new FormData();
     formData.append("availability", proAvailability);
@@ -61,8 +69,9 @@ export default function BasicModal({ productApiCall }) {
     formData.append("productPrice", proPrice);
     formData.append("stock", proStock);
     formData.append("productCode", proCode);
-    formData.append("image", imagePath);
+    formData.append("imageURL", selectedImg);
 
+    console.log(formData)
     axios
       .post("http://localhost:8000/api/addProdt", formData, {
         headers: {
@@ -78,7 +87,6 @@ export default function BasicModal({ productApiCall }) {
         console.log(err.message);
       });
 
-    console.log("-- ~ handleAddProduct ~ details:", details);
     handleClose();
   };
 
@@ -102,8 +110,27 @@ export default function BasicModal({ productApiCall }) {
           </Typography>
           <form className=" p-5 flex flex-col gap-5">
             <div className=" flex gap-2 items-center ">
-              <div className="h-20 w-20 border rounded-full flex items-center justify-center">
+              {/* <div className="h-20 w-20 border rounded-full flex items-center justify-center">
                 img
+              </div> */}
+              <div className="h-28 w-28 p-2 flex items-center justify-center">
+                {selectedImg ? (
+                  <img
+                    src={selectedImg ? `${selectedImg}` : productImg}
+                    alt="pdt"
+                    className="h-full w-full object-contain rounded-lg"
+                  />
+                ) : (
+                  <img
+                    src={
+                      imagePath
+                        ? `data:image/png;base64,${imagePath}`
+                        : productImg
+                    }
+                    alt="pdt"
+                    className="h-full w-full object-contain rounded-lg"
+                  />
+                )}
               </div>
               <ImageUpload imageSetter={imageSetter} />
             </div>

@@ -78,7 +78,7 @@ function SingleProduct({ obj, selectedOption }) {
         <img
           src={imagePath ? `data:image/png;base64,${imagePath}` : productImg}
           alt="pdt"
-          className="h-80 w-52 object-contain"
+          className="h-80 w-52 object-contain "
         />
         <div className=" w-full overflow-scroll h-full p-2">
           <div className="flex flex-col gap-6 justify-between h-full">

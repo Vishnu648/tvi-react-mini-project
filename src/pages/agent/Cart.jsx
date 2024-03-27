@@ -17,8 +17,8 @@ function Cart({ optionSetter }) {
         },
       })
       .then((res) => {
-        setProductDetails(res.data.cartItems);
-        console.log(res.data.cartItems);
+        console.log(res.data.result.products)
+        setProductDetails(res.data.result.products);
       })
       .catch((err) => console.log(err.message));
   };

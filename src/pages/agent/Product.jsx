@@ -64,7 +64,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
           },
         }
       )
-      .then((res) => console.log(res))
+      .then((res) => console.log(res.data.message))
       .catch((err) => console.log(err.message));
   };
 
@@ -89,13 +89,15 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   };
 
   const handleRemoveFromCart = () => {
-    axios.delete(`http://localhost:8000/api/delete-cart/${productDetails._id}`,{
-      headers:{
-        genericvalue: "agent",
-        Authorization: local_accessToken,
-      }
-    }).then(res=>console.log(res))
-    .catch(err=>console.log(err.message))
+    axios
+      .delete(`http://localhost:8000/api/delete-cart/${productDetails._id}`, {
+        headers: {
+          genericvalue: "agent",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err.message));
   };
 
   return (
@@ -116,9 +118,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
         </button>
       </div>
       <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
-        {productDetails.productName
-          ? productDetails.productName.toUpperCase()
-          : ""}
+        {productDetails.title ? productDetails.title.toUpperCase() : ""}
       </div>
 
       <div className="flex flex-col md:flex-row gap-3 justify-start  my-8 overflow-scroll border rounded-md border-[#e9ecef] relative">
@@ -138,13 +138,11 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
             {productDetails ? (
               <div className=" flex flex-col">
                 <p className="text-2xl font-extrabold">
-                  {productDetails.productName
-                    ? productDetails.productName.toUpperCase()
+                  {productDetails.title
+                    ? productDetails.title.toUpperCase()
                     : ""}
                 </p>
-                <p className="text-3xl font-thin">
-                  ₹{productDetails?.productPrice}
-                </p>
+                <p className="text-3xl font-thin">₹{productDetails?.price}</p>
                 {/* <p className="">{productDetails?.productCode}</p> */}
                 {productDetails?.availability == "yes" ? (
                   obj.stock <= 5 ? (
@@ -159,7 +157,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
                 ) : (
                   <p className="text-red-500 m-4">OUT OF STOCK</p>
                 )}
-                <p className="text-justify">{productDetails?.productDetails}</p>
+                <p className="text-justify">{productDetails?.description}</p>
               </div>
             ) : (
               ""

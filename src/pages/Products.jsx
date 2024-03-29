@@ -62,12 +62,12 @@ function AddProduct({ selectedOption }) {
             <div
               onClick={() => selectedOption("product", p)}
               key={p._id}
-              className="border shadow-md hover:shadow-2xl hover:scale-[1.01] rounded-md gap-5 object-cover cursor-pointer w-40"
+              className="border shadow-md hover:shadow-2xl hover:scale-[1.01] rounded-md gap-5 object-cover cursor-pointer w-36"
             >
               <img src={imgUrl} alt="product" className="h-40 w-full rounded-t-md" />
               <div className="p-2">
-                <p>{p.productName}</p>
-                <p>₹{p.productPrice}</p>
+                <p>{p.title}</p>
+                <p>₹{p.price}</p>
               </div>
             </div>
           );

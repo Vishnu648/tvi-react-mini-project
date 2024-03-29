@@ -74,7 +74,7 @@ function Cart({ optionSetter }) {
               />
               <div className="p-2">
                 <p>{p.productName}</p>
-                <p>${p.productPrice}</p>
+                <p>{p.productPrice}</p>
               </div>
             </div>
           </div>

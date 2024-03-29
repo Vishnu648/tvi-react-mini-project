@@ -69,8 +69,8 @@ function SingleProduct({ obj, selectedOption }) {
         </button>
       </div>
       <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
-        {productDetails.productName
-          ? productDetails.productName.toUpperCase()
+        {productDetails.title
+          ? productDetails.title.toUpperCase()
           : ""}
       </div>
 
@@ -85,12 +85,12 @@ function SingleProduct({ obj, selectedOption }) {
             {productDetails ? (
               <div className=" flex flex-col">
                 <p className="text-2xl font-extrabold">
-                  {productDetails.productName
-                    ? productDetails.productName.toUpperCase()
+                  {productDetails.title
+                    ? productDetails.title.toUpperCase()
                     : ""}
                 </p>
                 <p className="text-3xl font-thin">
-                  ₹{productDetails?.productPrice}
+                  ₹{productDetails?.price}
                 </p>
                 {/* <p className="">Code :- {productDetails?.productCode}</p> */}
 
@@ -108,7 +108,7 @@ function SingleProduct({ obj, selectedOption }) {
                   <p className="text-red-500 m-4">OUT OF STOCK</p>
                 )}
 
-                <p className="text-justify">{productDetails?.productDetails}</p>
+                <p className="text-justify">{productDetails?.description}</p>
               </div>
             ) : (
               ""

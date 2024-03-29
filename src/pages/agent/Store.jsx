@@ -22,7 +22,7 @@ function Store({ optionSetter }) {
       .then((res) => {
         setProducts(res.data.products);
         setTotalCount(res.data.totalCount);
-        // console.log(res.data);
+        // console.log(res.data.products);
       })
       .catch((err) => console.log("error-", err.message));
   };
@@ -92,8 +92,8 @@ function Store({ optionSetter }) {
                   className="h-36 mt-5 w-full hover:scale-[1.02]"
                 />
                 <div className="p-2">
-                  <p>{p.productName}</p>
-                  <p>${p.productPrice}</p>
+                  <p>{p.title}</p>
+                  <p>${p.price}</p>
                 </div>
               </div>
             </div>

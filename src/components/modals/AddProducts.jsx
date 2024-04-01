@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -16,7 +16,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-import productImg from '../../assets/productImg.jpg'
+import productImg from "../../assets/productImg.jpg";
 import userDP from "../../assets/userDP.png";
 
 export default function BasicModal({ productApiCall }) {
@@ -29,49 +29,35 @@ export default function BasicModal({ productApiCall }) {
   const [proCategory, setProCategory] = useState("laptop");
   const [proAvailability, setProAvailability] = useState("yes");
   const [proStock, setProStock] = useState("3");
+  const [proOffer, setProOffer] = useState("");
+  const [proColor, setProColor] = useState("");
   const [proDetails, setProDetails] = useState(
     "Featuring a speedy IPS-level panel up to 144Hz, the TUF Gaming A15 is perfect for fast-paced gaming. With adaptive sync, the display's refresh rate synchronizes with the GPU's frame rate to reduce lag, minimize stuttering, and eliminate visual tearing for ultra-smooth and immersive gameplay."
   );
-  const [proCode, setProCode] = useState("121212");
   let local_accessToken = localStorage.getItem("accessToken");
   const [imagePath, setImagePath] = useState("");
   const [selectedImg, setSelectedImg] = useState("");
-
 
   const imageSetter = (path) => {
     // console.log(path);
     setSelectedImg(path);
   };
 
-
-
   const handleAddProduct = (e) => {
     e.preventDefault();
-    // const details = {
-    //   availability: proAvailability,
-    //   category: proCategory,
-    //   productDetails: proDetails,
-    //   productName: proName,
-    //   productPrice: proPrice,
-    //   stock: proStock,
-    //   productCode: proCode,
-    //   //   image: userDP,
-    // };
-
-  
-  
 
     const formData = new FormData();
-    formData.append("availability", proAvailability);
+    formData.append("title", proName);
+    formData.append("price", proPrice);
+    formData.append("description", proDetails);
     formData.append("category", proCategory);
-    formData.append("productDetails", proDetails);
-    formData.append("productName", proName);
-    formData.append("productPrice", proPrice);
+    formData.append("availability", proAvailability);
     formData.append("stock", proStock);
-    formData.append("productCode", proCode);
-    formData.append("imageURL", selectedImg);
+    formData.append("offer", proOffer);
+    formData.append("color", proColor);
+    // formData.append("imageURL", selectedImg);
 
-    console.log(formData)
+    console.log(formData);
     axios
       .post("http://localhost:8000/api/addProdt", formData, {
         headers: {
@@ -169,18 +155,18 @@ export default function BasicModal({ productApiCall }) {
                 />
               </label>
               <label id="Label">
-                Product Code
+                Product Color
                 <br />
                 <input
                   type="text"
-                  value={proCode}
-                  onChange={(e) => setProCode(e.target.value)}
-                  placeholder="product code"
+                  value={proColor}
+                  onChange={(e) => setProColor(e.target.value)}
+                  placeholder="red"
                 />
               </label>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 ">
               <label id="Label">
                 Availability
                 <br />
@@ -201,7 +187,18 @@ export default function BasicModal({ productApiCall }) {
                   placeholder="00"
                 />
               </label>
+              <label id="Label" >
+                Product Offer
+                <br />
+                <input
+                  type="text"
+                  value={proOffer}
+                  onChange={(e) => setProOffer(e.target.value)}
+                  placeholder="discount in %..."
+                />
+              </label>
             </div>
+            
 
             <div className="grid grid-cols-1 items-center gap-4">
               <label id="Label">

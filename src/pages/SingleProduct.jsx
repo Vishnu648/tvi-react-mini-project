@@ -38,7 +38,7 @@ function SingleProduct({ obj, selectedOption }) {
   }, []);
 
   const handleDelete = () => {
-    console.log("id", obj._id);
+    // console.log("id", obj._id);
 
     axios
       .delete(`http://localhost:8000/api/deleteProduct/${obj._id}`, {
@@ -69,9 +69,7 @@ function SingleProduct({ obj, selectedOption }) {
         </button>
       </div>
       <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
-        {productDetails.title
-          ? productDetails.title.toUpperCase()
-          : ""}
+        {productDetails.title ? productDetails.title.toUpperCase() : ""}
       </div>
 
       <div className="flex flex-col md:flex-row gap-3 justify-start pb-10 md:h-[52vh] my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
@@ -89,18 +87,32 @@ function SingleProduct({ obj, selectedOption }) {
                     ? productDetails.title.toUpperCase()
                     : ""}
                 </p>
-                <p className="text-3xl font-thin">
-                  ₹{productDetails?.price}
-                </p>
-                {/* <p className="">Code :- {productDetails?.productCode}</p> */}
+                {/* <p className="text-3xl font-thin">₹{productDetails?.price}</p> */}
+                {productDetails.discountedPrice ? (
+                  <h3 className="text-[#26a541] my-2">Special price</h3>
+                ) : (
+                  ""
+                )}
+                <div className="flex items-center gap-3">
+                  <p className="text-3xl font-mono">
+                    ₹{productDetails?.discountedPrice}
+                  </p>
+                  <p className="text-xl font-thin">
+                    <s>₹{productDetails?.price}</s>
+                  </p>
+                  <p className="text-[#26a541] text-xs">
+                    {" "}
+                    {productDetails.offer}% off
+                  </p>
+                </div>
 
                 {productDetails?.availability == "yes" ? (
                   obj.stock <= 5 ? (
-                    <p className="text-sm m-4 text-red-500">
+                    <p className="text-sm mb-4 text-red-500">
                       only {obj.stock} left
                     </p>
                   ) : (
-                    <p className="text-sm m-4 text-gray-600">
+                    <p className="text-sm mb-4 text-gray-600">
                       only {obj.stock} left
                     </p>
                   )

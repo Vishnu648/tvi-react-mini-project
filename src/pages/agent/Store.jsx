@@ -83,17 +83,23 @@ function Store({ optionSetter }) {
 
               <div
                 onClick={() => optionSetter("product", p, "storeDetails")}
-                className="w-36"
+                className="w-48 py-3"
               >
                 {/* {p.image?.data ? bufferToString(p.image?.data) : null} */}
                 <img
                   src={imgUrl ? imgUrl : productImg}
                   alt="product"
-                  className="h-36 mt-5 w-full hover:scale-[1.02]"
+                  className="h-36 mt-5 w-full object-contain hover:scale-[1.02]"
                 />
                 <div className="p-2">
                   <p>{p.title}</p>
-                  <p>${p.price}</p>
+                  <div className="flex items-center gap-2 ">
+                    <p className="text-md font-medium ">₹{p.discountedPrice}</p>
+                    <p className="text-xs text-gray-400">
+                      <s>₹{p.price}</s>
+                    </p>
+                    <p className="text-[#26a541] text-xs"> {p.offer}% off</p>
+                  </div>
                 </div>
               </div>
             </div>

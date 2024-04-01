@@ -15,12 +15,12 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   const [imagePath, setImagePath] = useState("");
 
   const productApiCall = () => {
-    console.log("obj--", obj);
+    // console.log("obj--", obj);
     axios
       .get(
         `http://localhost:8000/api/get-one/${
           selectedPage == "cartDetails" || selectedPage == "wishDetails"
-            ? obj.productId
+            ? obj._id
             : obj._id
         }`,
         {
@@ -137,26 +137,45 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
           <div className="flex flex-col gap-6 justify-between  mt-6">
             {productDetails ? (
               <div className=" flex flex-col">
-                <p className="text-2xl font-extrabold">
+                <p className="text-xl font-extrabold">
                   {productDetails.title
                     ? productDetails.title.toUpperCase()
                     : ""}
                 </p>
-                <p className="text-3xl font-thin">₹{productDetails?.price}</p>
+                {productDetails.discountedPrice ? (
+                  <h3 className="text-[#26a541] my-2">Special price</h3>
+                ) : (
+                  ""
+                )}
+                <div className="flex items-center gap-3">
+                  <p className="text-3xl font-mono">
+                    ₹{productDetails?.discountedPrice}
+                  </p>
+                  <p className="text-xl font-thin">
+                    <s>₹{productDetails?.price}</s>
+                  </p>
+                  <p className="text-[#26a541] text-xs"> {productDetails.offer}% off</p>
+                </div>
                 {/* <p className="">{productDetails?.productCode}</p> */}
                 {productDetails?.availability == "yes" ? (
                   obj.stock <= 5 ? (
-                    <p className="text-sm m-4 text-red-500">
+                    <p className="text-sm mb-4 text-red-500">
                       only {obj.stock} left
                     </p>
                   ) : (
-                    <p className="text-sm m-4 text-gray-600">
+                    <p className="text-sm mb-4 text-gray-600">
                       only {obj.stock} left
                     </p>
                   )
                 ) : (
                   <p className="text-red-500 m-4">OUT OF STOCK</p>
                 )}
+                <div className="flex items-center mb-3">
+                  <pre className="text-gray-500 text-sm">color : </pre>
+                  <pre className={`text-[${productDetails.color}]`}>
+                    {productDetails.color}
+                  </pre>
+                </div>
                 <p className="text-justify">{productDetails?.description}</p>
               </div>
             ) : (

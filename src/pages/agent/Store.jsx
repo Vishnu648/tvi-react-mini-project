@@ -3,6 +3,7 @@ import axios from "axios";
 import Pagination from "../../components/Pagination";
 import productImg from "../../assets/productImg.jpg";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
+import { IoHeart } from "react-icons/io5";
 
 function Store({ optionSetter }) {
   let local_accessToken = localStorage.getItem("accessToken");
@@ -10,6 +11,9 @@ function Store({ optionSetter }) {
   const [imgUrl, setImgUrl] = useState("");
   const [totalCount, setTotalCount] = useState(0);
   const [imagePath, setImagePath] = useState("");
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const [ptdIds, setPtdIds] = useState([]);
+  const [wishIds, setWishIds] = useState([]);
 
   const productApiCall = (pn = 1) => {
     axios
@@ -22,13 +26,49 @@ function Store({ optionSetter }) {
       .then((res) => {
         setProducts(res.data.products);
         setTotalCount(res.data.totalCount);
-        console.log(res.data.products);
+        let pdt = res.data.products;
+
+        axios
+          .get("http://localhost:8000/api/wishlist", {
+            headers: {
+              agent: "agent",
+              Authorization: local_accessToken,
+            },
+          })
+          .then((res) => {
+            setWishlistItems(res.data.result?.[0]?.results);
+            let wish = res.data.result?.[0]?.results;
+            // console.log(pdt);
+            // console.log(wish);
+            wish.map((e) => {
+              !wishIds.includes(e._id)
+                ? setWishIds((prev) => [...prev, e._id])
+                : "";
+            });
+          })
+          .catch((err) => console.log(err.message));
       })
       .catch((err) => console.log("error-", err.message));
   };
 
+  // const wishListApiCall = () => {
+  //   axios
+  //     .get("http://localhost:8000/api/wishlist", {
+  //       headers: {
+  //         agent: "agent",
+  //         Authorization: local_accessToken,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       setWishlistItems(res.data.result?.[0]?.results);
+  //       console.log(res.data.result?.[0]?.results);
+  //     })
+  //     .catch((err) => console.log(err.message));
+  // };
+
   useEffect(() => {
     productApiCall();
+    // wishListApiCall();
   }, []);
 
   const selectedPage = (pageNo) => {
@@ -47,7 +87,26 @@ function Store({ optionSetter }) {
           },
         }
       )
-      .then((res) => console.log(res.data.message))
+      .then((res) => {
+        console.log(res.data.message);
+        productApiCall();
+      })
+      .catch((err) => console.log(err.message));
+  };
+
+  const handleRemoveFromWishList = (id) => {
+    axios
+      .delete(`http://localhost:8000/api/delete-wishist/${id}`, {
+        headers: {
+          agent: "agent",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.message);
+        setWishIds(wishIds.filter((e) => e != id));
+        productApiCall();
+      })
       .catch((err) => console.log(err.message));
   };
 
@@ -74,12 +133,21 @@ function Store({ optionSetter }) {
               key={p._id}
               className="border shadow-md hover:shadow-2xl relative rounded-md gap-5 object-cover cursor-pointer hover:scale-[1.01]"
             >
-              <div
-                className="absolute top-1 right-1 "
-                onClick={() => handleAddToWishlist(p._id)}
-              >
-                <MdOutlineFavoriteBorder />
-              </div>
+              {wishIds.includes(p._id) ? (
+                <div
+                  className="absolute top-1 right-1  text-red-600"
+                  onClick={() => handleRemoveFromWishList(p._id)}
+                >
+                  <IoHeart />
+                </div>
+              ) : (
+                <div
+                  className="absolute top-1 right-1 "
+                  onClick={() => handleAddToWishlist(p._id)}
+                >
+                  <MdOutlineFavoriteBorder />
+                </div>
+              )}
 
               <div
                 onClick={() => optionSetter("product", p, "storeDetails")}

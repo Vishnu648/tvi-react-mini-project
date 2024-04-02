@@ -6,6 +6,8 @@ import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { FaCartPlus } from "react-icons/fa";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { useSelector } from "react-redux";
+import { IoHeart } from "react-icons/io5";
+import Alert from "../../components/Alert";
 
 function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   const [productDetails, setProductDetails] = useState({});
   const tokens = useSelector((state) => state.token);
   const [imagePath, setImagePath] = useState("");
+  const [itemRemoved, setItemRemoved] = useState(false);
 
   const productApiCall = () => {
     // console.log("obj--", obj);
@@ -96,12 +99,48 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
           Authorization: local_accessToken,
         },
       })
-      .then((res) => console.log(res))
+      .then((res) =>
+        res.status == "200"
+          ? setItemRemoved(true)(
+              setTimeout(() => {
+                setItemRemoved(false);
+              }, 2000)
+            )
+          : ""
+      )
       .catch((err) => console.log(err.message));
   };
 
+  const handleRemoveFromWishList = (id) => {
+    axios
+      .delete(`http://localhost:8000/api/delete-wishist/${id}`, {
+        headers: {
+          agent: "agent",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => {
+        res.status == "200"
+          ? setItemRemoved(true)(
+              setTimeout(() => {
+                setItemRemoved(false);
+              }, 2000)
+            )
+          : "";
+      })
+      .catch((err) => console.log(" "));
+  };
+
   return (
-    <section className="px-6 flex-1 overflow-scroll h-[92vh] pb-5">
+    <section className="px-6 flex-1 relative overflow-scroll h-[92vh] pb-5">
+      {itemRemoved ? (
+        <div className="border rounded-md absolute right-10 top-2">
+          <Alert />
+        </div>
+      ) : (
+        ""
+      )}
+
       <div className=" mb-[.5rem] mt-[1.5rem] leading-[1.2] flex justify-between  ">
         {/* <p className="text-[35px]  text-[#212529] ">Product</p> */}
         <button
@@ -120,18 +159,25 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
       <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
         {productDetails.title ? productDetails.title.toUpperCase() : ""}
       </div>
-
       <div className="flex flex-col md:flex-row gap-3 justify-start  my-8 overflow-scroll border rounded-md border-[#e9ecef] relative">
         <img
           src={imagePath ? `data:image/png;base64,${imagePath}` : productImg}
           alt="pdt"
           className="h-80 w-52 object-contain"
         />
-        <div
-          className="absolute top-1 right-1 text-2xl cursor-pointer"
-          onClick={() => handleAddToWishlist(productDetails._id)}
-        >
-          <MdOutlineFavoriteBorder />
+        <div className="absolute top-1 right-1 text-2xl cursor-pointer">
+          {selectedPage == "wishDetails" ? (
+            <div
+              className="absolute top-1 right-1 text-red-600"
+              onClick={() => handleRemoveFromWishList(productDetails._id)}
+            >
+              <IoHeart />
+            </div>
+          ) : (
+            <div onClick={() => handleAddToWishlist(productDetails._id)}>
+              <MdOutlineFavoriteBorder />
+            </div>
+          )}
         </div>
         <div className=" w-full overflow-scroll h-full p-2 ">
           <div className="flex flex-col gap-6 justify-between  mt-6">
@@ -154,7 +200,10 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
                   <p className="text-xl font-thin">
                     <s>₹{productDetails?.price}</s>
                   </p>
-                  <p className="text-[#26a541] text-xs"> {productDetails.offer}% off</p>
+                  <p className="text-[#26a541] text-xs">
+                    {" "}
+                    {productDetails.offer}% off
+                  </p>
                 </div>
                 {/* <p className="">{productDetails?.productCode}</p> */}
                 {productDetails?.availability == "yes" ? (

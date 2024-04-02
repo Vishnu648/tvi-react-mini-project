@@ -22,7 +22,7 @@ function Store({ optionSetter }) {
       .then((res) => {
         setProducts(res.data.products);
         setTotalCount(res.data.totalCount);
-        // console.log(res.data.products);
+        console.log(res.data.products);
       })
       .catch((err) => console.log("error-", err.message));
   };

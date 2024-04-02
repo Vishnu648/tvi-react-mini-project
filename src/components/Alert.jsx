@@ -1,0 +1,16 @@
+import * as React from "react";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
+
+export default function BasicAlerts({
+  message = "item removed successfully...",
+}) {
+  return (
+    <Stack sx={{ width: "100%" }} spacing={2}>
+      <Alert severity="success">{message}</Alert>
+      {/* <Alert severity="info">This is an info Alert.</Alert>
+      <Alert severity="warning">This is a warning Alert.</Alert>
+      <Alert severity="error">This is an error Alert.</Alert> */}
+    </Stack>
+  );
+}

@@ -18,7 +18,7 @@ function WishList({ optionSetter }) {
       })
       .then((res) => {
         setWishlistItems(res.data.result?.[0]?.results);
-        // console.log(res.data.result?.[0]?.results);
+        console.log(res.data.result?.[0]?.results);
       })
       .catch((err) => console.log(err.message));
   };

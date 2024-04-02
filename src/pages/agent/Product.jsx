@@ -73,6 +73,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
 
   const handlePurchase = () => {
     console.log("purchase");
+    optionSetter("order", productDetails, "orderDetails");
   };
 
   const handleAddToWishlist = (id) => {

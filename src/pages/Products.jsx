@@ -20,7 +20,7 @@ function AddProduct({ selectedOption }) {
       })
       .then((res) => {
         setProducts(res.data.products);
-        console.log(res.data.products);
+        // console.log(res.data.products);
         setTotalCount(res.data.totalCount);
         
       })

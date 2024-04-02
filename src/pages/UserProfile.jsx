@@ -10,6 +10,7 @@ import Store from "./agent/Store";
 import Product from "../pages/agent/Product";
 import Cart from "./agent/Cart";
 import WishList from "./agent/WishList";
+import Order from "./agent/Order";
 
 function UserProfile() {
   const navigate = useNavigate();
@@ -99,7 +100,13 @@ function UserProfile() {
         ) : selectedOption == "cart" ? (
           <Cart optionSetter={optionSetter} />
         ) : selectedOption == "wishlist" ? (
-          <WishList optionSetter={optionSetter}/>
+          <WishList optionSetter={optionSetter} />
+        ) : selectedOption == "order" ? (
+          <Order
+            optionSetter={optionSetter}
+            obj={selectedProduct}
+            selectedPage={selectedPage}
+          />
         ) : (
           console.log("undefined-------")
         )}

@@ -84,6 +84,15 @@ export default function Address({ address, addressSetter }) {
     .catch(err=>console.log(err.message))
   };
 
+  const handleAddressEdit=() => {
+    console.log('handleaddressedit');
+  }
+  
+  const hanldeAddressDelete=() => {
+    console.log('handleaddressdelete');
+  }
+  
+
   return (
     <div>
       <button
@@ -98,7 +107,7 @@ export default function Address({ address, addressSetter }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} className="h-screen overflow-scroll">
+        <Box sx={style} className="h-[96vh] overflow-scroll">
           <h1 className="font-bold">DELIVERY ADDRESS</h1>
           <p className="text-xs text-gray-500 my-2">
             Please select your current address:
@@ -110,7 +119,7 @@ export default function Address({ address, addressSetter }) {
                 className="flex m-2 border border-gray-400 rounded-md p-3 "
               >
                 <label
-                  className="flex flex-col items-start w-full border border-red-500"
+                  className="flex flex-col relative items-start w-full"
                   onClick={(e) => AddressChanger(a)}
                 >
                   <div className="flex gap-2">
@@ -120,6 +129,10 @@ export default function Address({ address, addressSetter }) {
                   <p className="font-serif">{`${a?.buildingName}, ${a?.area}, ${a?.city} `}</p>
                   <p className="font-serif">{a?.pincode}</p>
                   <p>{a?.phoneNumber}</p>
+                  <div className="absolute top-2 right-0 flex gap-5 ">
+                    <button className="border text-[#2874f0] px-3" onClick={handleAddressEdit}>Edit</button>
+                    <button className="border px-3" onClick={hanldeAddressDelete}>Del</button>
+                  </div>
                 </label>
               </div>
             ))}

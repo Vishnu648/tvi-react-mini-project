@@ -127,14 +127,14 @@ function Order({ optionSetter, obj, selectedPage }) {
           </div>
         </div>
       </div>
-      <div className="border flex relative justify-around p-3 mt-2">
+      <div className="border border-gray-400 rounded-md flex relative justify-around p-3 mt-2">
         <div className="w-full">
           <s className="text-xs">{obj.price}</s>
           <p className="font-[500]">₹{obj.discountedPrice}</p>
         </div>
         <button
           onClick={handleContinue}
-          className="bg-[#fb641b] text-blak px-7 rounded-sm font-[500]"
+          className="bg-[#fb641b] text-white px-7 rounded-sm font-[500]"
         >
           Continue
         </button>

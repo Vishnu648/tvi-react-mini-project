@@ -28,7 +28,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
         }`,
         {
           headers: {
-            genericvalue: "admin",
+            genericvalue: "agent",
             Authorization: local_accessToken,
           },
         }

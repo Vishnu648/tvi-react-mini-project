@@ -3,6 +3,7 @@ import Alert from "../../components/Alert";
 import axios from "axios";
 import productImg from "../../assets/productImg.jpg";
 import { FaArrowDownLong } from "react-icons/fa6";
+import Address from "../../components/modals/products/Address";
 
 function Order({ optionSetter, obj, selectedPage }) {
   let local_accessToken = localStorage.getItem("accessToken");
@@ -19,7 +20,7 @@ function Order({ optionSetter, obj, selectedPage }) {
       })
       .then((res) => {
         setAddress(res.data.result?.[0].address);
-        setLatestAddress(res.data.result?.[0].address?.[address.length - 1]);
+        setLatestAddress(res.data.result?.[0].address?.[0]);
         console.log(res.data.result?.[0].address);
       })
       .catch((err) => console.log(err));
@@ -33,6 +34,12 @@ function Order({ optionSetter, obj, selectedPage }) {
   const handleContinue = () => {
     console.log("continue");
   };
+
+  const addressSetter=(address) => {
+    // console.log(address);
+    setLatestAddress(address)
+  }
+  
 
   return (
     <section className="px-6 flex-1 relative h-[92vh] pb-5">
@@ -52,12 +59,14 @@ function Order({ optionSetter, obj, selectedPage }) {
       </div>
       <div className="h-[65vh] overflow-scroll">
         <div className="bg-[#e9ecef] relative py-3 flex items-center px-4 rounded-sm text-[1rem] mb-2">
-          <div className="">
+          <div className="relative w-full">
             <h6>Deliver to:</h6>
             <p className="font-semibold">{latestAddress?.fullName}</p>
             <p className="font-serif">{`${latestAddress?.buildingName}, ${latestAddress?.area}, ${latestAddress?.city} `}</p>
             <p className="font-serif">{latestAddress?.pincode}</p>
             <p>{latestAddress?.phoneNumber}</p>
+
+            <Address address={address} addressSetter={addressSetter} />
           </div>
         </div>
 
@@ -109,7 +118,7 @@ function Order({ optionSetter, obj, selectedPage }) {
 
             <div className="flex justify-between my-4">
               <p className="font-medium">Total Amount</p>
-              <p className="font-semibold">₹ {obj.price}</p>
+              <p className="font-semibold">₹ {obj.discountedPrice}</p>
             </div>
 
             <h4 className="font-medium text-[green] my-4">{`You will save ₹${
@@ -121,7 +130,7 @@ function Order({ optionSetter, obj, selectedPage }) {
       <div className="border flex relative justify-around p-3 mt-2">
         <div className="w-full">
           <s className="text-xs">{obj.price}</s>
-          <p className="font-[500]">{obj.discountedPrice}</p>
+          <p className="font-[500]">₹{obj.discountedPrice}</p>
         </div>
         <button
           onClick={handleContinue}

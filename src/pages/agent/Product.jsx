@@ -72,7 +72,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   };
 
   const handlePurchase = () => {
-    console.log("purchase");
+    // console.log("purchase");
     optionSetter("order", productDetails, "orderDetails");
   };
 

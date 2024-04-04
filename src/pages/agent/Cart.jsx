@@ -17,8 +17,9 @@ function Cart({ optionSetter }) {
         },
       })
       .then((res) => {
-        console.log(res.data.cartItems?.[0]);
-        setProductDetails(res.data.cartItems?.[0]?.results);
+        console.log(res.data.results?.[0].results);
+        setProductDetails(res.data.results?.[0].results);
+        // setProductDetails(res.data.results[0].result);
       })
       .catch((err) => console.log(err.message));
   };
@@ -41,6 +42,10 @@ function Cart({ optionSetter }) {
       )
       .then((res) => console.log(res.data.message))
       .catch((err) => console.log(err.message));
+  };
+
+  const handlePlaceOrder = () => {
+    console.log("handlePlaceOrder");
   };
 
   return (
@@ -90,6 +95,18 @@ function Cart({ optionSetter }) {
           </div>
         ))}
       </div>
+      {productDetails.length > 0 ? (
+        <div className="mt-2 flex justify-end">
+          <button
+            className="bg-[#fb641b] text-white px-7 py-1 rounded-sm font-[500]"
+            onClick={handlePlaceOrder}
+          >
+            Place Order
+          </button>
+        </div>
+      ) : (
+        ""
+      )}
     </section>
   );
 }

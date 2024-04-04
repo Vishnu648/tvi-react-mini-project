@@ -25,12 +25,14 @@ function UserProfile() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
   let local_role = localStorage.getItem("role");
   const [selectedPage, setSelectedPage] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
-  const optionSetter = (opt, obj, page) => {
+  const optionSetter = (opt, obj, page, productQuantity) => {
     // console.log(obj);
     setSelectedOption(opt);
     setSelectedProduct(obj);
     setSelectedPage(page);
+    setQuantity(productQuantity);
   };
 
   const userApiCall = () => {
@@ -106,6 +108,7 @@ function UserProfile() {
             optionSetter={optionSetter}
             obj={selectedProduct}
             selectedPage={selectedPage}
+            productQuantity={quantity}
           />
         ) : (
           console.log("undefined-------")

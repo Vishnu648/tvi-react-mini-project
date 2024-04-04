@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
+import AddressEdit from "./AddressEdit";
 
 const style = {
   position: "absolute",
@@ -17,7 +18,7 @@ const style = {
   p: 4,
 };
 
-export default function Address({ address, addressSetter }) {
+export default function Address({ address, addressSetter, addressApi }) {
   const [open, setOpen] = React.useState(false);
   const local_accessToken = localStorage.getItem("accessToken");
 
@@ -42,7 +43,9 @@ export default function Address({ address, addressSetter }) {
     handleOpen();
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log('add',address); 
+  }, []);
 
   const AddressChanger = (adrs) => {
     setSelectedAddress(adrs);
@@ -70,28 +73,37 @@ export default function Address({ address, addressSetter }) {
       landmark,
     };
 
-    axios.post("http://localhost:8000/api/address", details,{
-      headers: {
-        genericvalue: "agent",
-        Authorization: local_accessToken,
-      },
-    }).then(res=>{
-        if(res.status=='200'){
-            setIsAddAddressVisible(false)
-            
+    axios
+      .post("http://localhost:8000/api/address", details, {
+        headers: {
+          genericvalue: "agent",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => {
+        if (res.status == "200") {
+          setIsAddAddressVisible(false);
+          addressApi();
         }
-    })
-    .catch(err=>console.log(err.message))
+      })
+      .catch((err) => console.log(err.message));
   };
 
-  const handleAddressEdit=() => {
-    console.log('handleaddressedit');
-  }
-  
-  const hanldeAddressDelete=() => {
-    console.log('handleaddressdelete');
-  }
-  
+  const hanldeAddressDelete = (id) => {
+    axios
+      .delete(`http://localhost:8000/api/delete-address/${id}`, {
+        headers: {
+          genericvalue: "agent",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => {
+        if (res.status == "200") {
+          addressApi(); 
+        }
+      })
+      .catch((err) => console.log(err.message));
+  };
 
   return (
     <div>
@@ -107,16 +119,16 @@ export default function Address({ address, addressSetter }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} className="h-[96vh] overflow-scroll">
+        <Box sx={style} className="h-[96vh] w-full overflow-scroll relative">
           <h1 className="font-bold">DELIVERY ADDRESS</h1>
           <p className="text-xs text-gray-500 my-2">
             Please select your current address:
           </p>
-          <div className="flex flex-col ">
+          <div className="flex flex-col mb-2 border  h-[70vh] overflow-scroll border-gray-300 rounded-md overflow-scroll">
             {address.map((a) => (
               <div
                 key={a._id}
-                className="flex m-2 border border-gray-400 rounded-md p-3 "
+                className="flex m-2 border border-gray-400 rounded-md p-3  "
               >
                 <label
                   className="flex flex-col relative items-start w-full"
@@ -130,8 +142,13 @@ export default function Address({ address, addressSetter }) {
                   <p className="font-serif">{a?.pincode}</p>
                   <p>{a?.phoneNumber}</p>
                   <div className="absolute top-2 right-0 flex gap-5 ">
-                    <button className="border text-[#2874f0] px-3" onClick={handleAddressEdit}>Edit</button>
-                    <button className="border px-3" onClick={hanldeAddressDelete}>Del</button>
+                    <AddressEdit data={a} />
+                    <button
+                      className="border px-3"
+                      onClick={() => hanldeAddressDelete(a._id)}
+                    >
+                      Del
+                    </button>
                   </div>
                 </label>
               </div>
@@ -222,21 +239,21 @@ export default function Address({ address, addressSetter }) {
           ) : (
             ""
           )}
-          <div className="flex justify-between items-center px-2">
+          <div className="flex justify-between items-center px-2 absolute bottom-5 w-[92%]"> 
             {isAddAddressVisible ? (
-              <div className="flex items-center gap-3">
-                <button
-                  className="text-white bg-[#fb641b] px-4 py-2 rounded-sm "
-                  onClick={handleAddressSave}
-                >
-                  SAVE
-                </button>
+              <div className="flex items-center gap-8 w-full justify-end">
                 <p
                   onClick={() => setIsAddAddressVisible(false)}
                   className=" text-[#2874f0] cursor-pointer"
                 >
                   CANCEL
                 </p>
+                <button
+                  className="text-white bg-[#fb641b] px-4 py-2 rounded-sm "
+                  onClick={handleAddressSave}
+                >
+                  SAVE
+                </button>
               </div>
             ) : (
               <p
@@ -246,12 +263,16 @@ export default function Address({ address, addressSetter }) {
                 + Add a new Address
               </p>
             )}
-            <button
-              onClick={handleSubmit}
-              className="text-white bg-[#fb641b] px-4 py-2 rounded-sm "
-            >
-              DELIVER HERE
-            </button>
+            {isAddAddressVisible ? (
+              ""
+            ) : (
+              <button
+                onClick={handleSubmit}
+                className="text-white bg-[#fb641b] px-4 py-2 rounded-sm "
+              >
+                DELIVER HERE
+              </button>
+            )}
           </div>
         </Box>
       </Modal>

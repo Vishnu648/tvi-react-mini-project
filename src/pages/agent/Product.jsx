@@ -16,14 +16,15 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   const tokens = useSelector((state) => state.token);
   const [imagePath, setImagePath] = useState("");
   const [itemRemoved, setItemRemoved] = useState(false);
+  const [quantity, setQuantity] = useState(1)
 
   const productApiCall = () => {
     // console.log("obj--", obj);
     axios
       .get(
         `http://localhost:8000/api/get-one/${
-          selectedPage == "cartDetails" || selectedPage == "wishDetails"
-            ? obj._id
+          selectedPage == "cartDetails"
+            ? obj.productId
             : obj._id
         }`,
         {
@@ -51,6 +52,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   useEffect(() => {
     // console.log(obj);
     productApiCall();
+    // console.log(obj._id)
   }, []);
 
   const handleAddToCart = (e) => {
@@ -73,7 +75,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
 
   const handlePurchase = () => {
     // console.log("purchase");
-    optionSetter("order", productDetails, "orderDetails");
+    optionSetter("order", productDetails, "orderDetails",quantity);
   };
 
   const handleAddToWishlist = (id) => {
@@ -101,13 +103,14 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
         },
       })
       .then((res) =>
-        res.status == "200"
-          ? setItemRemoved(true)(
-              setTimeout(() => {
-                setItemRemoved(false);
-              }, 2000)
-            )
-          : ""
+        // res.status == "200"
+        //   ? setItemRemoved(true)(
+        //       setTimeout(() => {
+        //         setItemRemoved(false);
+        //       }, 2000)
+        //     )
+        //   : ""
+        console.log(res)
       )
       .catch((err) => console.log(err.message));
   };
@@ -227,6 +230,16 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
                   </pre>
                 </div>
                 <p className="text-justify">{productDetails?.description}</p>
+                <select
+                  className="border border-gray-400 w-[10%] my-3 rounded-sm"
+                  onChange={(e) => setQuantity(e.target.value)}
+                  value={quantity}
+                >
+                  <option className="">1</option>
+                  <option className="">2</option>
+                  <option className="">3</option>
+                  <option className="">4</option>
+                </select>
               </div>
             ) : (
               ""

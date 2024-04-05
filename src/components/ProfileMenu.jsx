@@ -46,7 +46,6 @@ export default function bMenu() {
           "aria-labelledby": "basic-button",
         }}
       >
-        {/* <MenuItem onClick={handleLogout}>Logout</MenuItem> */}
         <p className="px-2 py-1 flex cursor-pointer items-center gap-1">
           <div className="inline ">
             <LuFileDown />

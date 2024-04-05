@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { FiLogOut } from "react-icons/fi";
 
 const style = {
   position: "absolute",
@@ -32,7 +33,8 @@ export default function BasicModal({ id, userApiCall }) {
   return (
     <div>
       {/* <MdDelete onClick={handleOpen} size={"20px"} /> */}
-      <p className="px-2 py-1 cursor-pointer" onClick={handleOpen}>
+      <p className="px-2 py-1 cursor-pointer flex items-center gap-1" onClick={handleOpen}>
+      <FiLogOut/>
         Logout
       </p>
       <Modal

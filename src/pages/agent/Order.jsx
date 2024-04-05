@@ -78,6 +78,7 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
       .then((res) => {
         if (res.status == "200") {
           setIsAddAddressVisible(false);
+          handleCancel();
           addressApi();
         }
       })
@@ -111,7 +112,7 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
       </div>
       <div className="h-[65vh] overflow-scroll">
         <div className="bg-[#e9ecef] relative py-3 flex justify-center items-center px-4 rounded-sm text-[1rem] mb-2">
-          {latestAddress.length > 0 ? (
+          {latestAddress? (
             <div className="relative w-full">
               <h6>Deliver to:</h6>
               <p className="font-semibold">{latestAddress?.fullName}</p>

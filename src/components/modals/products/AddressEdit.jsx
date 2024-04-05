@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -17,18 +18,19 @@ const style = {
 };
 
 export default function EditAddress({ data }) {
+  let local_accessToken = localStorage.getItem("accessToken");
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [fullName, setFullName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [alternateNumber, setAlternateNumber] = useState("");
-  const [pincode, setPincode] = useState("");
-  const [state, setState] = useState("");
-  const [city, setCity] = useState("");
-  const [buildingName, setBuildingName] = useState("");
-  const [area, setArea] = useState("");
-  const [landmark, setLandMark] = useState("");
+  const [fullName, setFullName] = useState(data.fullName);
+  const [phoneNumber, setPhoneNumber] = useState(data.phoneNumber);
+  const [alternateNumber, setAlternateNumber] = useState(data.alternateNumber);
+  const [pincode, setPincode] = useState(data.pincode);
+  const [state, setState] = useState(data.state);
+  const [city, setCity] = useState(data.city);
+  const [buildingName, setBuildingName] = useState(data.buildingName);
+  const [area, setArea] = useState(data.area);
+  const [landmark, setLandMark] = useState(data.landmark);
 
   const handleAddressEdit = () => {
     const details = {
@@ -42,7 +44,16 @@ export default function EditAddress({ data }) {
       area,
       landmark,
     };
-    console.log("newAdrs", details);
+
+    axios
+      .put(`http://localhost:8000/api/address-edit/${data._id}`, details, {
+        headers: {
+          genericvalue: "agent",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err.message));
   };
 
   return (
@@ -68,14 +79,14 @@ export default function EditAddress({ data }) {
                   className="p-2"
                   placeholder="FullName"
                   onChange={(e) => setFullName(e.target.value)}
-                  defaultValue={data.fullName}
+                  defaultValue={fullName}
                 />
                 <input
                   type="text"
                   className="p-2"
                   placeholder="pincode"
                   onChange={(e) => setPincode(e.target.value)}
-                  defaultValue={data.pincode}
+                  defaultValue={pincode}
                 />
               </div>
 
@@ -84,15 +95,15 @@ export default function EditAddress({ data }) {
                   type="text"
                   className="p-2"
                   placeholder="10-digit mobile number"
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  defaultValue={data.phoneNumber}
+                  onChange={(e) => setPhoneNumber(JSON.stringify(e.target.value))}
+                  defaultValue={phoneNumber}
                 />
                 <input
                   type="text"
                   className="p-2"
                   placeholder="Alternate mobile number"
                   onChange={(e) => setAlternateNumber(e.target.value)}
-                  defaultValue={data.alternateNumber}
+                  defaultValue={alternateNumber}
                 />
               </div>
 
@@ -102,14 +113,14 @@ export default function EditAddress({ data }) {
                   className="p-2"
                   placeholder="City"
                   onChange={(e) => setCity(e.target.value)}
-                  defaultValue={data.city}
+                  defaultValue={city}
                 />
                 <input
                   type="text"
                   className="p-2"
                   placeholder="State"
                   onChange={(e) => setState(e.target.value)}
-                  defaultValue={data.state}
+                  defaultValue={state}
                 />
               </div>
 
@@ -119,14 +130,14 @@ export default function EditAddress({ data }) {
                   className="p-2"
                   placeholder="LandMark"
                   onChange={(e) => setLandMark(e.target.value)}
-                  defaultValue={data.landmark}
+                  defaultValue={landmark}
                 />
                 <input
                   type="text"
                   className="p-2"
                   placeholder="area"
                   onChange={(e) => setArea(e.target.value)}
-                  defaultValue={data.area}
+                  defaultValue={area}
                 />
               </div>
 
@@ -136,7 +147,7 @@ export default function EditAddress({ data }) {
                   className="p-2"
                   placeholder="Building Name"
                   onChange={(e) => setBuildingName(e.target.value)}
-                  defaultValue={data.buildingName}
+                  defaultValue={buildingName}
                 />
               </div>
             </form>

@@ -119,12 +119,12 @@ export default function Address({ address, addressSetter, addressApi }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} className="h-[96vh] w-full overflow-scroll relative">
+        <Box sx={style} className="border rounded-md w-full max-h-[96vh] overflow-scroll relative">
           <h1 className="font-bold">DELIVERY ADDRESS</h1>
           <p className="text-xs text-gray-500 my-2">
             Please select your current address:
           </p>
-          <div className="flex flex-col mb-2 border  h-[70vh] border-gray-300 rounded-md overflow-scroll">
+          <div className="flex flex-col mb-2 border border-gray-300 rounded-md overflow-scroll">
             {address.map((a) => (
               <div
                 key={a._id}
@@ -143,6 +143,7 @@ export default function Address({ address, addressSetter, addressApi }) {
                   <p>{a?.phoneNumber}</p>
                   <div className="absolute top-2 right-0 flex gap-5 ">
                     <AddressEdit data={a} />
+                    {/* {console.log('a',a)} */}
                     <button
                       className="border px-3"
                       onClick={() => hanldeAddressDelete(a._id)}
@@ -239,7 +240,7 @@ export default function Address({ address, addressSetter, addressApi }) {
           ) : (
             ""
           )}
-          <div className="flex justify-between items-center px-2 absolute bottom-5 w-[92%]">
+          <div className="flex justify-between items-center px-2 ">
             {isAddAddressVisible ? (
               <div className="flex items-center gap-8 w-full justify-end">
                 <p

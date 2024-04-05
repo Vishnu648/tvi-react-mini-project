@@ -2,7 +2,8 @@ import * as React from "react";
 import Menu from "@mui/material/Menu";
 import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import LogoutModal from "./modals/LogoutModal"
+import LogoutModal from "./modals/LogoutModal";
+import { LuFileDown } from "react-icons/lu";
 
 export default function bMenu() {
   const navigate = useNavigate();
@@ -46,7 +47,13 @@ export default function bMenu() {
         }}
       >
         {/* <MenuItem onClick={handleLogout}>Logout</MenuItem> */}
-        <LogoutModal/>
+        <p className="px-2 py-1 flex cursor-pointer items-center gap-1">
+          <div className="inline ">
+            <LuFileDown />
+          </div>
+          Orders
+        </p>
+        <LogoutModal />
       </Menu>
     </div>
   );

@@ -45,7 +45,19 @@ function Cart({ optionSetter }) {
   };
 
   const handlePlaceOrder = () => {
-    console.log("handlePlaceOrder");
+    axios
+      .post(
+        "http://localhost:8000/api/order",
+        {},
+        {
+          headers: {
+            genericvalue: "agent",
+            Authorization: local_accessToken,
+          },
+        }
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err.message));
   };
 
   return (

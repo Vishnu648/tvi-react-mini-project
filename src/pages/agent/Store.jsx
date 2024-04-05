@@ -120,12 +120,14 @@ function Store({ optionSetter }) {
       </div>
       <div className="h-[55vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         {products.map((p, i) => {
-          const base64String = p.image?.data
-            ? btoa(String.fromCharCode(...new Uint8Array(p.image?.data)))
-            : null;
-          const imgUrl = base64String
+          if (p.image.length > 0) {
+            const base64String = p.image[0].data
+              ? btoa(String.fromCharCode(...new Uint8Array(p.image[0].data)))
+              : null;
+          var imgUrl = (base64String
             ? `data:image/jpeg;base64,${base64String}`
-            : productImg;
+            : productImg)
+          }
 
           return (
             <div

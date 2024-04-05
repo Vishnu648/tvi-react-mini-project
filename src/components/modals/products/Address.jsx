@@ -44,7 +44,7 @@ export default function Address({ address, addressSetter, addressApi }) {
   };
 
   useEffect(() => {
-    console.log('add',address); 
+    console.log("add", address);
   }, []);
 
   const AddressChanger = (adrs) => {
@@ -99,7 +99,7 @@ export default function Address({ address, addressSetter, addressApi }) {
       })
       .then((res) => {
         if (res.status == "200") {
-          addressApi(); 
+          addressApi();
         }
       })
       .catch((err) => console.log(err.message));
@@ -124,7 +124,7 @@ export default function Address({ address, addressSetter, addressApi }) {
           <p className="text-xs text-gray-500 my-2">
             Please select your current address:
           </p>
-          <div className="flex flex-col mb-2 border  h-[70vh] overflow-scroll border-gray-300 rounded-md overflow-scroll">
+          <div className="flex flex-col mb-2 border  h-[70vh] border-gray-300 rounded-md overflow-scroll">
             {address.map((a) => (
               <div
                 key={a._id}
@@ -239,7 +239,7 @@ export default function Address({ address, addressSetter, addressApi }) {
           ) : (
             ""
           )}
-          <div className="flex justify-between items-center px-2 absolute bottom-5 w-[92%]"> 
+          <div className="flex justify-between items-center px-2 absolute bottom-5 w-[92%]">
             {isAddAddressVisible ? (
               <div className="flex items-center gap-8 w-full justify-end">
                 <p

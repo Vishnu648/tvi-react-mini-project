@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import demoProImg from "../assets/demoProImg.jpg";
 import productImg from "../assets/productImg.jpg";
 import DeleteModal from "../components/modals/DeleteModal";
 import EditModal from "../components/modals/products/EditModal";
@@ -25,7 +24,7 @@ function SingleProduct({ obj, selectedOption }) {
         console.log(res.data.result);
 
         const base64String = btoa(
-          String.fromCharCode(...new Uint8Array(res.data.result?.image?.data))
+          String.fromCharCode(...new Uint8Array(res.data.result?.image?.[0].data))
         );
         setImagePath(base64String);
         // console.log(res.data.result);

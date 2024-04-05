@@ -36,7 +36,7 @@ function WishList({ optionSetter }) {
         },
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
         res.status == "200" ? wishListApiCall() : "";
       })
       .catch((err) => console.log(err.message));
@@ -53,12 +53,9 @@ function WishList({ optionSetter }) {
 
       <div className="h-[53vh]  flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         {wishlistItems?.map((p, i) => {
-          const base64String = p.image?.data
-            ? btoa(String.fromCharCode(...new Uint8Array(p.image?.data)))
-            : null;
-          const imgUrl = base64String
-            ? `data:image/jpeg;base64,${base64String}`
-            : productImg;
+          if (p.image.length > 0) {
+            var imgUrl = p.image[0];
+          }
 
           return (
             <div
@@ -79,7 +76,7 @@ function WishList({ optionSetter }) {
               >
                 {/* {p.image?.data ? bufferToString(p.image?.data) : null} */}
                 <img
-                  src={imgUrl ? imgUrl : productImg}
+                  src={imgUrl ? `data:image/jpeg;base64,${imgUrl}` : productImg}
                   alt="product"
                   className="h-36 mt-5 w-full object-contain hover:scale-[1.02]"
                 />

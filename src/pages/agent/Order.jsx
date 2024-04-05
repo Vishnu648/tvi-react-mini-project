@@ -10,10 +10,20 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
   const [address, setAddress] = useState([]);
   const [latestAddress, setLatestAddress] = useState([]);
   const [quantity, setQuantity] = useState(productQuantity);
+  const [isAddAddressVisible, setIsAddAddressVisible] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [alternateNumber, setAlternateNumber] = useState("");
+  const [pincode, setPincode] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [buildingName, setBuildingName] = useState("");
+  const [area, setArea] = useState("");
+  const [landmark, setLandMark] = useState("");
 
   const addressApi = () => {
     axios
-      .get(`http://localhost:8000/api/address-view`, {
+      .get(`http://localhost:8000/api/address-view/${obj._id}`, {
         headers: {
           genericvalue: "agent",
           Authorization: local_accessToken,
@@ -41,6 +51,52 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
     setLatestAddress(address);
   };
 
+  const handleAddAddress = () => {
+    setIsAddAddressVisible(true);
+  };
+
+  const handleAddressSave = () => {
+    const details = {
+      fullName,
+      phoneNumber,
+      alternateNumber,
+      pincode,
+      state,
+      city,
+      buildingName,
+      area,
+      landmark,
+    };
+
+    axios
+      .post("http://localhost:8000/api/address", details, {
+        headers: {
+          genericvalue: "agent",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => {
+        if (res.status == "200") {
+          setIsAddAddressVisible(false);
+          addressApi();
+        }
+      })
+      .catch((err) => console.log(err.message));
+  };
+
+  const handleCancel = () => {
+    setIsAddAddressVisible(false);
+    setFullName("");
+    setPhoneNumber("");
+    setAlternateNumber("");
+    setPincode("");
+    setState("");
+    setCity("");
+    setBuildingName("");
+    setArea("");
+    setLandMark("");
+  };
+
   return (
     <section className="px-6 flex-1 relative h-[92vh] pb-5">
       <div className=" mb-[.5rem] mt-[1.5rem] leading-[1.2] flex justify-between  ">
@@ -54,20 +110,135 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
         </button>
       </div>
       <div className="h-[65vh] overflow-scroll">
-        <div className="bg-[#e9ecef] relative py-3 flex items-center px-4 rounded-sm text-[1rem] mb-2">
-          <div className="relative w-full">
-            <h6>Deliver to:</h6>
-            <p className="font-semibold">{latestAddress?.fullName}</p>
-            <p className="font-serif">{`${latestAddress?.buildingName}, ${latestAddress?.area}, ${latestAddress?.city} `}</p>
-            <p className="font-serif">{latestAddress?.pincode}</p>
-            <p>{latestAddress?.phoneNumber}</p>
+        <div className="bg-[#e9ecef] relative py-3 flex justify-center items-center px-4 rounded-sm text-[1rem] mb-2">
+          {latestAddress.length > 0 ? (
+            <div className="relative w-full">
+              <h6>Deliver to:</h6>
+              <p className="font-semibold">{latestAddress?.fullName}</p>
+              <p className="font-serif">{`${latestAddress?.buildingName}, ${latestAddress?.area}, ${latestAddress?.city} `}</p>
+              <p className="font-serif">{latestAddress?.pincode}</p>
+              <p>{latestAddress?.phoneNumber}</p>
 
-            <Address
-              address={address}
-              addressSetter={addressSetter}
-              addressApi={addressApi}
-            />
-          </div>
+              <Address
+                address={address}
+                addressSetter={addressSetter}
+                addressApi={addressApi}
+              />
+            </div>
+          ) : (
+            <div className="w-full">
+              {isAddAddressVisible ? (
+                <div className="bg-[#e9ecef] relative py-3 flex items-center px-4 rounded-sm text-[1rem] mb-2">
+                  <form className="flex flex-col w-full gap-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <input
+                        type="text"
+                        className="p-2"
+                        placeholder="FullName"
+                        onChange={(e) => setFullName(e.target.value)}
+                        value={fullName}
+                      />
+                      <input
+                        type="text"
+                        className="p-2"
+                        placeholder="pincode"
+                        onChange={(e) => setPincode(e.target.value)}
+                        value={pincode}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <input
+                        type="text"
+                        className="p-2"
+                        placeholder="10-digit mobile number"
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        value={phoneNumber}
+                      />
+                      <input
+                        type="text"
+                        className="p-2"
+                        placeholder="Alternate mobile number"
+                        onChange={(e) => setAlternateNumber(e.target.value)}
+                        value={alternateNumber}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <input
+                        type="text"
+                        className="p-2"
+                        placeholder="City"
+                        onChange={(e) => setCity(e.target.value)}
+                        value={city}
+                      />
+                      <input
+                        type="text"
+                        className="p-2"
+                        placeholder="State"
+                        onChange={(e) => setState(e.target.value)}
+                        value={state}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <input
+                        type="text"
+                        className="p-2"
+                        placeholder="LandMark"
+                        onChange={(e) => setLandMark(e.target.value)}
+                        value={landmark}
+                      />
+                      <input
+                        type="text"
+                        className="p-2"
+                        placeholder="area"
+                        onChange={(e) => setArea(e.target.value)}
+                        value={area}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4">
+                      <input
+                        type="text"
+                        className="p-2"
+                        placeholder="Building Name"
+                        onChange={(e) => setBuildingName(e.target.value)}
+                        value={buildingName}
+                      />
+                    </div>
+                  </form>
+                </div>
+              ) : (
+                ""
+              )}
+              <div>
+                {isAddAddressVisible ? (
+                  <div className="flex items-center gap-8 w-full justify-end">
+                    <p
+                      onClick={handleCancel}
+                      className=" text-[#2874f0] cursor-pointer"
+                    >
+                      CANCEL
+                    </p>
+                    <button
+                      className="text-white bg-[#fb641b] px-4 py-2 rounded-sm "
+                      onClick={handleAddressSave}
+                    >
+                      SAVE
+                    </button>
+                  </div>
+                ) : (
+                  <p
+                    onClick={handleAddAddress}
+                    className=" text-[#2874f0] cursor-pointer"
+                  >
+                    + Add a new Address
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="bg-[#e9ecef] relative py-3 flex items-center px-4 rounded-sm text-[1rem] mb-2">

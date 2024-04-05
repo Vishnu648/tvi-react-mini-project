@@ -57,43 +57,49 @@ function Cart({ optionSetter }) {
         Cart
       </div>
       <div className="h-[53vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
-        {productDetails?.map((p, i) => (
-          <div
-            // onClick={() => optionSetter("product", p)}
-            key={i}
-            className="border shadow-md hover:shadow-2xl relative rounded-md gap-5 object-cover cursor-pointer hover:scale-[1.01]"
-          >
-            <div
-              className="absolute top-1 right-1 "
-              onClick={() => handleAddToWishlist(p._id)}
-            >
-              <MdOutlineFavoriteBorder />
-            </div>
+        {productDetails?.map((p, i) => {
+          if (p.image.length > 0) {
+            var imgUrl = p.image[0];
+          }
 
+          return (
             <div
-              onClick={() => optionSetter("product", p, "cartDetails")}
-              className="w-48 py-3"
+              // onClick={() => optionSetter("product", p)}
+              key={i}
+              className="border shadow-md hover:shadow-2xl relative rounded-md gap-5 object-cover cursor-pointer hover:scale-[1.01]"
             >
-              {/* {p.image?.data ? bufferToString(p.image?.data) : null} */}
-              <img
-                src={productImg}
-                alt="product"
-                className="h-36 object-contain mt-5 w-full"
-              />
-              <div className="p-2">
-                <p>{p.title}</p>
+              <div
+                className="absolute top-1 right-1 "
+                onClick={() => handleAddToWishlist(p._id)}
+              >
+                <MdOutlineFavoriteBorder />
+              </div>
 
-                <div className="flex items-center gap-2 ">
-                  <p className="text-md font-medium ">₹{p.discountedPrice}</p>
-                  <p className="text-xs text-gray-400">
-                    <s>₹{p.price}</s>
-                  </p>
-                  <p className="text-[#26a541] text-xs"> {p.offer}% off</p>
+              <div
+                onClick={() => optionSetter("product", p, "cartDetails")}
+                className="w-48 py-3"
+              >
+                {/* {p.image?.data ? bufferToString(p.image?.data) : null} */}
+                <img
+                  src={imgUrl ? `data:image/jpeg;base64,${imgUrl}` : productImg}
+                  alt="product"
+                  className="h-36 object-contain mt-5 w-full"
+                />
+                <div className="p-2">
+                  <p>{p.title}</p>
+
+                  <div className="flex items-center gap-2 ">
+                    <p className="text-md font-medium ">₹{p.discountedPrice}</p>
+                    <p className="text-xs text-gray-400">
+                      <s>₹{p.price}</s>
+                    </p>
+                    <p className="text-[#26a541] text-xs"> {p.offer}% off</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       {productDetails.length > 0 ? (
         <div className="mt-2 flex justify-end">

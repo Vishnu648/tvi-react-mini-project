@@ -40,7 +40,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
           console.log(res.data.result);
 
           const base64String = btoa(
-            String.fromCharCode(...new Uint8Array(res.data.result?.image?.data))
+            String.fromCharCode(...new Uint8Array(res.data.result?.image?.[0].data))
           );
           setImagePath(base64String);
           // console.log(base64String)

@@ -11,6 +11,7 @@ import Product from "../pages/agent/Product";
 import Cart from "./agent/Cart";
 import WishList from "./agent/WishList";
 import Order from "./agent/Order";
+import OrderedItems from "./agent/OrderedItems";
 
 function UserProfile() {
   const navigate = useNavigate();
@@ -79,7 +80,7 @@ function UserProfile() {
 
   return (
     <div>
-      <UserNavbar toogleSidebar={toogleSidebar} />
+      <UserNavbar toogleSidebar={toogleSidebar} optionSetter={optionSetter} />
       <div className="flex ">
         <div
           className={`transition-all duration-500 ${
@@ -110,6 +111,8 @@ function UserProfile() {
             selectedPage={selectedPage}
             productQuantity={quantity}
           />
+        ) : selectedOption == "orderedItems" ? (
+          <OrderedItems />
         ) : (
           console.log("undefined-------")
         )}

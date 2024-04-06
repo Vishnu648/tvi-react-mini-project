@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import LogoutModal from "./modals/LogoutModal";
 import { LuFileDown } from "react-icons/lu";
 
-export default function bMenu() {
+export default function bMenu({ optionSetter }) {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -46,7 +46,10 @@ export default function bMenu() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <p className="px-2 py-1 flex cursor-pointer items-center gap-1">
+        <p
+          className="px-2 py-1 flex cursor-pointer items-center gap-1"
+          onClick={() => optionSetter("orderedItems")}
+        >
           <div className="inline ">
             <LuFileDown />
           </div>

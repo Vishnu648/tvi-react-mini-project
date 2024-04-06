@@ -20,10 +20,11 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
   const [buildingName, setBuildingName] = useState("");
   const [area, setArea] = useState("");
   const [landmark, setLandMark] = useState("");
+  const [imagePath, setImagePath] = useState("");
 
   const addressApi = () => {
     axios
-      .get(`http://localhost:8000/api/address-view/${obj._id}`, {
+      .get(`http://localhost:8000/api/address-view`, {
         headers: {
           genericvalue: "agent",
           Authorization: local_accessToken,
@@ -39,7 +40,13 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
 
   useEffect(() => {
     addressApi();
-    // console.log("ptdDetails", obj._id);
+    console.log("ptdDetails", obj);
+    if (obj.image.length > 0) {
+      const base64String = btoa(
+        String.fromCharCode(...new Uint8Array(obj?.image?.[0].data))
+      );
+      setImagePath(base64String);
+    }
   }, []);
 
   const handleContinue = () => {
@@ -112,7 +119,7 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
       </div>
       <div className="h-[65vh] overflow-scroll">
         <div className="bg-[#e9ecef] relative py-3 flex justify-center items-center px-4 rounded-sm text-[1rem] mb-2">
-          {latestAddress? (
+          {latestAddress ? (
             <div className="relative w-full">
               <h6>Deliver to:</h6>
               <p className="font-semibold">{latestAddress?.fullName}</p>
@@ -248,7 +255,9 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
               height={100}
               width={100}
               className="object-contain border"
-              src={productImg}
+              src={
+                imagePath ? `data:image/png;base64,${imagePath}` : productImg
+              }
             />
             <div>
               <h4 className="font-medium">{obj.title}</h4>

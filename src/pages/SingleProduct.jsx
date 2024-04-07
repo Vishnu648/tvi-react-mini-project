@@ -4,12 +4,14 @@ import productImg from "../assets/productImg.jpg";
 import DeleteModal from "../components/modals/DeleteModal";
 import EditModal from "../components/modals/products/EditModal";
 import { useNavigate } from "react-router-dom";
+import Loading from "../components/Loading";
 
 function SingleProduct({ obj, selectedOption }) {
   const navigate = useNavigate();
   let local_accessToken = localStorage.getItem("accessToken");
   const [productDetails, setProductDetails] = useState({});
   const [imagePath, setImagePath] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const productApiCall = () => {
     axios
@@ -22,9 +24,12 @@ function SingleProduct({ obj, selectedOption }) {
       .then((res) => {
         setProductDetails(res.data.result);
         console.log(res.data.result);
+        res.data.result ? setIsLoading(false) : "";
 
         const base64String = btoa(
-          String.fromCharCode(...new Uint8Array(res.data.result?.image?.[0].data))
+          String.fromCharCode(
+            ...new Uint8Array(res.data.result?.image?.[0].data)
+          )
         );
         setImagePath(base64String);
         // console.log(res.data.result);
@@ -71,70 +76,82 @@ function SingleProduct({ obj, selectedOption }) {
         {productDetails.title ? productDetails.title.toUpperCase() : ""}
       </div>
 
-      <div className="flex flex-col md:flex-row gap-3 justify-start pb-10 md:h-[52vh] my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
-        <img
-          src={imagePath ? `data:image/png;base64,${imagePath}` : productImg}
-          alt="pdt"
-          className="h-80 w-52 object-contain "
-        />
-        <div className=" w-full overflow-scroll h-full p-2">
-          <div className="flex flex-col gap-6 justify-between h-full">
-            {productDetails ? (
-              <div className=" flex flex-col">
-                <p className="text-2xl font-extrabold">
-                  {productDetails.title
-                    ? productDetails.title.toUpperCase()
-                    : ""}
-                </p>
-                {/* <p className="text-3xl font-thin">₹{productDetails?.price}</p> */}
-                {productDetails.discountedPrice ? (
-                  <h3 className="text-[#26a541] my-2">Special price</h3>
+      {isLoading ? (
+        <div className="mt-12 flex justify-center">
+          <Loading />
+        </div>
+      ) : (
+        <div>
+          <div className="flex flex-col md:flex-row gap-3 justify-start pb-10 md:h-[52vh] my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
+            <img
+              src={
+                imagePath ? `data:image/png;base64,${imagePath}` : productImg
+              }
+              alt="pdt"
+              className="h-80 w-52 object-contain "
+            />
+            <div className=" w-full overflow-scroll h-full p-2">
+              <div className="flex flex-col gap-6 justify-between h-full">
+                {productDetails ? (
+                  <div className=" flex flex-col">
+                    <p className="text-2xl font-extrabold">
+                      {productDetails.title
+                        ? productDetails.title.toUpperCase()
+                        : ""}
+                    </p>
+                    {/* <p className="text-3xl font-thin">₹{productDetails?.price}</p> */}
+                    {productDetails.discountedPrice ? (
+                      <h3 className="text-[#26a541] my-2">Special price</h3>
+                    ) : (
+                      ""
+                    )}
+                    <div className="flex items-center gap-3">
+                      <p className="text-3xl font-mono">
+                        ₹{productDetails?.discountedPrice}
+                      </p>
+                      <p className="text-xl font-thin">
+                        <s>₹{productDetails?.price}</s>
+                      </p>
+                      <p className="text-[#26a541] text-xs">
+                        {" "}
+                        {productDetails.offer}% off
+                      </p>
+                    </div>
+
+                    {productDetails?.availability == "yes" ? (
+                      obj.stock <= 5 ? (
+                        <p className="text-sm mb-4 text-red-500">
+                          only {obj.stock} left
+                        </p>
+                      ) : (
+                        <p className="text-sm mb-4 text-gray-600">
+                          only {obj.stock} left
+                        </p>
+                      )
+                    ) : (
+                      <p className="text-red-500 m-4">OUT OF STOCK</p>
+                    )}
+
+                    <p className="text-justify">
+                      {productDetails?.description}
+                    </p>
+                  </div>
                 ) : (
                   ""
                 )}
-                <div className="flex items-center gap-3">
-                  <p className="text-3xl font-mono">
-                    ₹{productDetails?.discountedPrice}
-                  </p>
-                  <p className="text-xl font-thin">
-                    <s>₹{productDetails?.price}</s>
-                  </p>
-                  <p className="text-[#26a541] text-xs">
-                    {" "}
-                    {productDetails.offer}% off
-                  </p>
-                </div>
-
-                {productDetails?.availability == "yes" ? (
-                  obj.stock <= 5 ? (
-                    <p className="text-sm mb-4 text-red-500">
-                      only {obj.stock} left
-                    </p>
-                  ) : (
-                    <p className="text-sm mb-4 text-gray-600">
-                      only {obj.stock} left
-                    </p>
-                  )
-                ) : (
-                  <p className="text-red-500 m-4">OUT OF STOCK</p>
-                )}
-
-                <p className="text-justify">{productDetails?.description}</p>
               </div>
-            ) : (
-              ""
-            )}
+            </div>
+          </div>
+          <div className="flex justify-between">
+            <DeleteModal
+              message="Are you sure, you want to delete this Product?"
+              id={obj._id}
+              handleDelete={handleDelete}
+            />
+            <EditModal obj={obj} productApiCall={productApiCall} />
           </div>
         </div>
-      </div>
-      <div className="flex justify-between">
-        <DeleteModal
-          message="Are you sure, you want to delete this Product?"
-          id={obj._id}
-          handleDelete={handleDelete}
-        />
-        <EditModal obj={obj} productApiCall={productApiCall} />
-      </div>
+      )}
     </section>
   );
 }

@@ -4,6 +4,7 @@ import Pagination from "../../components/Pagination";
 import productImg from "../../assets/productImg.jpg";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { IoHeart } from "react-icons/io5";
+import Loading from "../../components/Loading";
 
 function Store({ optionSetter }) {
   let local_accessToken = localStorage.getItem("accessToken");
@@ -14,6 +15,7 @@ function Store({ optionSetter }) {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [ptdIds, setPtdIds] = useState([]);
   const [wishIds, setWishIds] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const productApiCall = (pn = 1) => {
     axios
@@ -25,6 +27,7 @@ function Store({ optionSetter }) {
       })
       .then((res) => {
         setProducts(res.data.products);
+        res.data.products.length > 0 ? setIsLoading(false) : "";
         setTotalCount(res.data.totalCount);
         let pdt = res.data.products;
 
@@ -119,62 +122,68 @@ function Store({ optionSetter }) {
         Products
       </div>
       <div className="h-[55vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
-        {products.map((p, i) => {
-          if (p.image.length > 0) {
-            const base64String = p.image[0].data
-              ? btoa(String.fromCharCode(...new Uint8Array(p.image[0].data)))
-              : null;
-          var imgUrl = (base64String
-            ? `data:image/jpeg;base64,${base64String}`
-            : productImg)
-          }
+        {isLoading ? (
+          <Loading />
+        ) : (
+          products.map((p, i) => {
+            if (p.image.length > 0) {
+              const base64String = p.image[0].data
+                ? btoa(String.fromCharCode(...new Uint8Array(p.image[0].data)))
+                : null;
+              var imgUrl = base64String
+                ? `data:image/jpeg;base64,${base64String}`
+                : productImg;
+            }
 
-          return (
-            <div
-              // onClick={() => optionSetter("product", p)}
-              key={p._id}
-              className="border shadow-md hover:shadow-2xl relative rounded-md gap-5 object-cover cursor-pointer hover:scale-[1.01]"
-            >
-              {wishIds.includes(p._id) ? (
-                <div
-                  className="absolute top-1 right-1  text-red-600"
-                  onClick={() => handleRemoveFromWishList(p._id)}
-                >
-                  <IoHeart />
-                </div>
-              ) : (
-                <div
-                  className="absolute top-1 right-1 "
-                  onClick={() => handleAddToWishlist(p._id)}
-                >
-                  <MdOutlineFavoriteBorder />
-                </div>
-              )}
-
+            return (
               <div
-                onClick={() => optionSetter("product", p, "storeDetails")}
-                className="w-48 py-3"
+                // onClick={() => optionSetter("product", p)}
+                key={p._id}
+                className="border shadow-md hover:shadow-2xl relative rounded-md gap-5 object-cover cursor-pointer hover:scale-[1.01]"
               >
-                {/* {p.image?.data ? bufferToString(p.image?.data) : null} */}
-                <img
-                  src={imgUrl ? imgUrl : productImg}
-                  alt="product"
-                  className="h-36 mt-5 w-full object-contain hover:scale-[1.02]"
-                />
-                <div className="p-2">
-                  <p>{p.title}</p>
-                  <div className="flex items-center gap-2 ">
-                    <p className="text-md font-medium ">₹{p.discountedPrice}</p>
-                    <p className="text-xs text-gray-400">
-                      <s>₹{p.price}</s>
-                    </p>
-                    <p className="text-[#26a541] text-xs"> {p.offer}% off</p>
+                {wishIds.includes(p._id) ? (
+                  <div
+                    className="absolute top-1 right-1  text-red-600"
+                    onClick={() => handleRemoveFromWishList(p._id)}
+                  >
+                    <IoHeart />
+                  </div>
+                ) : (
+                  <div
+                    className="absolute top-1 right-1 "
+                    onClick={() => handleAddToWishlist(p._id)}
+                  >
+                    <MdOutlineFavoriteBorder />
+                  </div>
+                )}
+
+                <div
+                  onClick={() => optionSetter("product", p, "storeDetails")}
+                  className="w-48 py-3"
+                >
+                  {/* {p.image?.data ? bufferToString(p.image?.data) : null} */}
+                  <img
+                    src={imgUrl ? imgUrl : productImg}
+                    alt="product"
+                    className="h-36 mt-5 w-full object-contain hover:scale-[1.02]"
+                  />
+                  <div className="p-2">
+                    <p>{p.title}</p>
+                    <div className="flex items-center gap-2 ">
+                      <p className="text-md font-medium ">
+                        ₹{p.discountedPrice}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        <s>₹{p.price}</s>
+                      </p>
+                      <p className="text-[#26a541] text-xs"> {p.offer}% off</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
       {totalCount > 10 ? (
         <Pagination

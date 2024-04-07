@@ -1,15 +1,16 @@
-
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import productImg from "../assets/productImg.jpg";
 import AddProducts from "../components/modals/AddProducts";
 import Pagination from "../components/Pagination";
+import Loading from "../components/Loading";
 
 function AddProduct({ selectedOption }) {
   let local_accessToken = localStorage.getItem("accessToken");
   const [products, setProducts] = useState([]);
   const [imgUrl, setImgUrl] = useState("");
   const [totalCount, setTotalCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const productApiCall = (pn = 1) => {
     axios
@@ -21,6 +22,7 @@ function AddProduct({ selectedOption }) {
       })
       .then((res) => {
         setProducts(res.data.products);
+        res.data.products.length > 0 ? setIsLoading(false) : "";
         // console.log(res.data.products);
         setTotalCount(res.data.totalCount);
       })
@@ -51,39 +53,43 @@ function AddProduct({ selectedOption }) {
         Products
       </div>
       <div className="h-[53vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
-        {products.map((p, i) => {
-          if (p.image.length > 0) {
-            const base64String = p.image[0].data
-              ? btoa(String.fromCharCode(...new Uint8Array(p.image[0].data)))
-              : null;
-            var imgUrl = base64String
-              ? `data:image/jpeg;base64,${base64String}`
-              : productImg;
-          }
-          return (
-            <div
-              onClick={() => selectedOption("product", p)}
-              key={p._id}
-              className="border shadow-md hover:shadow-2xl hover:scale-[1.01] rounded-md gap-5 object-cover cursor-pointer w-48 py-3"
-            >
-              <img
-                src={imgUrl ? imgUrl : productImg}
-                alt="product"
-                className="h-40 w-full object-contain rounded-t-md"
-              />
-              <div className="p-2">
-                <p>{p.title}</p>
-                <div className="flex items-center gap-2 ">
-                  <p className="text-md font-medium ">₹{p.discountedPrice}</p>
-                  <p className="text-xs text-gray-400">
-                    <s>₹{p.price}</s>
-                  </p>
-                  <p className="text-[#26a541] text-xs"> {p.offer}% off</p>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          products.map((p, i) => {
+            if (p.image.length > 0) {
+              const base64String = p.image[0].data
+                ? btoa(String.fromCharCode(...new Uint8Array(p.image[0].data)))
+                : null;
+              var imgUrl = base64String
+                ? `data:image/jpeg;base64,${base64String}`
+                : productImg;
+            }
+            return (
+              <div
+                onClick={() => selectedOption("product", p)}
+                key={p._id}
+                className="border shadow-md hover:shadow-2xl hover:scale-[1.01] rounded-md gap-5 object-cover cursor-pointer w-48 py-3"
+              >
+                <img
+                  src={imgUrl ? imgUrl : productImg}
+                  alt="product"
+                  className="h-40 w-full object-contain rounded-t-md"
+                />
+                <div className="p-2">
+                  <p>{p.title}</p>
+                  <div className="flex items-center gap-2 ">
+                    <p className="text-md font-medium ">₹{p.discountedPrice}</p>
+                    <p className="text-xs text-gray-400">
+                      <s>₹{p.price}</s>
+                    </p>
+                    <p className="text-[#26a541] text-xs"> {p.offer}% off</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
       {totalCount > 10 ? (
         <Pagination

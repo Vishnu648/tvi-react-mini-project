@@ -3,10 +3,12 @@ import axios from "axios";
 import productImg from "../../assets/productImg.jpg";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { IoHeart } from "react-icons/io5";
+import Loading from "../../components/Loading";
 
 function WishList({ optionSetter }) {
   let local_accessToken = localStorage.getItem("accessToken");
   const [wishlistItems, setWishlistItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const wishListApiCall = () => {
     axios
@@ -19,6 +21,7 @@ function WishList({ optionSetter }) {
       .then((res) => {
         setWishlistItems(res.data.result?.[0]?.results);
         console.log(res.data.result?.[0]?.results);
+        res.data.result?.[0]?.results.length > 0 ? setIsLoading(false) : "";
       })
       .catch((err) => console.log(err.message));
   };
@@ -52,48 +55,56 @@ function WishList({ optionSetter }) {
       </div>
 
       <div className="h-[53vh]  flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
-        {wishlistItems?.map((p, i) => {
-          if (p.image.length > 0) {
-            var imgUrl = p.image[0];
-          }
+        {isLoading ? (
+          <Loading />
+        ) : (
+          wishlistItems?.map((p, i) => {
+            if (p.image.length > 0) {
+              var imgUrl = p.image[0];
+            }
 
-          return (
-            <div
-              // onClick={() => optionSetter("product", p)}
-              key={p._id}
-              className="border shadow-md relative hover:shadow-2xl hover:scale-[1.01] rounded-md gap-5 object-cover cursor-pointer"
-            >
+            return (
               <div
-                className="absolute top-1 right-1 text-red-600"
-                onClick={() => handleRemoveFromWishList(p._id)}
+                // onClick={() => optionSetter("product", p)}
+                key={p._id}
+                className="border shadow-md relative hover:shadow-2xl hover:scale-[1.01] rounded-md gap-5 object-cover cursor-pointer"
               >
-                <IoHeart />
-              </div>
+                <div
+                  className="absolute top-1 right-1 text-red-600"
+                  onClick={() => handleRemoveFromWishList(p._id)}
+                >
+                  <IoHeart />
+                </div>
 
-              <div
-                onClick={() => optionSetter("product", p, "wishDetails")}
-                className="w-48 py-3"
-              >
-                {/* {p.image?.data ? bufferToString(p.image?.data) : null} */}
-                <img
-                  src={imgUrl ? `data:image/jpeg;base64,${imgUrl}` : productImg}
-                  alt="product"
-                  className="h-36 mt-5 w-full object-contain hover:scale-[1.02]"
-                />
-                <div className="p-2">
-                  <p>{p.title}</p>
-                  <div className="flex items-center gap-2 ">
-                    <p className="text-md font-medium ">₹{p.discountedPrice}</p>
-                    <p className="text-xs text-gray-400">
-                      <s>₹{p.price}</s>
-                    </p>
-                    <p className="text-[#26a541] text-xs"> {p.offer}% off</p>
+                <div
+                  onClick={() => optionSetter("product", p, "wishDetails")}
+                  className="w-48 py-3"
+                >
+                  {/* {p.image?.data ? bufferToString(p.image?.data) : null} */}
+                  <img
+                    src={
+                      imgUrl ? `data:image/jpeg;base64,${imgUrl}` : productImg
+                    }
+                    alt="product"
+                    className="h-36 mt-5 w-full object-contain hover:scale-[1.02]"
+                  />
+                  <div className="p-2">
+                    <p>{p.title}</p>
+                    <div className="flex items-center gap-2 ">
+                      <p className="text-md font-medium ">
+                        ₹{p.discountedPrice}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        <s>₹{p.price}</s>
+                      </p>
+                      <p className="text-[#26a541] text-xs"> {p.offer}% off</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
     </section>
   );

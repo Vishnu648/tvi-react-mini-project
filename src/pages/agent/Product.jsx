@@ -8,6 +8,7 @@ import { AiFillThunderbolt } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { IoHeart } from "react-icons/io5";
 import Alert from "../../components/Alert";
+import Loading from "../../components/Loading";
 
 function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   const navigate = useNavigate();
@@ -16,16 +17,15 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   const tokens = useSelector((state) => state.token);
   const [imagePath, setImagePath] = useState("");
   const [itemRemoved, setItemRemoved] = useState(false);
-  const [quantity, setQuantity] = useState(1)
+  const [quantity, setQuantity] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
 
   const productApiCall = () => {
     // console.log("obj--", obj);
     axios
       .get(
         `http://localhost:8000/api/get-one/${
-          selectedPage == "cartDetails"
-            ? obj.productId
-            : obj._id
+          selectedPage == "cartDetails" ? obj.productId : obj._id
         }`,
         {
           headers: {
@@ -38,9 +38,12 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
         {
           setProductDetails(res.data.result);
           console.log(res.data.result);
+          res.data.result ? setIsLoading(false) : "";
 
           const base64String = btoa(
-            String.fromCharCode(...new Uint8Array(res.data.result?.image?.[0].data))
+            String.fromCharCode(
+              ...new Uint8Array(res.data.result?.image?.[0].data)
+            )
           );
           setImagePath(base64String);
           // console.log(base64String)
@@ -75,7 +78,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
 
   const handlePurchase = () => {
     // console.log("purchase");
-    optionSetter("order", productDetails, "orderDetails",quantity);
+    optionSetter("order", productDetails, "orderDetails", quantity);
   };
 
   const handleAddToWishlist = (id) => {
@@ -163,117 +166,129 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
       <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
         {productDetails.title ? productDetails.title.toUpperCase() : ""}
       </div>
-      <div className="flex flex-col md:flex-row gap-3 justify-start  my-8 overflow-scroll border rounded-md border-[#e9ecef] relative">
-        <img
-          src={imagePath ? `data:image/png;base64,${imagePath}` : productImg}
-          alt="pdt"
-          className="h-80 w-52 object-contain"
-        />
-        <div className="absolute top-1 right-1 text-2xl cursor-pointer">
-          {selectedPage == "wishDetails" ? (
-            <div
-              className="absolute top-1 right-1 text-red-600"
-              onClick={() => handleRemoveFromWishList(productDetails._id)}
-            >
-              <IoHeart />
-            </div>
-          ) : (
-            <div onClick={() => handleAddToWishlist(productDetails._id)}>
-              <MdOutlineFavoriteBorder />
-            </div>
-          )}
+      {isLoading ? (
+        <div className=" flex justify-center">
+          <Loading />
         </div>
-        <div className=" w-full overflow-scroll h-full p-2 ">
-          <div className="flex flex-col gap-6 justify-between  mt-6">
-            {productDetails ? (
-              <div className=" flex flex-col">
-                <p className="text-xl font-extrabold">
-                  {productDetails.title
-                    ? productDetails.title.toUpperCase()
-                    : ""}
-                </p>
-                {productDetails.discountedPrice ? (
-                  <h3 className="text-[#26a541] my-2">Special price</h3>
+      ) : (
+        <div>
+          <div className="flex flex-col md:flex-row gap-3 justify-start  my-8 overflow-scroll border rounded-md border-[#e9ecef] relative">
+            <img
+              src={
+                imagePath ? `data:image/png;base64,${imagePath}` : productImg
+              }
+              alt="pdt"
+              className="h-80 w-52 object-contain"
+            />
+            <div className="absolute top-1 right-1 text-2xl cursor-pointer">
+              {selectedPage == "wishDetails" ? (
+                <div
+                  className="absolute top-1 right-1 text-red-600"
+                  onClick={() => handleRemoveFromWishList(productDetails._id)}
+                >
+                  <IoHeart />
+                </div>
+              ) : (
+                <div onClick={() => handleAddToWishlist(productDetails._id)}>
+                  <MdOutlineFavoriteBorder />
+                </div>
+              )}
+            </div>
+            <div className=" w-full overflow-scroll h-full p-2 ">
+              <div className="flex flex-col gap-6 justify-between  mt-6">
+                {productDetails ? (
+                  <div className=" flex flex-col">
+                    <p className="text-xl font-extrabold">
+                      {productDetails.title
+                        ? productDetails.title.toUpperCase()
+                        : ""}
+                    </p>
+                    {productDetails.discountedPrice ? (
+                      <h3 className="text-[#26a541] my-2">Special price</h3>
+                    ) : (
+                      ""
+                    )}
+                    <div className="flex items-center gap-3">
+                      <p className="text-3xl font-mono">
+                        ₹{productDetails?.discountedPrice}
+                      </p>
+                      <p className="text-xl font-thin">
+                        <s>₹{productDetails?.price}</s>
+                      </p>
+                      <p className="text-[#26a541] text-xs">
+                        {" "}
+                        {productDetails.offer}% off
+                      </p>
+                    </div>
+                    {/* <p className="">{productDetails?.productCode}</p> */}
+                    {productDetails?.availability == "yes" ? (
+                      obj.stock <= 5 ? (
+                        <p className="text-sm mb-4 text-red-500">
+                          only {obj.stock} left
+                        </p>
+                      ) : (
+                        <p className="text-sm mb-4 text-gray-600">
+                          only {obj.stock} left
+                        </p>
+                      )
+                    ) : (
+                      <p className="text-red-500 m-4">OUT OF STOCK</p>
+                    )}
+                    <div className="flex items-center mb-3">
+                      <pre className="text-gray-500 text-sm">color : </pre>
+                      <pre className={`text-[${productDetails.color}]`}>
+                        {productDetails.color}
+                      </pre>
+                    </div>
+                    <p className="text-justify">
+                      {productDetails?.description}
+                    </p>
+                    <select
+                      className="border border-gray-400 w-[10%] my-3 rounded-sm"
+                      onChange={(e) => setQuantity(e.target.value)}
+                      value={quantity}
+                    >
+                      <option className="">1</option>
+                      <option className="">2</option>
+                      <option className="">3</option>
+                      <option className="">4</option>
+                    </select>
+                  </div>
                 ) : (
                   ""
                 )}
-                <div className="flex items-center gap-3">
-                  <p className="text-3xl font-mono">
-                    ₹{productDetails?.discountedPrice}
-                  </p>
-                  <p className="text-xl font-thin">
-                    <s>₹{productDetails?.price}</s>
-                  </p>
-                  <p className="text-[#26a541] text-xs">
-                    {" "}
-                    {productDetails.offer}% off
-                  </p>
-                </div>
-                {/* <p className="">{productDetails?.productCode}</p> */}
-                {productDetails?.availability == "yes" ? (
-                  obj.stock <= 5 ? (
-                    <p className="text-sm mb-4 text-red-500">
-                      only {obj.stock} left
-                    </p>
-                  ) : (
-                    <p className="text-sm mb-4 text-gray-600">
-                      only {obj.stock} left
-                    </p>
-                  )
-                ) : (
-                  <p className="text-red-500 m-4">OUT OF STOCK</p>
-                )}
-                <div className="flex items-center mb-3">
-                  <pre className="text-gray-500 text-sm">color : </pre>
-                  <pre className={`text-[${productDetails.color}]`}>
-                    {productDetails.color}
-                  </pre>
-                </div>
-                <p className="text-justify">{productDetails?.description}</p>
-                <select
-                  className="border border-gray-400 w-[10%] my-3 rounded-sm"
-                  onChange={(e) => setQuantity(e.target.value)}
-                  value={quantity}
-                >
-                  <option className="">1</option>
-                  <option className="">2</option>
-                  <option className="">3</option>
-                  <option className="">4</option>
-                </select>
+              </div>
+            </div>
+          </div>
+          <div className=" flex justify-evenly">
+            {selectedPage == "cartDetails" ? (
+              <div
+                className="flex items-center cursor-pointer rounded-md bg-[#ff9f00] hover:bg-[#ff9f39] text-white justify-center  w-40 py-3"
+                onClick={handleRemoveFromCart}
+              >
+                <FaCartPlus size={"25px"} />
+                Remove product
               </div>
             ) : (
-              ""
+              <div
+                className="flex items-center cursor-pointer rounded-md bg-[#ff9f00] hover:bg-[#ff9f39] text-white justify-center  w-40 py-3 "
+                onClick={handleAddToCart}
+              >
+                <FaCartPlus size={"25px"} />
+                ADD TO CART
+              </div>
             )}
-          </div>
-        </div>
-      </div>
-      <div className=" flex justify-evenly">
-        {selectedPage == "cartDetails" ? (
-          <div
-            className="flex items-center cursor-pointer rounded-md bg-[#ff9f00] hover:bg-[#ff9f39] text-white justify-center  w-40 py-3"
-            onClick={handleRemoveFromCart}
-          >
-            <FaCartPlus size={"25px"} />
-            Remove product
-          </div>
-        ) : (
-          <div
-            className="flex items-center cursor-pointer rounded-md bg-[#ff9f00] hover:bg-[#ff9f39] text-white justify-center  w-40 py-3 "
-            onClick={handleAddToCart}
-          >
-            <FaCartPlus size={"25px"} />
-            ADD TO CART
-          </div>
-        )}
 
-        <div
-          onClick={handlePurchase}
-          className="flex items-center cursor-pointer rounded-lg bg-[#fb641b] hover:bg-[#fb643e] justify-center text-white w-40 py-3"
-        >
-          <AiFillThunderbolt />
-          BUY NOW
+            <div
+              onClick={handlePurchase}
+              className="flex items-center cursor-pointer rounded-lg bg-[#fb641b] hover:bg-[#fb643e] justify-center text-white w-40 py-3"
+            >
+              <AiFillThunderbolt />
+              BUY NOW
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }

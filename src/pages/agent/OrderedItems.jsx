@@ -37,43 +37,45 @@ function OrderedItems() {
         Order List
       </div>
       <div className="h-[59vh] flex flex-col gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
-        {isLoading ? <Loading /> : ""}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          orderedItems.map((item) => {
+            return (
+              <div
+                key={item._id}
+                className="flex w-full border rounded-md hover:shadow-md px-2 py-1 gap-3 cursor-pointer"
+              >
+                <div className="flex items-center w-[50%] gap-11">
+                  <img
+                    src={productImg}
+                    alt="prtd"
+                    className=""
+                    height={100}
+                    width={100}
+                  />
+                  <div>
+                    <h3>{item?.product?.title}</h3>
+                    <div className="flex items-center">
+                      <pre className="text-gray-500 text-sm">color : </pre>
+                      <pre className={`text-[${item?.product?.color}]`}>
+                        {item?.product?.color}
+                      </pre>
+                    </div>
+                  </div>
+                </div>
 
-        {orderedItems.map((item) => {
-          return (
-            <div
-              key={item._id}
-              className="flex w-full border rounded-md hover:shadow-md px-2 py-1 gap-3 cursor-pointer"
-            >
-              <div className="flex items-center w-[50%] gap-11">
-                <img
-                  src={productImg}
-                  alt="prtd"
-                  className=""
-                  height={100}
-                  width={100}
-                />
-                <div>
-                  <h3>{item?.product?.title}</h3>
-                  <div className="flex items-center">
-                    <pre className="text-gray-500 text-sm">color : </pre>
-                    <pre className={`text-[${item?.product?.color}]`}>
-                      {item?.product?.color}
-                    </pre>
+                <div className="flex items-center w-[50%] justify-between pr-28">
+                  <p>₹{item?.product?.price}</p>
+                  <div className="flex items-center gap-2">
+                    <div className={`h-2 w-2 rounded-full bg-orange-400`}></div>
+                    <p>{item?.status}</p>
                   </div>
                 </div>
               </div>
-
-              <div className="flex items-center w-[50%] justify-between pr-28">
-                <p>₹{item?.product?.price}</p>
-                <div className="flex items-center gap-2">
-                  <div className={`h-2 w-2 rounded-full bg-orange-400`}></div>
-                  <p>{item?.status}</p>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
     </section>
   );

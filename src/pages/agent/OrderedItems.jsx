@@ -1,12 +1,14 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import productImg from "../../assets/productImg.jpg";
+import Loading from "../../components/Loading";
 
 function OrderedItems() {
   let local_accessToken = localStorage.getItem("accessToken");
   const [orderedItems, setOrderedItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  const orderedItemsApiCall = () => {
     axios
       .get("http://localhost:8000/api/order-productlist", {
         headers: {
@@ -14,8 +16,16 @@ function OrderedItems() {
           Authorization: local_accessToken,
         },
       })
-      .then((res) => setOrderedItems(res.data.results))
+      .then((res) => {
+        setOrderedItems(res.data.results);
+        res.data.results.length > 0 ? setIsLoading(false) : "";
+        console.log(res.data.results);
+      })
       .catch((err) => console.log(err.message));
+  };
+
+  useEffect(() => {
+    orderedItemsApiCall();
   }, []);
 
   return (
@@ -27,6 +37,8 @@ function OrderedItems() {
         Order List
       </div>
       <div className="h-[59vh] flex flex-col gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
+        {isLoading ? <Loading /> : ""}
+
         {orderedItems.map((item) => {
           return (
             <div
@@ -42,19 +54,21 @@ function OrderedItems() {
                   width={100}
                 />
                 <div>
-                  <h3>{"item.title"}</h3>
+                  <h3>{item?.product?.title}</h3>
                   <div className="flex items-center">
                     <pre className="text-gray-500 text-sm">color : </pre>
-                    <pre className={`text-[${item.color}]`}>{"item.color"}</pre>
+                    <pre className={`text-[${item?.product?.color}]`}>
+                      {item?.product?.color}
+                    </pre>
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center w-[50%] justify-between pr-28">
-                <p>₹{"items.price"}</p>
+                <p>₹{item?.product?.price}</p>
                 <div className="flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-orange-400"></div>
-                  <p>{"item.status"}</p>
+                  <div className={`h-2 w-2 rounded-full bg-orange-400`}></div>
+                  <p>{item?.status}</p>
                 </div>
               </div>
             </div>
@@ -66,14 +80,3 @@ function OrderedItems() {
 }
 
 export default OrderedItems;
-/*
-​color: "red"
-​description: "i phoneee"
-​discountedPrice: 122500
-​image: Array []
-​offer: 2
-​price: 125000
-​stock: 55
-​title: "i phone 15"
-status: "pending"
- */

@@ -37,16 +37,18 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
       .then((res) => {
         {
           setProductDetails(res.data.result);
-          console.log(res.data.result);
+          // console.log(res.data.result);
           res.data.result ? setIsLoading(false) : "";
 
-          const base64String = btoa(
-            String.fromCharCode(
-              ...new Uint8Array(res.data.result?.image?.[0].data)
-            )
-          );
-          setImagePath(base64String);
-          // console.log(base64String)
+          if (res.data.result?.image.length > 0) {
+            const base64String = btoa(
+              String.fromCharCode(
+                ...new Uint8Array(res.data.result?.image?.[0].data)
+              )
+            );
+            setImagePath(base64String);
+            // console.log(base64String)
+          }
         }
       })
       .catch((err) => console.log(err.message));
@@ -72,13 +74,21 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
           },
         }
       )
-      .then((res) => console.log(res.data.message))
+      .then((res) => {
+        if (res.status == "200") {
+          setItemRemoved(true)(
+            setTimeout(() => {
+              setItemRemoved(false);
+            }, 2000)
+          );
+        }
+      })
       .catch((err) => console.log(err.message));
   };
 
   const handlePurchase = () => {
     // console.log("purchase");
-    optionSetter("order", productDetails, "orderDetails", quantity);
+    optionSetter("order", productDetails, "fromProduct", quantity);
   };
 
   const handleAddToWishlist = (id) => {
@@ -105,15 +115,16 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
           Authorization: local_accessToken,
         },
       })
-      .then((res) =>
-        // res.status == "200"
-        //   ? setItemRemoved(true)(
-        //       setTimeout(() => {
-        //         setItemRemoved(false);
-        //       }, 2000)
-        //     )
-        //   : ""
-        console.log(res)
+      .then(
+        (res) =>
+          res.status == "200"
+            ? setItemRemoved(true)(
+                setTimeout(() => {
+                  setItemRemoved(false);
+                }, 2000)
+              )
+            : ""
+        // console.log(res)
       )
       .catch((err) => console.log(err.message));
   };
@@ -142,7 +153,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
     <section className="px-6 flex-1 relative overflow-scroll h-[92vh] pb-5">
       {itemRemoved ? (
         <div className="border rounded-md absolute right-10 top-2">
-          <Alert />
+          <Alert message="Success!..." />
         </div>
       ) : (
         ""
@@ -252,6 +263,12 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
                       <option className="">2</option>
                       <option className="">3</option>
                       <option className="">4</option>
+                      <option className="">5</option>
+                      <option className="">6</option>
+                      <option className="">7</option>
+                      <option className="">8</option>
+                      <option className="">9</option>
+                      <option className="">10</option>
                     </select>
                   </div>
                 ) : (

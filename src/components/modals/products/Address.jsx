@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import AddressEdit from "./AddressEdit";
+import DeleteModal from "../DeleteModal";
 
 const style = {
   position: "absolute",
@@ -29,15 +30,15 @@ export default function Address({ address, addressSetter, addressApi }) {
   };
   const [selectedAddress, setSelectedAddress] = useState({});
   const [isAddAddressVisible, setIsAddAddressVisible] = useState(false);
-  const [fullName, setFullName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [alternateNumber, setAlternateNumber] = useState("");
-  const [pincode, setPincode] = useState("");
-  const [state, setState] = useState("");
-  const [city, setCity] = useState("");
-  const [buildingName, setBuildingName] = useState("");
-  const [area, setArea] = useState("");
-  const [landmark, setLandMark] = useState("");
+  const [fullName, setFullName] = useState("demo address");
+  const [phoneNumber, setPhoneNumber] = useState("1234567890");
+  const [alternateNumber, setAlternateNumber] = useState("0987654321");
+  const [pincode, setPincode] = useState("123456");
+  const [state, setState] = useState("state");
+  const [city, setCity] = useState("city");
+  const [buildingName, setBuildingName] = useState("name");
+  const [area, setArea] = useState("area");
+  const [landmark, setLandMark] = useState("landmark");
 
   const handleAddressChange = () => {
     handleOpen();
@@ -119,7 +120,10 @@ export default function Address({ address, addressSetter, addressApi }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} className="border rounded-md w-full max-h-[96vh] overflow-scroll relative">
+        <Box
+          sx={style}
+          className="border rounded-md w-full max-h-[96vh] overflow-scroll relative"
+        >
           <h1 className="font-bold">DELIVERY ADDRESS</h1>
           <p className="text-xs text-gray-500 my-2">
             Please select your current address:
@@ -142,13 +146,16 @@ export default function Address({ address, addressSetter, addressApi }) {
                   <p className="font-serif">{a?.pincode}</p>
                   <p>{a?.phoneNumber}</p>
                   <div className="absolute top-2 right-0 flex gap-5 ">
-                    <AddressEdit data={a} />
+                    <AddressEdit data={a} addressApi={addressApi} />
                     {/* {console.log('a',a)} */}
                     <button
-                      className="border px-3"
-                      onClick={() => hanldeAddressDelete(a._id)}
+                      className="px-3"
+                      // onClick={() => hanldeAddressDelete(a._id)}
                     >
-                      Del
+                      <DeleteModal
+                        handleDelete={hanldeAddressDelete}
+                        id={a._id}
+                      />
                     </button>
                   </div>
                 </label>

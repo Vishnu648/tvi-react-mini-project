@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
+import { MdEdit } from "react-icons/md";
 
 const style = {
   position: "absolute",
@@ -17,15 +18,17 @@ const style = {
   p: 4,
 };
 
-export default function EditAddress({ data }) {
+export default function EditAddress({ data, addressApi }) {
   let local_accessToken = localStorage.getItem("accessToken");
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [fullName, setFullName] = useState(data.fullName);
-  const [phoneNumber, setPhoneNumber] = useState(data.phoneNumber);
-  const [alternateNumber, setAlternateNumber] = useState(data.alternateNumber);
-  const [pincode, setPincode] = useState(data.pincode);
+  const [phoneNumber, setPhoneNumber] = useState(data.phoneNumber.toString());
+  const [alternateNumber, setAlternateNumber] = useState(
+    data.alternateNumber.toString()
+  );
+  const [pincode, setPincode] = useState(data.pincode.toString());
   const [state, setState] = useState(data.state);
   const [city, setCity] = useState(data.city);
   const [buildingName, setBuildingName] = useState(data.buildingName);
@@ -52,14 +55,21 @@ export default function EditAddress({ data }) {
           Authorization: local_accessToken,
         },
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        if(res.status=='200'){
+          addressApi();
+          handleClose();
+        }
+
+      }
+      )
       .catch((err) => console.log(err.message));
   };
 
   return (
     <div>
-      <button className="border text-[#2874f0] px-3" onClick={handleOpen}>
-        Edit
+      <button className="px-3 py-1 text-black text-xl" onClick={handleOpen}>
+        <MdEdit />
       </button>
       <Modal
         open={open}
@@ -95,14 +105,16 @@ export default function EditAddress({ data }) {
                   type="text"
                   className="p-2"
                   placeholder="10-digit mobile number"
-                  onChange={(e) => setPhoneNumber(JSON.stringify(e.target.value))}
+                  onChange={(e) => setPhoneNumber(e.target.value.toString())}
                   defaultValue={phoneNumber}
                 />
                 <input
                   type="text"
                   className="p-2"
                   placeholder="Alternate mobile number"
-                  onChange={(e) => setAlternateNumber(e.target.value)}
+                  onChange={(e) =>
+                    setAlternateNumber(e.target.value.toString())
+                  }
                   defaultValue={alternateNumber}
                 />
               </div>
@@ -152,12 +164,14 @@ export default function EditAddress({ data }) {
               </div>
             </form>
           </div>
-          <button
-            onClick={handleAddressEdit}
-            className="border text-[#2874f0] px-3"
-          >
-            Update
-          </button>
+          <div className="flex justify-center ">
+            <button
+              onClick={handleAddressEdit}
+              className=" bg-[#2874f0]  rounded-sm text-white px-3 w-50%"
+            >
+              Update
+            </button>
+          </div>
         </Box>
       </Modal>
     </div>

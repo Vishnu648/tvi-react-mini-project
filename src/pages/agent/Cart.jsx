@@ -3,12 +3,15 @@ import React, { useState, useEffect } from "react";
 import productImg from "../../assets/productImg.jpg";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import Loading from "../../components/Loading";
+import Alert from "../../components/Alert";
 
 function Cart({ optionSetter }) {
   let local_accessToken = localStorage.getItem("accessToken");
   const [imagePath, setImagePath] = useState("");
   const [productDetails, setProductDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [itemRemoved, setItemRemoved] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const cartApiCall = () => {
     axios
@@ -19,9 +22,10 @@ function Cart({ optionSetter }) {
         },
       })
       .then((res) => {
-        console.log(res.data.results?.[0].results);
-        res.data.results?.[0].results.length > 0 ? setIsLoading(false) : "";
-        setProductDetails(res.data.results?.[0].results);
+        console.log(res.data.results?.[0]);
+        setTotalPrice(res.data.results[0].total);
+        setProductDetails(res.data.results[0].results);
+        res.data.results[0].results ? setIsLoading(false) : "";
         // setProductDetails(res.data.results[0].result);
       })
       .catch((err) => console.log(err.message));
@@ -47,20 +51,22 @@ function Cart({ optionSetter }) {
       .catch((err) => console.log(err.message));
   };
 
-  const handlePlaceOrder = () => {
-    axios
-      .post(
-        "http://localhost:8000/api/order",
-        {},
-        {
-          headers: {
-            genericvalue: "agent",
-            Authorization: local_accessToken,
-          },
-        }
-      )
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err.message));
+  const checkoutPage = () => {
+    
+        // axios
+        //   .post(
+        //     "http://localhost:8000/api/order",
+        //     {},
+        //     {
+        //       headers: {
+        //         genericvalue: "agent",
+        //         Authorization: local_accessToken,
+        //       },
+        //     }
+        //   )
+        //   .then((res) => console.log(res))
+        //   .catch((err) => console.log(err.message));
+    optionSetter("order", productDetails, "fromCart", 'quantity');
   };
 
   return (
@@ -74,9 +80,24 @@ function Cart({ optionSetter }) {
       <div className="h-[53vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         {isLoading ? (
           <Loading />
+        ) : productDetails.length == 0 ? (
+          <div className="flex flex-col gap-2 items-center">
+            <h2 className="text-xl font-medium text-gray-500">
+              Your Cart is Empty
+            </h2>
+            <p className="text-xs">
+              Explore our wide selection and find something you like
+            </p>
+            <button
+              className="bg-[#2874ee] text-white px-2 py-1 rounded-sm hover:[#007bff]"
+              onClick={() => optionSetter("store")}
+            >
+              Shop Now
+            </button>
+          </div>
         ) : (
           productDetails?.map((p, i) => {
-            if (p.image.length > 0) {
+            if (p?.image?.length > 0) {
               var imgUrl = p.image[0];
             }
 
@@ -125,10 +146,14 @@ function Cart({ optionSetter }) {
         )}
       </div>
       {productDetails.length > 0 ? (
-        <div className="mt-2 flex justify-end">
+        <div className="mt-2 flex justify-between">
+          <div className="flex gap-3 ml-8">
+            <p className="text-sm text-gray-500">Total Price: </p>
+            <p className="font-medium"> ₹ {totalPrice}</p>
+          </div>
           <button
             className="bg-[#fb641b] text-white px-7 py-1 rounded-sm font-[500]"
-            onClick={handlePlaceOrder}
+            onClick={checkoutPage}
           >
             Place Order
           </button>

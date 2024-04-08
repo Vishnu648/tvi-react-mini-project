@@ -5,6 +5,7 @@ import productImg from "../../assets/productImg.jpg";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { IoHeart } from "react-icons/io5";
 import Loading from "../../components/Loading";
+import Alert from "../../components/Alert";
 
 function Store({ optionSetter }) {
   let local_accessToken = localStorage.getItem("accessToken");
@@ -16,6 +17,7 @@ function Store({ optionSetter }) {
   const [ptdIds, setPtdIds] = useState([]);
   const [wishIds, setWishIds] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [itemRemoved, setItemRemoved] = useState(false);
 
   const productApiCall = (pn = 1) => {
     axios
@@ -51,7 +53,7 @@ function Store({ optionSetter }) {
           })
           .catch((err) => console.log(err.message));
       })
-      .catch((err) => console.log("error-", err.message));
+      .catch((err) => console.log("error-", err?.response?.status));
   };
 
   // const wishListApiCall = () => {
@@ -91,8 +93,14 @@ function Store({ optionSetter }) {
         }
       )
       .then((res) => {
-        console.log(res.data.message);
-        productApiCall();
+        if (res.status == "200") {
+          productApiCall();
+          setItemRemoved(true)(
+            setTimeout(() => {
+              setItemRemoved(false);
+            }, 1400)
+          );
+        }
       })
       .catch((err) => console.log(err.message));
   };
@@ -106,7 +114,7 @@ function Store({ optionSetter }) {
         },
       })
       .then((res) => {
-        console.log(res.data.message);
+        console.log(res.status);
         setWishIds(wishIds.filter((e) => e != id));
         productApiCall();
       })
@@ -115,8 +123,15 @@ function Store({ optionSetter }) {
 
   return (
     <section className="px-6 flex-1 overflow-scroll h-[92vh] pb-5">
-      <div className=" mb-[.5rem] mt-[1.5rem] leading-[1.2] flex justify-between  ">
+      <div className=" mb-[.5rem] relative mt-[1.5rem] leading-[1.2] flex justify-between  ">
         <p className="text-[35px]  text-[#212529] ">Products</p>
+        {itemRemoved ? (
+          <div className="border rounded-md absolute right-0 top-[-10px]">
+            <Alert message="add to wishlist"/>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
       <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
         Products

@@ -21,6 +21,7 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
   const [area, setArea] = useState("");
   const [landmark, setLandMark] = useState("");
   const [imagePath, setImagePath] = useState("");
+  const [cartProducts, setCartProducts] = useState([]);
 
   const addressApi = () => {
     axios
@@ -33,24 +34,56 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
       .then((res) => {
         setAddress(res.data.result?.[0].address);
         setLatestAddress(res.data.result?.[0].address?.[0]);
-        console.log(res.data.result?.[0].address);
+        // console.log(res.data.result?.[0].address);
       })
       .catch((err) => console.log(err));
   };
 
+  const cartApiCall = () => {
+    axios
+      .get("http://localhost:8000/api/cart", {
+        headers: {
+          genericvalue: "agent",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => {
+        if (res.data.results.length > 0) {
+          console.log(res.data.results[0].results);
+          setCartProducts(res.data.results[0].results);
+        }
+      })
+      .catch((err) => console.log(err.message));
+  };
+
   useEffect(() => {
     addressApi();
+    cartApiCall();
     console.log("ptdDetails", obj);
-    if (obj.image.length > 0) {
-      const base64String = btoa(
-        String.fromCharCode(...new Uint8Array(obj?.image?.[0].data))
-      );
-      setImagePath(base64String);
+    if (selectedPage == "fromProduct") {
+      if (obj.image.length > 0) {
+        const base64String = btoa(
+          String.fromCharCode(...new Uint8Array(obj?.image?.[0].data))
+        );
+        setImagePath(base64String);
+      }
     }
   }, []);
 
   const handleContinue = () => {
-    console.log("continue");
+    axios
+      .post(
+        "http://localhost:8000/api/order",
+        {},
+        {
+          headers: {
+            genericvalue: "agent",
+            Authorization: local_accessToken,
+          },
+        }
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err.message));
   };
 
   const addressSetter = (address) => {
@@ -249,36 +282,88 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
           )}
         </div>
 
-        <div className="bg-[#e9ecef] relative py-3 flex items-center px-4 rounded-sm text-[1rem] mb-2">
-          <div className="grid grid-cols-2">
-            <img
-              height={100}
-              width={100}
-              className="object-contain border"
-              src={
-                imagePath ? `data:image/png;base64,${imagePath}` : productImg
-              }
-            />
-            <div>
-              <h4 className="font-medium">{obj.title}</h4>
-              <pre className={`text-${obj.color}`}>{obj.color}</pre>
-              <pre className="flex items-center my-2 text-[#26a541] gap-1">
-                <FaArrowDownLong />
-                {obj.offer}% <s className="text-gray-500">₹{obj.price}</s>
-                <b>₹{obj.discountedPrice}</b>
-              </pre>
+        <div className="bg-[#e9ecef] relative py-3 flex flex-col px-2 rounded-sm text-[1rem] mb-2">
+          {selectedPage == "fromProduct" ? (
+            <div className="grid grid-cols-2">
+              <img
+                height={100}
+                width={100}
+                className="object-contain border"
+                src={
+                  imagePath ? `data:image/png;base64,${imagePath}` : productImg
+                }
+              />
+              <div>
+                <h4 className="font-medium">{obj.title}</h4>
+                <pre className={`text-${obj.color}`}>{obj.color}</pre>
+                <pre className="flex items-center my-2 text-[#26a541] gap-1">
+                  <FaArrowDownLong />
+                  {obj.offer}% <s className="text-gray-500">₹{obj.price}</s>
+                  <b>₹{obj.discountedPrice}</b>
+                </pre>
+              </div>
+              <select
+                className="border border-gray-400 w-[90px] ml-[5px] my-1 rounded-sm"
+                // onChange={(e) => setQuantity(e.target.value)}
+                // value={quantity}
+              >
+                <option className="">1</option>
+                <option className="">2</option>
+                <option className="">3</option>
+                <option className="">4</option>
+                <option className="">5</option>
+                <option className="">6</option>
+                <option className="">7</option>
+                <option className="">8</option>
+                <option className="">9</option>
+                <option className="">10</option>
+              </select>
             </div>
-            <select
-              className="border border-gray-400 w-[50%] ml-[5px] my-1 rounded-sm"
-              onChange={(e) => setQuantity(e.target.value)}
-              value={quantity}
-            >
-              <option className="">1</option>
-              <option className="">2</option>
-              <option className="">3</option>
-              <option className="">4</option>
-            </select>
-          </div>
+          ) : (
+            cartProducts.map((p) => {
+              return (
+                <div key={p._id} className="border border-white my-1">
+                  <div className="grid grid-cols-2">
+                    <img
+                      height={100}
+                      width={100}
+                      className="object-contain border"
+                      src={
+                        imagePath
+                          ? `data:image/png;base64,${imagePath}`
+                          : productImg
+                      }
+                    />
+                    <div>
+                      <h4 className="font-medium">{p.title}</h4>
+                      <pre className={`text-${p.color}`}>{p.color}</pre>
+                      <pre className="flex items-center my-2 text-[#26a541] gap-1">
+                        <FaArrowDownLong />
+                        {p.offer}% <s className="text-gray-500">₹{p.price}</s>
+                        <b>₹{p.discountedPrice}</b>
+                      </pre>
+                    </div>
+                    {/* <select
+                      className="border border-gray-400 w-[90px] ml-[5px] my-1 rounded-sm"
+                      onChange={(e) => setQuantity(e.target.value)}
+                      value={quantity}
+                    >
+                      <option className="">1</option>
+                      <option className="">2</option>
+                      <option className="">3</option>
+                      <option className="">4</option>
+                      <option className="">5</option>
+                      <option className="">6</option>
+                      <option className="">7</option>
+                      <option className="">8</option>
+                      <option className="">9</option>
+                      <option className="">10</option>
+                    </select> */}
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
 
         <div className="bg-[#e9ecef] relative py-3 flex flex-col px-4 rounded-sm text-[1rem] mb-2">
@@ -326,7 +411,7 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
         </div>
         <button
           onClick={handleContinue}
-          className="bg-[#fb641b] text-white px-7 rounded-sm font-[500]"
+          className="bg-[#fb641b] text-white px-7 py-1 rounded-sm font-[500]"
         >
           Continue
         </button>

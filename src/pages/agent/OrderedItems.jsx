@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import productImg from "../../assets/productImg.jpg";
 import Loading from "../../components/Loading";
 
-function OrderedItems() {
+function OrderedItems({ optionSetter }) {
   let local_accessToken = localStorage.getItem("accessToken");
   const [orderedItems, setOrderedItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +18,7 @@ function OrderedItems() {
       })
       .then((res) => {
         setOrderedItems(res.data.results);
-        res.data.results.length > 0 ? setIsLoading(false) : "";
+        res.data.results ? setIsLoading(false) : "";
         console.log(res.data.results);
       })
       .catch((err) => console.log(err.message));
@@ -36,15 +36,31 @@ function OrderedItems() {
       <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
         Order List
       </div>
-      <div className="h-[59vh] flex flex-col gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
+      <div className="flex flex-col gap-3 justify-center md:justify-center items-center p-5 my-8 border rounded-md border-[#e9ecef] ">
         {isLoading ? (
           <Loading />
+        ) : orderedItems.length == "0 " ? (
+          <div className="flex flex-col gap-2 items-center">
+            <h2 className="text-xl font-medium text-gray-500">
+              Your haven't Ordered anything yet.
+            </h2>
+            <p className="text-xs">
+              Explore our wide selection and find something you like
+            </p>
+            <button
+              className="bg-[#2874ee] text-white px-2 py-1 rounded-sm hover:[#007bff]"
+              onClick={() => optionSetter("store")}
+            >
+              Shop Now
+            </button>
+          </div>
         ) : (
-          orderedItems.map((item) => {
+          orderedItems.map((item, i) => {
             return (
               <div
-                key={item._id}
+                key={i}
                 className="flex w-full border rounded-md hover:shadow-md px-2 py-1 gap-3 cursor-pointer"
+                onClick={() => optionSetter("singleOrder", item)}
               >
                 <div className="flex items-center w-[50%] gap-11">
                   <img

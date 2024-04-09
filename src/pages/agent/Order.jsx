@@ -36,7 +36,7 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
         setLatestAddress(res.data.result?.[0].address?.[0]);
         // console.log(res.data.result?.[0].address);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err.message));
   };
 
   const cartApiCall = () => {
@@ -49,7 +49,7 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
       })
       .then((res) => {
         if (res.data.results.length > 0) {
-          console.log(res.data.results[0].results);
+          // console.log(res.data.results[0].results);
           setCartProducts(res.data.results[0].results);
         }
       })
@@ -321,6 +321,11 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
             </div>
           ) : (
             cartProducts.map((p) => {
+              if (p?.image.length > 0) {
+                let img = p?.image?.[0];
+                var imgUrl = img ? `data:image/jpeg;base64,${img}` : productImg;
+              }
+
               return (
                 <div key={p._id} className="border border-white my-1">
                   <div className="grid grid-cols-2">
@@ -328,11 +333,7 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
                       height={100}
                       width={100}
                       className="object-contain border"
-                      src={
-                        imagePath
-                          ? `data:image/png;base64,${imagePath}`
-                          : productImg
-                      }
+                      src={imgUrl ? imgUrl : productImg}
                     />
                     <div>
                       <h4 className="font-medium">{p.title}</h4>
@@ -410,7 +411,11 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
           <p className="font-[500]">₹{obj.discountedPrice}</p>
         </div>
         <button
-          onClick={handleContinue}
+          onClick={() => {
+            selectedPage == "fromCart"
+              ? handleContinue()
+              : console.log("ordered");
+          }}
           className="bg-[#fb641b] text-white px-7 py-1 rounded-sm font-[500]"
         >
           Continue

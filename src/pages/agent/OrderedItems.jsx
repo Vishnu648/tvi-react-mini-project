@@ -56,6 +56,14 @@ function OrderedItems({ optionSetter }) {
           </div>
         ) : (
           orderedItems.map((item, i) => {
+            if (item?.product?.image.length > 0) {
+              const base64String=(item?.product?.image[0]);
+
+              var imgUrl = base64String
+                ? `data:image/jpeg;base64,${base64String}`
+                : productImg;
+            }
+
             return (
               <div
                 key={i}
@@ -64,7 +72,7 @@ function OrderedItems({ optionSetter }) {
               >
                 <div className="flex items-center w-[50%] gap-11">
                   <img
-                    src={productImg}
+                    src={imgUrl ? imgUrl : productImg}
                     alt="prtd"
                     className=""
                     height={100}

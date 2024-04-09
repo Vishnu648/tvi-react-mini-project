@@ -53,7 +53,7 @@ function Store({ optionSetter }) {
           })
           .catch((err) => console.log(err.message));
       })
-      .catch((err) => console.log("error-", err?.response?.status));
+      .catch((err) => console.error("error-", err.message));
   };
 
   // const wishListApiCall = () => {

@@ -73,8 +73,9 @@ function Login() {
         .catch((err) => {
           if (err?.response?.status == 400) {
             showToastMessage("Incorrect email and/or password!!!");
+          } else {
+            console.log("error-", err.message);
           }
-          console.log("error-", err.message);
         });
     }
   };

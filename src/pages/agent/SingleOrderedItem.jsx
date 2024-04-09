@@ -6,6 +6,7 @@ function SingleOrderedItem({ obj, optionSetter }) {
   let local_accessToken = localStorage.getItem("accessToken");
   const [productDetails, setProductDetails] = useState();
   const [address, setAddress] = useState();
+  const [imageUrl, setImageUrl] = useState("");
 
   const productDetailsApiCall = () => {
     axios
@@ -15,7 +16,16 @@ function SingleOrderedItem({ obj, optionSetter }) {
           Authorization: local_accessToken,
         },
       })
-      .then((res) => console.log(res.data.result))
+      .then((res) => {
+        if (res.data.result[0].product.image.length > 0) {
+          const img = res.data.result[0].product.image[0];
+          let imgUrl = img
+            ? `data:image/jpeg;base64,${img}`
+            : productImg;
+
+          setImageUrl(imgUrl);
+        }
+      })
       .catch((err) => console.log(err.message));
   };
 
@@ -40,10 +50,7 @@ function SingleOrderedItem({ obj, optionSetter }) {
       <div className="h-[53vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-start items-center my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         <div className="flex flex-col md:flex-row gap-3 justify-start  my-8 overflow-scroll border rounded-md border-[#e9ecef] w-full relative">
           <img
-            src={
-              // imagePath ? `data:image/png;base64,${imagePath}` :
-              productImg
-            }
+             src={imageUrl ? imageUrl : productImg}
             alt="pdt"
             className="h-80 w-52 object-contain"
           />

@@ -17,20 +17,27 @@ function SingleOrderedItem({ obj, optionSetter }) {
         },
       })
       .then((res) => {
-        if (res.data.result[0].product.image.length > 0) {
-          const img = res.data.result[0].product.image[0];
-          let imgUrl = img
-            ? `data:image/jpeg;base64,${img}`
-            : productImg;
+        setProductDetails(res.data.results[0]);
+        console.log(res.data.results[0]);
+        // if (res.data.results[0].product.image.length > 0) {
+        //   const img = res.data.result[0].product.image[0];
+        //   let imgUrl = img ? `data:image/jpeg;base64,${img}` : productImg;
 
-          setImageUrl(imgUrl);
-        }
+        //   setImageUrl(imgUrl);
+        // }
       })
       .catch((err) => console.log(err.message));
   };
 
   useEffect(() => {
     console.log(obj);
+    if (obj?.product?.image.length > 0) {
+      const img = obj?.product?.image[0];
+
+      let imgUrl = img ? `data:image/jpeg;base64,${img}` : productImg;
+
+      setImageUrl(imgUrl);
+    }
     productDetailsApiCall();
   }, []);
 
@@ -47,63 +54,92 @@ function SingleOrderedItem({ obj, optionSetter }) {
       <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
         Order Details
       </div>
-      <div className="h-[53vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-start items-center my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
-        <div className="flex flex-col md:flex-row gap-3 justify-start  my-8 overflow-scroll border rounded-md border-[#e9ecef] w-full relative">
-          <img
-             src={imageUrl ? imageUrl : productImg}
-            alt="pdt"
-            className="h-80 w-52 object-contain"
-          />
-          <div className="absolute top-1 right-1 text-2xl cursor-pointer"></div>
-          <div className=" w-full overflow-scroll h-full p-2 ">
-            <div className="flex flex-col gap-6 justify-between  mt-6">
-              {obj?.product ? (
-                <div className=" flex flex-col">
-                  <p className="text-xl font-extrabold">
-                    {obj?.product.title ? obj?.product.title.toUpperCase() : ""}
-                  </p>
-                  {obj?.product.discountedPrice ? (
-                    <h3 className="text-[#26a541] my-2">Special price</h3>
-                  ) : (
-                    ""
-                  )}
-                  <div className="flex items-center gap-3">
-                    <p className="text-3xl font-mono">
-                      ₹{obj?.product?.discountedPrice}
+      <div className="h-[64vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-start items-center my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
+        <div className="relative w-full p-5">
+          <h6>Delivered to:</h6>
+          <p className="font-semibold">
+            {productDetails?.matchedAddress?.fullName}
+          </p>
+          <p className="font-serif">{`${productDetails?.matchedAddress?.buildingName}, ${productDetails?.matchedAddress?.area}, ${productDetails?.matchedAddress?.city} `}</p>
+          <p className="font-serif">
+            {productDetails?.matchedAddress?.pincode}
+          </p>
+          <p>
+            {productDetails?.matchedAddress?.phoneNumber},
+            {productDetails?.matchedAddress?.alternateNumber}
+          </p>
+        </div>
+        <div className="flex w-full">
+          <div className="flex border flex-col md:flex-row gap-3 justify-start overflow-scroll rounded-md w-full relative">
+            <img
+              src={imageUrl ? imageUrl : productImg}
+              alt="pdt"
+              className="h-80 w-52 object-contain"
+            />
+            <div className="absolute top-1 right-1 text-2xl cursor-pointer"></div>
+            <div className=" w-full overflow-scroll h-full p-2 ">
+              <div className="flex flex-col gap-6 justify-between  mt-6">
+                {obj?.product ? (
+                  <div className=" flex flex-col">
+                    <p className="text-xl font-extrabold">
+                      {obj?.product.title
+                        ? obj?.product.title.toUpperCase()
+                        : ""}
                     </p>
-                    <p className="text-xl font-thin">
-                      <s>₹{obj?.product?.price}</s>
-                    </p>
-                    <p className="text-[#26a541] text-xs">
-                      {" "}
-                      {obj?.product.offer}% off
-                    </p>
-                  </div>
-                  {/* <p className="">{obj?.product?.productCode}</p> */}
-                  {obj?.product?.availability == "yes" ? (
-                    obj?.product.stock <= 5 ? (
-                      <p className="text-sm mb-4 text-red-500">
-                        only {obj?.product.stock} left
-                      </p>
+                    {obj?.product.discountedPrice ? (
+                      <h3 className="text-[#26a541] my-2">Special price</h3>
                     ) : (
-                      <p className="text-sm mb-4 text-gray-600">
-                        only {obj?.product.stock} left
+                      ""
+                    )}
+                    <div className="flex items-center gap-3">
+                      <p className="text-3xl font-mono">
+                        ₹{obj?.product?.discountedPrice}
                       </p>
-                    )
-                  ) : (
-                    <p className="text-red-500 m-4">OUT OF STOCK</p>
-                  )}
-                  <div className="flex items-center mb-3">
-                    <pre className="text-gray-500 text-sm">color : </pre>
-                    <pre className={`text-[${obj?.product.color}]`}>
-                      {obj?.product.color}
-                    </pre>
+                      <p className="text-xl font-thin">
+                        <s>₹{obj?.product?.price}</s>
+                      </p>
+                      <p className="text-[#26a541] text-xs">
+                        {" "}
+                        {obj?.product.offer}% off
+                      </p>
+                    </div>
+                    {/* <p className="">{obj?.product?.productCode}</p> */}
+                    {obj?.product?.availability == "yes" ? (
+                      obj?.product.stock <= 5 ? (
+                        <p className="text-sm mb-4 text-red-500">
+                          only {obj?.product.stock} left
+                        </p>
+                      ) : (
+                        <p className="text-sm mb-4 text-gray-600">
+                          only {obj?.product.stock} left
+                        </p>
+                      )
+                    ) : (
+                      <p className="text-red-500 m-4">OUT OF STOCK</p>
+                    )}
+                    <div className="flex items-center mb-3">
+                      <pre className="text-gray-500 text-sm">color : </pre>
+                      <pre className={`text-[${obj?.product.color}]`}>
+                        {obj?.product.color}
+                      </pre>
+                    </div>
+                    <p className="text-justify">{obj?.product?.description}</p>
                   </div>
-                  <p className="text-justify">{obj?.product?.description}</p>
-                </div>
-              ) : (
-                ""
-              )}
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="flex border border-red-600 flex-col md:flex-row gap-3 justify-start overflow-scroll rounded-md w-full relative">
+            <div>
+              <p>Status:</p>
+              <p>{productDetails?.status}</p>
+            </div>
+
+            <div>
+              <p>Order Date:</p>
+              <p>{productDetails?.orderConfirmed}</p>
             </div>
           </div>
         </div>

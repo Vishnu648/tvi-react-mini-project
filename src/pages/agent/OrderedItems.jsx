@@ -40,9 +40,9 @@ function OrderedItems({ optionSetter }) {
         {isLoading ? (
           <Loading />
         ) : orderedItems.length == "0 " ? (
-          <div className="flex flex-col gap-2 items-center">
+          <div className="flex flex-col gap-2 items-center h-[50vh]">
             <h2 className="text-xl font-medium text-gray-500">
-              Your haven't Ordered anything yet.
+              You haven't Ordered anything yet.
             </h2>
             <p className="text-xs">
               Explore our wide selection and find something you like

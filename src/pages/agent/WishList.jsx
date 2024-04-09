@@ -11,6 +11,7 @@ function WishList({ optionSetter }) {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [itemRemoved, setItemRemoved] = useState(false);
+  const [isError, setisError] = useState(false);
 
   const wishListApiCall = () => {
     axios
@@ -25,7 +26,11 @@ function WishList({ optionSetter }) {
         // console.log(res.data.result?.[0]?.results);
         res.data.result?.[0]?.results ? setIsLoading(false) : "";
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => {
+        console.log(err.message);
+        setisError(true);
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -72,6 +77,13 @@ function WishList({ optionSetter }) {
       <div className="h-[53vh]  flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         {isLoading ? (
           <Loading />
+        ) : isError ? (
+          <div className="flex flex-col gap-2 items-center">
+            <h2 className="text-sm font-medium text-gray-500">
+              Something went wrong...
+            </h2>
+            <p className="text-red-600">Please try again...</p>
+          </div>
         ) : wishlistItems.length == 0 ? (
           <div className="flex flex-col gap-2 items-center">
             <h2 className="text-sm font-medium text-gray-500">

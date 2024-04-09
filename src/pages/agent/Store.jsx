@@ -18,6 +18,7 @@ function Store({ optionSetter }) {
   const [wishIds, setWishIds] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [itemRemoved, setItemRemoved] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const productApiCall = (pn = 1) => {
     axios
@@ -53,7 +54,11 @@ function Store({ optionSetter }) {
           })
           .catch((err) => console.log(err.message));
       })
-      .catch((err) => console.error("error-", err.message));
+      .catch((err) => {
+        console.error("error-", err.message);
+        setIsError(true);
+        setIsLoading(false);
+      });
   };
 
   // const wishListApiCall = () => {
@@ -127,7 +132,7 @@ function Store({ optionSetter }) {
         <p className="text-[35px]  text-[#212529] ">Products</p>
         {itemRemoved ? (
           <div className="border rounded-md absolute right-0 top-[-10px]">
-            <Alert message="add to wishlist"/>
+            <Alert message="add to wishlist" />
           </div>
         ) : (
           ""
@@ -139,6 +144,13 @@ function Store({ optionSetter }) {
       <div className="h-[55vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         {isLoading ? (
           <Loading />
+        ) : isError ? (
+          <div className="flex flex-col gap-2 items-center">
+            <h2 className="text-sm font-medium text-gray-500">
+              Something went wrong...
+            </h2>
+            <p className="text-red-600">Please try again...</p>
+          </div>
         ) : (
           products.map((p, i) => {
             if (p.image.length > 0) {

@@ -4,6 +4,7 @@ import axios from "axios";
 import productImg from "../../assets/productImg.jpg";
 import { FaArrowDownLong } from "react-icons/fa6";
 import Address from "../../components/modals/products/Address";
+import PlaceOrderConfirm from "../../components/modals/products/PlaceOrderConfirm";
 
 function Order({ optionSetter, obj, selectedPage, productQuantity }) {
   let local_accessToken = localStorage.getItem("accessToken");
@@ -11,15 +12,15 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
   const [latestAddress, setLatestAddress] = useState([]);
   const [quantity, setQuantity] = useState(productQuantity);
   const [isAddAddressVisible, setIsAddAddressVisible] = useState(false);
-  const [fullName, setFullName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [alternateNumber, setAlternateNumber] = useState("");
-  const [pincode, setPincode] = useState("");
-  const [state, setState] = useState("");
-  const [city, setCity] = useState("");
-  const [buildingName, setBuildingName] = useState("");
-  const [area, setArea] = useState("");
-  const [landmark, setLandMark] = useState("");
+  const [fullName, setFullName] = useState("fullName");
+  const [phoneNumber, setPhoneNumber] = useState("1234567890");
+  const [alternateNumber, setAlternateNumber] = useState("1234567891");
+  const [pincode, setPincode] = useState("123455");
+  const [state, setState] = useState("state");
+  const [city, setCity] = useState("city");
+  const [buildingName, setBuildingName] = useState("building name");
+  const [area, setArea] = useState("area");
+  const [landmark, setLandMark] = useState("landmark");
   const [imagePath, setImagePath] = useState("");
   const [cartProducts, setCartProducts] = useState([]);
 
@@ -59,7 +60,6 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
   useEffect(() => {
     addressApi();
     cartApiCall();
-    console.log("ptdDetails", obj);
     if (selectedPage == "fromProduct") {
       if (obj.image.length > 0) {
         const base64String = btoa(
@@ -70,19 +70,21 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
     }
   }, []);
 
-  const handleContinue = () => {
+  const handleContinue = (id) => {
+    const deliveryAddress = {
+      addressId: id,
+    };
+
+    console.log('deliveryAddress',deliveryAddress)
+
     axios
-      .post(
-        "http://localhost:8000/api/order",
-        {},
-        {
-          headers: {
-            genericvalue: "agent",
-            Authorization: local_accessToken,
-          },
-        }
-      )
-      .then((res) => console.log(res))
+      .post("http://localhost:8000/api/order", deliveryAddress, {
+        headers: {
+          genericvalue: "agent",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => console.log(res.status))
       .catch((err) => console.log(err.message));
   };
 
@@ -304,8 +306,8 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
               </div>
               <select
                 className="border border-gray-400 w-[90px] ml-[5px] my-1 rounded-sm"
-                // onChange={(e) => setQuantity(e.target.value)}
-                // value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                value={quantity}
               >
                 <option className="">1</option>
                 <option className="">2</option>
@@ -410,15 +412,12 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
           <s className="text-xs">{obj.price}</s>
           <p className="font-[500]">₹{obj.discountedPrice}</p>
         </div>
-        <button
-          onClick={() => {
-            selectedPage == "fromCart"
-              ? handleContinue()
-              : console.log("ordered");
-          }}
-          className="bg-[#fb641b] text-white px-7 py-1 rounded-sm font-[500]"
-        >
-          Continue
+        <button className="bg-[#fb641b] text-white px-7 py-1 rounded-sm font-[500]">
+          <PlaceOrderConfirm
+            selectedPage={selectedPage}
+            handleFunction={() => handleContinue(latestAddress._id)}
+            optionSetter={optionSetter}
+          />
         </button>
       </div>
     </section>

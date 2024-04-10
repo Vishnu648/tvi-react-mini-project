@@ -6,6 +6,7 @@ import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { IoHeart } from "react-icons/io5";
 import Loading from "../../components/Loading";
 import Alert from "../../components/Alert";
+import { handleLogout } from "../../utils/utils";
 
 function Store({ optionSetter }) {
   let local_accessToken = localStorage.getItem("accessToken");
@@ -55,7 +56,11 @@ function Store({ optionSetter }) {
           .catch((err) => console.log(err.message));
       })
       .catch((err) => {
-        console.error("error-", err.message);
+        if (err.message === "Request failed with status code 401") {
+          handleLogout();
+        } else {
+          console.log(err.message);
+        }
         setIsError(true);
         setIsLoading(false);
       });

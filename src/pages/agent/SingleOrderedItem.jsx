@@ -18,7 +18,7 @@ function SingleOrderedItem({ obj, optionSetter }) {
       })
       .then((res) => {
         setProductDetails(res.data.results[0]);
-        console.log(res.data.results[0]);
+        console.log(res.data);
         // if (res.data.results[0].product.image.length > 0) {
         //   const img = res.data.result[0].product.image[0];
         //   let imgUrl = img ? `data:image/jpeg;base64,${img}` : productImg;

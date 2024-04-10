@@ -23,6 +23,9 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
   const [landmark, setLandMark] = useState("landmark");
   const [imagePath, setImagePath] = useState("");
   const [cartProducts, setCartProducts] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalDiscount, setTotalDiscount] = useState(0);
+  const [totalFinalPrice, setTotalFinalPrice] = useState(0);
 
   const addressApi = () => {
     axios
@@ -58,6 +61,7 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
   };
 
   useEffect(() => {
+    console.log(obj);
     addressApi();
     cartApiCall();
     if (selectedPage == "fromProduct") {
@@ -75,7 +79,7 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
       addressId: id,
     };
 
-    console.log('deliveryAddress',deliveryAddress)
+    console.log("deliveryAddress", deliveryAddress);
 
     axios
       .post("http://localhost:8000/api/order", deliveryAddress, {
@@ -322,10 +326,23 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
               </select>
             </div>
           ) : (
-            cartProducts.map((p) => {
+            cartProducts.map((p, i) => {
               if (p?.image.length > 0) {
                 let img = p?.image?.[0];
                 var imgUrl = img ? `data:image/jpeg;base64,${img}` : productImg;
+              }
+
+              console.log(i, p);
+              if (totalPrice == "0") {
+                setTotalPrice((prev) => prev + p.price);
+              }
+              if (totalDiscount == "0") {
+                setTotalDiscount(
+                  (prev) => prev + (p.price - p.discountedPrice)
+                );
+              }
+              if (totalFinalPrice == "0") {
+                setTotalFinalPrice((prev) => prev + p.discountedPrice);
               }
 
               return (
@@ -374,12 +391,13 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
           <div>
             <div className="flex justify-between">
               <p className="font-serif">Price</p>
-              <p className="text-sm">₹ {obj.price * quantity}</p>
+              <p className="text-sm">₹ {obj.price * quantity || totalPrice}</p>
             </div>
             <div className="flex justify-between">
               <p className="font-serif">Discount</p>
               <p className="text-sm text-[green]">
-                - {(obj.price - obj.discountedPrice) * quantity}
+                -{" "}
+                {(obj.price - obj.discountedPrice) * quantity || totalDiscount}
               </p>
             </div>
             <div className="flex justify-between">
@@ -393,14 +411,14 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
             <div className="flex justify-between my-4">
               <p className="font-medium">Total Amount</p>
               <p className="font-semibold">
-                ₹ {obj.discountedPrice * quantity}
+                ₹ {obj.discountedPrice * quantity || totalFinalPrice}
               </p>
             </div>
 
             <pre className="font-semibold text-[green] my-4 flex items-center">
               You will save ₹
               <p className="font-bold text-xl">
-                {(obj.price - obj.discountedPrice) * quantity}{" "}
+                {(obj.price - obj.discountedPrice) * quantity || totalDiscount}{" "}
               </p>
               on this order
             </pre>
@@ -409,8 +427,8 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
       </div>
       <div className="border border-gray-400 rounded-md flex relative justify-around p-3 mt-2">
         <div className="w-full">
-          <s className="text-xs">{obj.price}</s>
-          <p className="font-[500]">₹{obj.discountedPrice}</p>
+          <s className="text-xs">{obj.price || totalPrice}</s>
+          <p className="font-[500]">₹{obj.discountedPrice || totalFinalPrice}</p>
         </div>
         <button className="bg-[#fb641b] text-white px-7 py-1 rounded-sm font-[500]">
           <PlaceOrderConfirm

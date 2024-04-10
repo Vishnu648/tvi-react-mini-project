@@ -21,6 +21,8 @@ export default function BasicModal({ handleFunction, selectedPage }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  
+
   return (
     <div>
       <button

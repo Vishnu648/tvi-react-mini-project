@@ -19,7 +19,7 @@ function OrderedItems({ optionSetter }) {
       .then((res) => {
         setOrderedItems(res.data.results);
         res.data.results ? setIsLoading(false) : "";
-        console.log(res.data.results);
+        // console.log(res.data.results);
       })
       .catch((err) => console.log(err.message));
   };
@@ -57,7 +57,7 @@ function OrderedItems({ optionSetter }) {
         ) : (
           orderedItems.map((item, i) => {
             if (item?.product?.image.length > 0) {
-              const base64String=(item?.product?.image[0]);
+              const base64String = item?.product?.image[0];
 
               var imgUrl = base64String
                 ? `data:image/jpeg;base64,${base64String}`
@@ -67,7 +67,7 @@ function OrderedItems({ optionSetter }) {
             return (
               <div
                 key={i}
-                className="flex w-full border rounded-md hover:shadow-md px-2 py-1 gap-3 cursor-pointer"
+                className="flex flex-col lg:flex-row w-full border rounded-md hover:shadow-md px-2 py-1 gap-3 cursor-pointer"
                 onClick={() => optionSetter("singleOrder", item)}
               >
                 <div className="flex items-center w-[50%] gap-11">
@@ -89,7 +89,7 @@ function OrderedItems({ optionSetter }) {
                   </div>
                 </div>
 
-                <div className="flex items-center w-[50%] justify-between pr-28">
+                <div className="flex items-center justify-center gap-10 pr-28">
                   <p>₹{item?.product?.price}</p>
                   <div className="flex items-center gap-2">
                     <div className={`h-2 w-2 rounded-full bg-orange-400`}></div>

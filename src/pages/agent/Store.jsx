@@ -56,13 +56,13 @@ function Store({ optionSetter }) {
           .catch((err) => console.log(err.message));
       })
       .catch((err) => {
+        setIsLoading(false);
+        setIsError(true);
         if (err.message === "Request failed with status code 401") {
           handleLogout();
         } else {
           console.log(err.message);
         }
-        setIsError(true);
-        setIsLoading(false);
       });
   };
 
@@ -217,7 +217,7 @@ function Store({ optionSetter }) {
           })
         )}
       </div>
-      {totalCount > 10 ? (
+      {!isError && totalCount > 10 ? (
         <Pagination
           pages={Math.ceil(totalCount / 10)}
           selectedPage={selectedPage}

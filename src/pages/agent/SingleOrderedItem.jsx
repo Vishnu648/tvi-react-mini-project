@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import productImg from "../../assets/productImg.jpg";
 import axios from "axios";
+import RateProduct from "../../components/modals/products/RateProduct";
+import { FaStar } from "react-icons/fa6";
 
 function SingleOrderedItem({ obj, optionSetter }) {
   let local_accessToken = localStorage.getItem("accessToken");
   const [productDetails, setProductDetails] = useState();
   const [address, setAddress] = useState();
   const [imageUrl, setImageUrl] = useState("");
+  const [ratingDetails, setRatingDetails] = useState([])
 
   const productDetailsApiCall = () => {
     axios
@@ -29,8 +32,20 @@ function SingleOrderedItem({ obj, optionSetter }) {
       .catch((err) => console.log(err.message));
   };
 
+  const ratingApiCall = () => {
+    axios
+      .get(`http://localhost:8000/api/get_review/${obj._id}`, {
+        headers: {
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => console.log("rating res------", res.data.result))
+      .catch((err) => console.error(err.message));
+  };
+
   useEffect(() => {
     console.log(obj);
+    ratingApiCall();
     if (obj?.product?.image.length > 0) {
       const img = obj?.product?.image[0];
 
@@ -54,23 +69,28 @@ function SingleOrderedItem({ obj, optionSetter }) {
       <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
         Order Details
       </div>
-      <div className="h-[64vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-start items-center my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
-        <div className="relative w-full p-5">
-          <h6>Delivered to:</h6>
-          <p className="font-semibold">
-            {productDetails?.matchedAddress?.fullName}
-          </p>
-          <p className="font-serif">{`${productDetails?.matchedAddress?.buildingName}, ${productDetails?.matchedAddress?.area}, ${productDetails?.matchedAddress?.city} `}</p>
-          <p className="font-serif">
-            {productDetails?.matchedAddress?.pincode}
-          </p>
-          <p>
-            {productDetails?.matchedAddress?.phoneNumber},
-            {productDetails?.matchedAddress?.alternateNumber}
-          </p>
+      <div className="h-[58vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-start items-center my-2 overflow-scroll border rounded-md border-[#e9ecef] ">
+        <div className="relative w-full p-5  flex justify-between">
+          <div >
+            <h6>Delivered to:</h6>
+            <p className="font-semibold">
+              {productDetails?.matchedAddress?.fullName}
+            </p>
+            <p className="font-serif">{`${productDetails?.matchedAddress?.buildingName}, ${productDetails?.matchedAddress?.area}, ${productDetails?.matchedAddress?.city} `}</p>
+            <p className="font-serif">
+              {productDetails?.matchedAddress?.pincode}
+            </p>
+            <p>
+              {productDetails?.matchedAddress?.phoneNumber},
+              {productDetails?.matchedAddress?.alternateNumber}
+            </p>
+          </div>
+          <div>
+            rating
+          </div>
         </div>
-        <div className="flex w-full">
-          <div className="flex border flex-col md:flex-row gap-3 justify-start overflow-scroll rounded-md w-full relative">
+        <div className="flex w-full flex-col xl:flex-row">
+          <div className="flex flex-col md:flex-row gap-3 justify-start overflow-scroll rounded-md w-full relative">
             <img
               src={imageUrl ? imageUrl : productImg}
               alt="pdt"
@@ -131,18 +151,33 @@ function SingleOrderedItem({ obj, optionSetter }) {
               </div>
             </div>
           </div>
-          <div className="flex border border-red-600 flex-col md:flex-row gap-3 justify-start overflow-scroll rounded-md w-full relative">
-            <div>
-              <p>Status:</p>
-              <p>{productDetails?.status}</p>
+          <div
+            className="flex  flex-col gap-3
+          justify-center pl-8 overflow-scroll rounded-md w-full relative"
+          >
+            <div className="flex gap-2">
+              <p className="text-gray-500 text-sm">Status:</p>
+              <div className="flex items-center gap-2">
+                <div
+                  className={`h-2 w-2 rounded-full ${
+                    productDetails?.status == "pending"
+                      ? "bg-orange-400"
+                      : "bg-black"
+                  }`}
+                ></div>
+                <p>{productDetails?.status}</p>
+              </div>
             </div>
 
-            <div>
-              <p>Order Date:</p>
+            <div className="flex gap-2">
+              <p className="text-gray-500 text-sm">Order Date:</p>
               <p>{productDetails?.orderConfirmed}</p>
             </div>
           </div>
         </div>
+      </div>
+      <div className="p-2 float-right">
+        <RateProduct productId={obj._id} />
       </div>
     </section>
   );

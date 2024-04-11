@@ -12,6 +12,7 @@ function Cart({ optionSetter }) {
   const [isLoading, setIsLoading] = useState(true);
   const [itemRemoved, setItemRemoved] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [isEmpty, setIsEmpty] = useState(false);
 
   const cartApiCall = () => {
     axios
@@ -22,10 +23,16 @@ function Cart({ optionSetter }) {
         },
       })
       .then((res) => {
-        console.log(res.data.results?.[0]);
-        setTotalPrice(res.data.results[0].total);
-        setProductDetails(res.data.results[0].results);
-        res.data.results[0].results ? setIsLoading(false) : "";
+        console.log(res.data.results);
+        if ((res.data.results).length>0) {
+          setTotalPrice(res.data.results[0].total);
+          setProductDetails(res.data.results[0].results);
+          // res.data.results[0].results ? setIsLoading(false) : "";
+          setIsLoading(false)
+        } else {
+          setIsLoading(false);
+          setIsEmpty(true);
+        }
         // setProductDetails(res.data.results[0].result);
       })
       .catch((err) => console.log(err.message));
@@ -52,21 +59,7 @@ function Cart({ optionSetter }) {
   };
 
   const checkoutPage = () => {
-    
-        // axios
-        //   .post(
-        //     "http://localhost:8000/api/order",
-        //     {},
-        //     {
-        //       headers: {
-        //         genericvalue: "agent",
-        //         Authorization: local_accessToken,
-        //       },
-        //     }
-        //   )
-        //   .then((res) => console.log(res))
-        //   .catch((err) => console.log(err.message));
-    optionSetter("order", productDetails, "fromCart", 'quantity');
+    optionSetter("order", productDetails, "fromCart", "quantity");
   };
 
   return (
@@ -80,7 +73,7 @@ function Cart({ optionSetter }) {
       <div className="h-[53vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         {isLoading ? (
           <Loading />
-        ) : productDetails.length == 0 ? (
+        ) : isEmpty ? (
           <div className="flex flex-col gap-2 items-center">
             <h2 className="text-xl font-medium text-gray-500">
               Your Cart is Empty

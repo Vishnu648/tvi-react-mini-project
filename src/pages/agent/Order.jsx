@@ -435,6 +435,8 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
             selectedPage={selectedPage}
             handleFunction={() => handleContinue(latestAddress._id)}
             optionSetter={optionSetter}
+            addressId={latestAddress._id}
+            productId={obj._id}
           />
         </button>
       </div>

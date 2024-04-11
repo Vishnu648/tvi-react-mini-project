@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -16,12 +17,32 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ handleFunction, selectedPage }) {
+export default function BasicModal({
+  handleFunction,
+  selectedPage,
+  addressId,
+  productId
+}) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  let local_accessToken = localStorage.getItem("accessToken");
 
-  
+  const singleProductOrder = () => {
+    const address = {
+      addressId: addressId,
+    };
+
+    axios
+      .post(`http://localhost:8000/api/orderSingle/${productId}`, address, {
+        headers: {
+          genericvalue: "agent",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err.message));
+  };
 
   return (
     <div>
@@ -55,6 +76,7 @@ export default function BasicModal({ handleFunction, selectedPage }) {
                   handleClose();
                 } else {
                   console.log("ordered");
+                  singleProductOrder();
                   handleClose();
                 }
               }}

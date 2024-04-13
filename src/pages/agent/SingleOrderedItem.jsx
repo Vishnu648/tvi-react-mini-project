@@ -3,13 +3,14 @@ import productImg from "../../assets/productImg.jpg";
 import axios from "axios";
 import RateProduct from "../../components/modals/products/RateProduct";
 import { FaStar } from "react-icons/fa6";
+import StarRating from "../../components/StarRating";
 
 function SingleOrderedItem({ obj, optionSetter }) {
   let local_accessToken = localStorage.getItem("accessToken");
   const [productDetails, setProductDetails] = useState();
   const [address, setAddress] = useState();
   const [imageUrl, setImageUrl] = useState("");
-  const [ratingDetails, setRatingDetails] = useState([])
+  const [ratingDetails, setRatingDetails] = useState([]);
 
   const productDetailsApiCall = () => {
     axios
@@ -39,7 +40,10 @@ function SingleOrderedItem({ obj, optionSetter }) {
           Authorization: local_accessToken,
         },
       })
-      .then((res) => console.log("rating res------", res.data.result))
+      .then((res) => {
+        console.log("rating res------", res.data.result?.[0]?.reviews);
+        setRatingDetails(res.data.result?.[0]?.reviews);
+      })
       .catch((err) => console.error(err.message));
   };
 
@@ -70,8 +74,8 @@ function SingleOrderedItem({ obj, optionSetter }) {
         Order Details
       </div>
       <div className="h-[58vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-start items-center my-2 overflow-scroll border rounded-md border-[#e9ecef] ">
-        <div className="relative w-full p-5  flex justify-between">
-          <div >
+        <div className="relative w-full p-5 flex flex-col md:flex-row justify-between">
+          <div className="">
             <h6>Delivered to:</h6>
             <p className="font-semibold">
               {productDetails?.matchedAddress?.fullName}
@@ -85,8 +89,8 @@ function SingleOrderedItem({ obj, optionSetter }) {
               {productDetails?.matchedAddress?.alternateNumber}
             </p>
           </div>
-          <div>
-            rating
+          <div className="flex flex-1">
+            <StarRating ratingDetails={ratingDetails} />
           </div>
         </div>
         <div className="flex w-full flex-col xl:flex-row">

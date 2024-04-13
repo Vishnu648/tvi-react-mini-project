@@ -1,13 +1,12 @@
-import { useState } from "react";
-import "./App.css";
+import { useState,useEffect } from "react";
 import { CiStar } from "react-icons/ci";
 
 import React from "react";
 
-function App() {
+function StarRating({ ratingDetails }) {
   const numbers = [{ sl: 1 }, { sl: 2 }, { sl: 3 }, { sl: 4 }, { sl: 5 }];
   // const stars = [{ sl: 1 }, { sl: 2 }, { sl: 3 }, { sl: 4 }];
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(ratingDetails.rating);
 
   const numberElements = [];
   for (let i = 0; i < rating; i++) {
@@ -20,16 +19,20 @@ function App() {
           console.log(i + 1);
         }}
       >
-        <CiStar size={"40px"} className="text-green-400 cursor-pointer" />
+        <CiStar size={"30px"} className="text-green-400 cursor-pointer" />
       </div>
     );
   }
 
+  useEffect(() => {
+    console.log("props------", ratingDetails);
+  }, []);
+
   return (
-    <div className="flex justify-center pt-28 bg-black text-white h-screen w-screen">
+    <div className="w-full flex justify-center">
       {/* {numberElements} */}
 
-      <div className="border border-black inline-block relative">
+      <div className=" relative">
         <div className="flex gap-2 absolute">
           {numbers.map((s, i) => {
             return (
@@ -40,7 +43,10 @@ function App() {
                   console.log(i + 1);
                 }}
               >
-                <CiStar size={"40px"} className="text-white cursor-pointer" />
+                <CiStar
+                  size={"30px"}
+                  className="text-gray-300 cursor-pointer"
+                />
               </div>
             );
           })}
@@ -51,4 +57,4 @@ function App() {
   );
 }
 
-export default App;
+export default StarRating;

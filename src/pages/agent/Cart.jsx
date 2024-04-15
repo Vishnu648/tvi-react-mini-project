@@ -4,6 +4,7 @@ import productImg from "../../assets/productImg.jpg";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import Loading from "../../components/Loading";
 import Alert from "../../components/Alert";
+import { IoIosCloseCircle } from "react-icons/io";
 
 function Cart({ optionSetter }) {
   let local_accessToken = localStorage.getItem("accessToken");
@@ -24,11 +25,11 @@ function Cart({ optionSetter }) {
       })
       .then((res) => {
         console.log(res.data.results);
-        if ((res.data.results).length>0) {
+        if (res.data.results.length > 0) {
           setTotalPrice(res.data.results[0].total);
           setProductDetails(res.data.results[0].results);
           // res.data.results[0].results ? setIsLoading(false) : "";
-          setIsLoading(false)
+          setIsLoading(false);
         } else {
           setIsLoading(false);
           setIsEmpty(true);
@@ -100,11 +101,16 @@ function Cart({ optionSetter }) {
                 key={i}
                 className="border shadow-md hover:shadow-2xl relative rounded-md gap-5 object-cover cursor-pointer hover:scale-[1.01]"
               >
-                <div
-                  className="absolute top-1 right-1 "
-                  onClick={() => handleAddToWishlist(p._id)}
-                >
-                  <MdOutlineFavoriteBorder />
+                <div>
+                  <div className="text-gray-500 ">
+                    <IoIosCloseCircle size="18px" />
+                  </div>
+                  <div
+                    className="absolute top-1 right-1 "
+                    onClick={() => handleAddToWishlist(p._id)}
+                  >
+                    <MdOutlineFavoriteBorder />
+                  </div>
                 </div>
 
                 <div

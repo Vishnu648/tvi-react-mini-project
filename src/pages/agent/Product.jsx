@@ -22,6 +22,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [ratingDetails, setRatingDetails] = useState([]);
+  const [wishIds, setWishIds] = useState([]);
 
   const productApiCall = () => {
     // console.log("obj--", obj);
@@ -43,6 +44,26 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
           ratingApiCall(res.data.result._id);
           console.log(res.data.result);
           res.data.result ? setIsLoading(false) : "";
+
+          axios
+            .get("http://localhost:8000/api/wishlist", {
+              headers: {
+                agent: "agent",
+                Authorization: local_accessToken,
+              },
+            })
+            .then((res) => {
+              // console.log('wishid',res.data.result?.[0]?.results);
+              let wish = res.data.result?.[0]?.results;
+              // console.log(pdt);
+              // console.log(wish);
+              wish.map((e) => {
+                !wishIds.includes(e._id)
+                  ? setWishIds((prev) => [...prev, e._id])
+                  : "";
+              });
+            })
+            .catch((err) => console.log(err.message));
 
           if (res.data.result?.image.length > 0) {
             const base64String = btoa(
@@ -66,8 +87,12 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
         },
       })
       .then((res) => {
-        // console.log("rating res------", res.data.result?.[0]?.reviews);
+        // console.log("rating", res.data.result?.[0]?.reviews);
         setRatingDetails(res.data.result?.[0]?.reviews);
+        localStorage.setItem(
+          "rating",
+          JSON.stringify(res.data.result?.[0]?.reviews)
+        );
       })
       .catch((err) => console.error(err.message));
   };
@@ -121,7 +146,10 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
           },
         }
       )
-      .then((res) => console.log(res.data.message))
+      .then((res) => {
+        productApiCall();
+        console.log(res.data.message);
+      })
       .catch((err) => console.log(err.message));
   };
 
@@ -139,7 +167,8 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
             ? setItemRemoved(true)(
                 setTimeout(() => {
                   setItemRemoved(false);
-                }, 2000)
+                  optionSetter("cart");
+                }, 1000)
               )
             : ""
         // console.log(res)
@@ -156,13 +185,17 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
         },
       })
       .then((res) => {
-        res.status == "200"
-          ? setItemRemoved(true)(
-              setTimeout(() => {
-                setItemRemoved(false);
-              }, 2000)
-            )
-          : "";
+        if (res.status == "200") {
+          setItemRemoved(true);
+          setWishIds(wishIds.filter((e) => e != id));
+          productApiCall();
+        }
+
+        // (
+        //     setTimeout(() => {
+        //       setItemRemoved(false);
+        //     }, 2000)
+        //   )
       })
       .catch((err) => console.log(" "));
   };
@@ -218,8 +251,18 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
                   >
                     <IoHeart />
                   </div>
+                ) : wishIds.includes(productDetails._id) ? (
+                  <div
+                    className="absolute top-1 right-1  text-red-600"
+                    onClick={() => handleRemoveFromWishList(productDetails._id)}
+                  >
+                    <IoHeart />
+                  </div>
                 ) : (
-                  <div onClick={() => handleAddToWishlist(productDetails._id)}>
+                  <div
+                    className="absolute top-1 right-1 "
+                    onClick={() => handleAddToWishlist(productDetails._id)}
+                  >
                     <MdOutlineFavoriteBorder />
                   </div>
                 )}
@@ -294,10 +337,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
             <div className="md:w-[20vw] px-2 py-5 font-medium">
               <h2>Ratings & Reviews</h2>
               {ratingDetails ? (
-                <>
-                  {console.log('ratingDetails:--',ratingDetails)}
-                  <ProductRating ratingDetails={ratingDetails} />
-                </>
+                <ProductRating ratingDetails={ratingDetails} />
               ) : (
                 <p className="text-md font-thin">no ratings yet</p>
               )}

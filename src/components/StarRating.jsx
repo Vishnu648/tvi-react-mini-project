@@ -6,9 +6,11 @@ import React from "react";
 function StarRating({ ratingDetails }) {
   const numbers = [{ sl: 1 }, { sl: 2 }, { sl: 3 }, { sl: 4 }, { sl: 5 }];
   const [rating, setRating] = useState(ratingDetails?.rating);
+  const local_orderedRating = localStorage.getItem("orderedRating");
+  // const parsedData = JSON.parse(local_orderedRating);
 
   const numberElements = [];
-  for (let i = 0; i < rating; i++) {
+  for (let i = 0; i < ratingDetails.rating; i++) {
     const number = numbers[i];
     numberElements.push(
       <div

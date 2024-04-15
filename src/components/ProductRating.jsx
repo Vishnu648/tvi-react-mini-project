@@ -5,18 +5,20 @@ import React from "react";
 
 function ProductRating({ ratingDetails }) {
   const numbers = [{ sl: 1 }, { sl: 2 }, { sl: 3 }, { sl: 4 }, { sl: 5 }];
-  const [rating, setRating] = useState(ratingDetails?.rating);
+  // const local_ratingDetails = JSON.parse(localStorage.getItem("rating"));
+  const local_ratingDetails = 3
+  const [rating, setRating] = useState(ratingDetails || local_ratingDetails);
 
   const numberElements = [];
-  for (let i = 0; i < rating; i++) {
+  for (let i = 0; i < rating.rating; i++) {
     const number = numbers[i];
     numberElements.push(
       <div
-        key={i} 
-        // onClick={() => {
-        //   setRating(i + 1);
-        //   console.log(i + 1);
-        // }} 
+        key={i}
+        onClick={() => {
+          setRating(i + 1);
+          console.log(i + 1);
+        }}
       >
         <CiStar size={"30px"} className="text-green-400 cursor-pointer" />
       </div>
@@ -24,8 +26,8 @@ function ProductRating({ ratingDetails }) {
   }
 
   useEffect(() => {
-    console.log("rating****--_+", ratingDetails);
-    setRating(ratingDetails?.rating);
+    // console.log("local--", local_ratingDetails);
+    setRating(ratingDetails || local_ratingDetails);
   }, []);
 
   return (
@@ -38,10 +40,10 @@ function ProductRating({ ratingDetails }) {
             return (
               <div
                 key={i}
-                // onClick={() => {
-                //   setRating(i + 1);
-                //   console.log(i + 1);
-                // }}
+                onClick={() => {
+                  setRating(i + 1);
+                  console.log(i + 1);
+                }}
               >
                 <CiStar
                   size={"30px"}
@@ -53,7 +55,9 @@ function ProductRating({ ratingDetails }) {
         </div>
         <div className="flex gap-2 absolute ">{numberElements}</div>
       </div>
-      <p className="text-lg text-gray-500 font-normal">{ratingDetails.comment}</p>
+      <p className="text-lg text-gray-500 font-normal">
+        {ratingDetails.comment}
+      </p>
     </div>
   );
 }

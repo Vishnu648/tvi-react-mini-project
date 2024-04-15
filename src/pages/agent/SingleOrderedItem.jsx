@@ -42,13 +42,17 @@ function SingleOrderedItem({ obj, optionSetter }) {
       })
       .then((res) => {
         console.log("rating res------", res.data.result?.[0]?.reviews);
+        localStorage.setItem(
+          "orderedRating",
+          JSON.stringify(res.data.result?.[0]?.reviews)
+        );
         setRatingDetails(res.data.result?.[0]?.reviews);
       })
       .catch((err) => console.error(err.message));
   };
 
   useEffect(() => {
-    console.log('obj--',obj);
+    console.log("obj--", obj);
     ratingApiCall();
     if (obj?.product?.image.length > 0) {
       const img = obj?.product?.image[0];

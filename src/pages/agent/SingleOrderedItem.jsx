@@ -22,7 +22,7 @@ function SingleOrderedItem({ obj, optionSetter }) {
       })
       .then((res) => {
         setProductDetails(res.data.results[0]);
-        console.log(res.data);
+        // console.log(res.data);
         // if (res.data.results[0].product.image.length > 0) {
         //   const img = res.data.result[0].product.image[0];
         //   let imgUrl = img ? `data:image/jpeg;base64,${img}` : productImg;
@@ -48,7 +48,7 @@ function SingleOrderedItem({ obj, optionSetter }) {
   };
 
   useEffect(() => {
-    console.log(obj);
+    console.log('obj--',obj);
     ratingApiCall();
     if (obj?.product?.image.length > 0) {
       const img = obj?.product?.image[0];
@@ -89,7 +89,7 @@ function SingleOrderedItem({ obj, optionSetter }) {
               {productDetails?.matchedAddress?.alternateNumber}
             </p>
           </div>
-          <div className="flex flex-1">
+          <div className="flex flex-1 ">
             <StarRating ratingDetails={ratingDetails} />
           </div>
         </div>

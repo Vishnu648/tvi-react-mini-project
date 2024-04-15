@@ -3,7 +3,7 @@ import { CiStar } from "react-icons/ci";
 
 import React from "react";
 
-function StarRating({ ratingDetails }) {
+function ProductRating({ ratingDetails }) {
   const numbers = [{ sl: 1 }, { sl: 2 }, { sl: 3 }, { sl: 4 }, { sl: 5 }];
   const [rating, setRating] = useState(ratingDetails?.rating);
 
@@ -12,11 +12,11 @@ function StarRating({ ratingDetails }) {
     const number = numbers[i];
     numberElements.push(
       <div
-        key={i}
-        onClick={() => {
-          setRating(i + 1);
-          console.log(i + 1);
-        }}
+        key={i} 
+        // onClick={() => {
+        //   setRating(i + 1);
+        //   console.log(i + 1);
+        // }} 
       >
         <CiStar size={"30px"} className="text-green-400 cursor-pointer" />
       </div>
@@ -29,7 +29,7 @@ function StarRating({ ratingDetails }) {
   }, []);
 
   return (
-    <div className="w-full flex justify-start">
+    <div className="w-full flex flex-col gap-8">
       {/* {numberElements} */}
 
       <div className=" relative">
@@ -38,10 +38,10 @@ function StarRating({ ratingDetails }) {
             return (
               <div
                 key={i}
-                onClick={() => {
-                  setRating(i + 1);
-                  console.log(i + 1);
-                }}
+                // onClick={() => {
+                //   setRating(i + 1);
+                //   console.log(i + 1);
+                // }}
               >
                 <CiStar
                   size={"30px"}
@@ -53,8 +53,9 @@ function StarRating({ ratingDetails }) {
         </div>
         <div className="flex gap-2 absolute ">{numberElements}</div>
       </div>
+      <p className="text-lg text-gray-500 font-normal">{ratingDetails.comment}</p>
     </div>
   );
 }
 
-export default StarRating;
+export default ProductRating;

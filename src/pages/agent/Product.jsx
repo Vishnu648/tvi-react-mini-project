@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 import { IoHeart } from "react-icons/io5";
 import Alert from "../../components/Alert";
 import Loading from "../../components/Loading";
+import StarRating from "../../components/StarRating";
+import ProductRating from "../../components/ProductRating";
 
 function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   const [itemRemoved, setItemRemoved] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [ratingDetails, setRatingDetails] = useState([]);
 
   const productApiCall = () => {
     // console.log("obj--", obj);
@@ -37,7 +40,8 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
       .then((res) => {
         {
           setProductDetails(res.data.result);
-          // console.log(res.data.result);
+          ratingApiCall(res.data.result._id);
+          console.log(res.data.result);
           res.data.result ? setIsLoading(false) : "";
 
           if (res.data.result?.image.length > 0) {
@@ -52,6 +56,20 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
         }
       })
       .catch((err) => console.log(err.message));
+  };
+
+  const ratingApiCall = (id) => {
+    axios
+      .get(`http://localhost:8000/api/get_review/${id}`, {
+        headers: {
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => {
+        // console.log("rating res------", res.data.result?.[0]?.reviews);
+        setRatingDetails(res.data.result?.[0]?.reviews);
+      })
+      .catch((err) => console.error(err.message));
   };
 
   useEffect(() => {
@@ -183,98 +201,106 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
         </div>
       ) : (
         <div>
-          <div className="flex flex-col md:flex-row gap-3 justify-start  my-8 overflow-scroll border rounded-md border-[#e9ecef] relative">
-            <img
-              src={
-                imagePath ? `data:image/png;base64,${imagePath}` : productImg
-              }
-              alt="pdt"
-              className="h-80 w-52 object-contain"
-            />
-            <div className="absolute top-1 right-1 text-2xl cursor-pointer">
-              {selectedPage == "wishDetails" ? (
-                <div
-                  className="absolute top-1 right-1 text-red-600"
-                  onClick={() => handleRemoveFromWishList(productDetails._id)}
-                >
-                  <IoHeart />
-                </div>
-              ) : (
-                <div onClick={() => handleAddToWishlist(productDetails._id)}>
-                  <MdOutlineFavoriteBorder />
-                </div>
-              )}
-            </div>
-            <div className=" w-full overflow-scroll h-full p-2 ">
-              <div className="flex flex-col gap-6 justify-between  mt-6">
-                {productDetails ? (
-                  <div className=" flex flex-col">
-                    <p className="text-xl font-extrabold">
-                      {productDetails.title
-                        ? productDetails.title.toUpperCase()
-                        : ""}
-                    </p>
-                    {productDetails.discountedPrice ? (
-                      <h3 className="text-[#26a541] my-2">Special price</h3>
-                    ) : (
-                      ""
-                    )}
-                    <div className="flex items-center gap-3">
-                      <p className="text-3xl font-mono">
-                        ₹{productDetails?.discountedPrice}
-                      </p>
-                      <p className="text-xl font-thin">
-                        <s>₹{productDetails?.price}</s>
-                      </p>
-                      <p className="text-[#26a541] text-xs">
-                        {" "}
-                        {productDetails.offer}% off
-                      </p>
-                    </div>
-                    {/* <p className="">{productDetails?.productCode}</p> */}
-                    {productDetails?.availability == "yes" ? (
-                      obj.stock <= 5 ? (
-                        <p className="text-sm mb-4 text-red-500">
-                          only {obj.stock} left
-                        </p>
-                      ) : (
-                        <p className="text-sm mb-4 text-gray-600">
-                          only {obj.stock} left
-                        </p>
-                      )
-                    ) : (
-                      <p className="text-red-500 m-4">OUT OF STOCK</p>
-                    )}
-                    <div className="flex items-center mb-3">
-                      <pre className="text-gray-500 text-sm">color : </pre>
-                      <pre className={`text-[${productDetails.color}]`}>
-                        {productDetails.color}
-                      </pre>
-                    </div>
-                    <p className="text-justify">
-                      {productDetails?.description}
-                    </p>
-                    <select
-                      className="border border-gray-400 w-[10%] my-3 rounded-sm"
-                      onChange={(e) => setQuantity(e.target.value)}
-                      value={quantity}
-                    >
-                      <option className="">1</option>
-                      <option className="">2</option>
-                      <option className="">3</option>
-                      <option className="">4</option>
-                      <option className="">5</option>
-                      <option className="">6</option>
-                      <option className="">7</option>
-                      <option className="">8</option>
-                      <option className="">9</option>
-                      <option className="">10</option>
-                    </select>
+          <div className="flex flex-col lg:flex-row gap-3 flex-1 lg:justify-between my-8 overflow-scroll border rounded-md border-[#e9ecef] relative">
+            <div className="flex flex-col flex-1 md:flex-row gap-3 justify-start overflow-scroll rounded-md relative">
+              <img
+                src={
+                  imagePath ? `data:image/png;base64,${imagePath}` : productImg
+                }
+                alt="pdt"
+                className="h-80 w-52 object-contain"
+              />
+              <div className="absolute top-1 right-1 text-2xl cursor-pointer">
+                {selectedPage == "wishDetails" ? (
+                  <div
+                    className="absolute top-1 right-1 text-red-600"
+                    onClick={() => handleRemoveFromWishList(productDetails._id)}
+                  >
+                    <IoHeart />
                   </div>
                 ) : (
-                  ""
+                  <div onClick={() => handleAddToWishlist(productDetails._id)}>
+                    <MdOutlineFavoriteBorder />
+                  </div>
                 )}
               </div>
+              <div className=" w-full overflow-scroll h-full p-2 ">
+                <div className="flex flex-col gap-6 justify-between  mt-6">
+                  {productDetails ? (
+                    <div className=" flex flex-col">
+                      <p className="text-xl font-extrabold">
+                        {productDetails.title
+                          ? productDetails.title.toUpperCase()
+                          : ""}
+                      </p>
+                      {productDetails.discountedPrice ? (
+                        <h3 className="text-[#26a541] my-2">Special price</h3>
+                      ) : (
+                        ""
+                      )}
+                      <div className="flex items-center gap-3">
+                        <p className="text-3xl font-mono">
+                          ₹{productDetails?.discountedPrice}
+                        </p>
+                        <p className="text-xl font-thin">
+                          <s>₹{productDetails?.price}</s>
+                        </p>
+                        <p className="text-[#26a541] text-xs">
+                          {" "}
+                          {productDetails.offer}% off
+                        </p>
+                      </div>
+                      {/* <p className="">{productDetails?.productCode}</p> */}
+                      {productDetails?.availability == "yes" ? (
+                        obj.stock <= 5 ? (
+                          <p className="text-sm mb-4 text-red-500">
+                            only {obj.stock} left
+                          </p>
+                        ) : (
+                          <p className="text-sm mb-4 text-gray-600">
+                            only {obj.stock} left
+                          </p>
+                        )
+                      ) : (
+                        <p className="text-red-500 m-4">OUT OF STOCK</p>
+                      )}
+                      <div className="flex items-center mb-3">
+                        <pre className="text-gray-500 text-sm">color : </pre>
+                        <pre className={`text-[${productDetails.color}]`}>
+                          {productDetails.color}
+                        </pre>
+                      </div>
+                      <p className="text-justify">
+                        {productDetails?.description}
+                      </p>
+                      <select
+                        className="border border-gray-400 w-[10%] my-3 rounded-sm"
+                        onChange={(e) => setQuantity(e.target.value)}
+                        value={quantity}
+                      >
+                        <option className="">1</option>
+                        <option className="">2</option>
+                        <option className="">3</option>
+                        <option className="">4</option>
+                        <option className="">5</option>
+                      </select>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="md:w-[20vw] px-2 py-5 font-medium">
+              <h2>Ratings & Reviews</h2>
+              {ratingDetails ? (
+                <>
+                  {console.log('ratingDetails:--',ratingDetails)}
+                  <ProductRating ratingDetails={ratingDetails} />
+                </>
+              ) : (
+                <p className="text-md font-thin">no ratings yet</p>
+              )}
             </div>
           </div>
           <div className=" flex justify-evenly">

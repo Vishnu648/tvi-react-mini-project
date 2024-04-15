@@ -318,11 +318,6 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
                 <option className="">3</option>
                 <option className="">4</option>
                 <option className="">5</option>
-                <option className="">6</option>
-                <option className="">7</option>
-                <option className="">8</option>
-                <option className="">9</option>
-                <option className="">10</option>
               </select>
             </div>
           ) : (
@@ -428,7 +423,9 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
       <div className="border border-gray-400 rounded-md flex relative justify-around p-3 mt-2">
         <div className="w-full">
           <s className="text-xs">{obj.price || totalPrice}</s>
-          <p className="font-[500]">₹{obj.discountedPrice || totalFinalPrice}</p>
+          <p className="font-[500]">
+            ₹{obj.discountedPrice || totalFinalPrice}
+          </p>
         </div>
         <button className="bg-[#fb641b] text-white px-7 py-1 rounded-sm font-[500]">
           <PlaceOrderConfirm

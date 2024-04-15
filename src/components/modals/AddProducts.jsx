@@ -30,7 +30,7 @@ export default function BasicModal({ productApiCall }) {
   const [proAvailability, setProAvailability] = useState("yes");
   const [proStock, setProStock] = useState("3");
   const [proOffer, setProOffer] = useState(0);
-  const [proColor, setProColor] = useState("");
+  const [proColor, setProColor] = useState("red");
   const [proDetails, setProDetails] = useState(
     "Featuring a speedy IPS-level panel up to 144Hz, the TUF Gaming A15 is perfect for fast-paced gaming. With adaptive sync, the display's refresh rate synchronizes with the GPU's frame rate to reduce lag, minimize stuttering, and eliminate visual tearing for ultra-smooth and immersive gameplay."
   );

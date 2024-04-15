@@ -22,8 +22,8 @@ function AddProduct({ selectedOption }) {
       })
       .then((res) => {
         setProducts(res.data.products);
-        res.data.products.length > 0 ? setIsLoading(false) : "";
-        // console.log(res.data.products);
+        res.data.products ? setIsLoading(false) : "";
+        console.log(res.data.products);
         setTotalCount(res.data.totalCount);
       })
       .catch((err) => console.log("error-", err.message));
@@ -55,7 +55,9 @@ function AddProduct({ selectedOption }) {
       <div className="h-[53vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         {isLoading ? (
           <Loading />
-        ) : (
+        ) :products.length==0?(
+          <p>No products</p>
+        ): (
           products.map((p, i) => {
             if (p.image.length > 0) {
               const base64String = p.image[0].data

@@ -22,20 +22,15 @@ function Profile() {
   let local_refreshToken = localStorage.getItem("refreshToken");
 
   let local_role = localStorage.getItem("role");
-  const [selectedImg, setSelectedImg] = useState("");
+  const [selectedImg, setSelectedImg] = useState(imagePath);
+  const [imgPathUrl, setimgPathUrl] = useState("");
 
-
-  const imageSetter = (path) => {
-
-    const details = {
-      image: path,
-    };
-
+  const imageSetter = (path, url) => {
     setSelectedImg(path);
-
-    
+    setimgPathUrl(url);
+    console.log(path, url);
   };
-  
+
   const userApiCall = () => {
     axios
       .get("http://localhost:8000/api/me", {
@@ -77,7 +72,7 @@ function Profile() {
     const details = {
       firstName: firstName,
       lastName: lastName,
-      image: imagePath,
+      image: selectedImg,
     };
 
     axios

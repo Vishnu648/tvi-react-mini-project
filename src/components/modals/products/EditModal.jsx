@@ -37,22 +37,25 @@ export default function BasicModal({ obj, imgPath, productApiCall }) {
 
   let local_accessToken = localStorage.getItem("accessToken");
   const [selectedImg, setSelectedImg] = useState("");
+  const [imgPathUrl, setImgPathUrl] = useState("");
 
-  const imageSetter = (path) => {
-    const details = {
-      image: path,
-    };
+  const imageSetter = (path, url) => {
+    // const details = {
+    //   image: path,
+    // };
     setSelectedImg(path);
+    setImgPathUrl(url);
+    // setSelectedImg(path);
     // console.log(path);
-    axios
-      .post("http://localhost:8000/image/import", details, {
-        headers: {
-          genericvalue: "admin",
-          Authorization: local_accessToken,
-        },
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err.message));
+    // axios
+    //   .post("http://localhost:8000/image/import", details, {
+    //     headers: {
+    //       genericvalue: "admin",
+    //       Authorization: local_accessToken,
+    //     },
+    //   })
+    //   .then((res) => console.log(res))
+    //   .catch((err) => console.log(err.message));
   };
 
   useEffect(() => {
@@ -96,9 +99,7 @@ export default function BasicModal({ obj, imgPath, productApiCall }) {
       .catch((err) => console.log(err.message));
   };
 
-  useEffect(() => {
-    console.log("ead;f", obj.image);
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div>
@@ -119,7 +120,7 @@ export default function BasicModal({ obj, imgPath, productApiCall }) {
               <div className="h-28 w-28 p-2 flex items-center justify-center">
                 {selectedImg ? (
                   <img
-                    src={selectedImg ? `${selectedImg}` : productImg}
+                    src={imgPathUrl ? `${imgPathUrl}` : productImg}
                     alt="pdt"
                     className="h-full w-full object-contain rounded-lg"
                   />

@@ -21,7 +21,7 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ message='Are you Sure...?',id, userApiCall,showToastMessage,handleDelete }) {
+export default function BasicModal({ message='Are you Sure...?',id, userApiCall,showToastMessage,handleDelete,size }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -32,7 +32,7 @@ export default function BasicModal({ message='Are you Sure...?',id, userApiCall,
 
   return (
     <div>
-      <MdDelete className="cursor-pointer text-2xl" onClick={handleOpen} />
+      <MdDelete className="cursor-pointer text-2xl" onClick={handleOpen} size={size} />
       <Modal
         open={open}
         onClose={handleClose}

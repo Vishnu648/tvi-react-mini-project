@@ -6,6 +6,7 @@ import Pagination from "../components/Pagination";
 import Loading from "../components/Loading";
 import { MdDelete } from "react-icons/md";
 import { handleLogout } from "../utils/utils";
+import DeleteModal from "../components/modals/DeleteModal";
 
 function AddProduct({ selectedOption }) {
   let local_accessToken = localStorage.getItem("accessToken");
@@ -45,7 +46,7 @@ function AddProduct({ selectedOption }) {
     productApiCall(pageNo);
   };
 
-  const handleRemoveProduct=(id) => {
+  const handleRemoveProduct = (id) => {
     // console.log('handleDelete',id)
 
     axios
@@ -56,14 +57,14 @@ function AddProduct({ selectedOption }) {
         },
       })
       .then((res) => {
-        console.log(res)
-        if(res.status=='200'){
+        console.log(res);
+        if (res.status == "200") {
           productApiCall();
         }
       })
       .catch((err) => console.log(err.message));
-  }
-  
+  };
+
   return (
     <section className="px-6 flex-1 overflow-scroll h-[92vh] pb-5">
       <div className=" mb-[.5rem] mt-[1.5rem] leading-[1.2] flex justify-between  ">
@@ -89,15 +90,18 @@ function AddProduct({ selectedOption }) {
                 ? `data:image/jpeg;base64,${base64String}`
                 : productImg; */
               }
-              console.log(p.image);
+              {
+                /* console.log(p.image); */
+              }
             }
 
             return (
               <div className="border shadow-md hover:shadow-2xl relative rounded-md gap-5 object-cover cursor-pointer hover:scale-[1.01]">
-                <div className="absolute top-1 right-1 text-gray-500 hover:text-gray-800 "
-                  onClick={()=>handleRemoveProduct(p._id)}
+                <div
+                  className="absolute top-1 right-1 text-gray-500 text-['1px'] hover:text-gray-800 "
+                  // onClick={() => handleRemoveProduct(p._id)}
                 >
-                  <MdDelete />
+                  <DeleteModal id={p._id} handleDelete={handleRemoveProduct} size={"20px"} />
                 </div>
                 <div
                   onClick={() => selectedOption("product", p)}
@@ -114,7 +118,7 @@ function AddProduct({ selectedOption }) {
                         : productImg
                     }
                     alt="product"
-                    className="h-36 mt-5 w-full object-contain hover:scale-[1.02]"
+                    className="h-36 mt-5 w-full object-contain"
                   />
                   <div className="p-2">
                     <p>{p.title}</p>

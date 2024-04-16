@@ -148,7 +148,7 @@ function SingleProduct({ obj, selectedOption }) {
               id={obj._id}
               handleDelete={handleDelete}
             />
-            <EditModal obj={obj} productApiCall={productApiCall} />
+            <EditModal obj={obj} imgPath={imagePath} productApiCall={productApiCall} />
           </div>
         </div>
       )}

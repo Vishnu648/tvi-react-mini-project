@@ -5,12 +5,10 @@ import React from "react";
 
 function ProductRating({ ratingDetails }) {
   const numbers = [{ sl: 1 }, { sl: 2 }, { sl: 3 }, { sl: 4 }, { sl: 5 }];
-  // const local_ratingDetails = JSON.parse(localStorage.getItem("rating"));
-  const local_ratingDetails = 3
-  const [rating, setRating] = useState(ratingDetails || local_ratingDetails);
+  const [rating, setRating] = useState(ratingDetails?.rating);
 
   const numberElements = [];
-  for (let i = 0; i < rating.rating; i++) {
+  for (let i = 0; i < rating; i++) {
     const number = numbers[i];
     numberElements.push(
       <div
@@ -26,9 +24,9 @@ function ProductRating({ ratingDetails }) {
   }
 
   useEffect(() => {
-    // console.log("local--", local_ratingDetails);
-    setRating(ratingDetails || local_ratingDetails);
-  }, []);
+    console.log("local--", ratingDetails);
+    setRating(ratingDetails?.rating);
+  }, [ratingDetails]);
 
   return (
     <div className="w-full flex flex-col gap-8">
@@ -56,7 +54,7 @@ function ProductRating({ ratingDetails }) {
         <div className="flex gap-2 absolute ">{numberElements}</div>
       </div>
       <p className="text-lg text-gray-500 font-normal">
-        {ratingDetails.comment}
+        {/* {ratingDetails.comment} */}
       </p>
     </div>
   );

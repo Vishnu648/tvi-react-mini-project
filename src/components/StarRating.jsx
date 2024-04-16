@@ -10,7 +10,7 @@ function StarRating({ ratingDetails }) {
   // const parsedData = JSON.parse(local_orderedRating);
 
   const numberElements = [];
-  for (let i = 0; i < ratingDetails.rating; i++) {
+  for (let i = 0; i < rating; i++) {
     const number = numbers[i];
     numberElements.push(
       <div
@@ -28,7 +28,7 @@ function StarRating({ ratingDetails }) {
   useEffect(() => {
     console.log("rating****--_+", ratingDetails);
     setRating(ratingDetails?.rating);
-  }, []);
+  }, [ratingDetails]);
 
   return (
     <div className="w-full flex justify-start">

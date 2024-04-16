@@ -41,7 +41,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
       .then((res) => {
         {
           setProductDetails(res.data.result);
-          ratingApiCall(res.data.result._id);
+          // ratingApiCall(res.data.result._id);
           console.log(res.data.result);
           res.data.result ? setIsLoading(false) : "";
 
@@ -79,16 +79,16 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
       .catch((err) => console.log(err.message));
   };
 
-  const ratingApiCall = (id) => {
+  const ratingApiCall = () => {
     axios
-      .get(`http://localhost:8000/api/get_review/${id}`, {
+      .get(`http://localhost:8000/api/get_review/${obj._id}`, {
         headers: {
           Authorization: local_accessToken,
         },
       })
       .then((res) => {
-        // console.log("rating", res.data.result?.[0]?.reviews);
         setRatingDetails(res.data.result?.[0]?.reviews);
+        console.log("rating---",res.data.result?.[0]?.reviews);
         localStorage.setItem(
           "rating",
           JSON.stringify(res.data.result?.[0]?.reviews)
@@ -100,6 +100,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   useEffect(() => {
     // console.log(obj);
     productApiCall();
+    ratingApiCall();
     // console.log(obj._id)
   }, []);
 
@@ -336,11 +337,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
             </div>
             <div className="md:w-[20vw] px-2 py-5 font-medium">
               <h2>Ratings & Reviews</h2>
-              {ratingDetails ? (
-                <ProductRating ratingDetails={ratingDetails} />
-              ) : (
-                <p className="text-md font-thin">no ratings yet</p>
-              )}
+              <StarRating ratingDetails={ratingDetails} />
             </div>
           </div>
           <div className=" flex justify-evenly">

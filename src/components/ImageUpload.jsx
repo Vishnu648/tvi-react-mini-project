@@ -1,17 +1,14 @@
-import { useState } from "react";
 import axios from "axios";
 
 export default function App({ imageSetter }) {
-  const [imgage, setImgage] = useState("");
-
   function handleImage(e) {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setImgage(reader.result);
+        const imgUrl = reader.result;
         // console.log(reader.result);
-        imageSetter(reader.result);
+        imageSetter(file,reader.result);
       };
       reader.readAsDataURL(file);
     }

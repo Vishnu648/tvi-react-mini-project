@@ -7,6 +7,7 @@ import { BsBoxSeam } from "react-icons/bs";
 
 export default function bMenu({ optionSetter }) {
   const navigate = useNavigate();
+  let local_role = localStorage.getItem("role");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -46,18 +47,22 @@ export default function bMenu({ optionSetter }) {
           "aria-labelledby": "basic-button",
         }}
       >
-        <p
-          className="px-2 py-1 flex cursor-pointer items-center gap-1"
-          onClick={() => {
-            optionSetter("orderedItems");
-            handleClose();
-          }}
-        >
-          <div className="inline ">
-            <BsBoxSeam />
-          </div>
-          Orders
-        </p>
+        {local_role == "agent" ? (
+          <p
+            className="px-2 py-1 flex cursor-pointer items-center gap-1"
+            onClick={() => {
+              optionSetter("orderedItems");
+              handleClose();
+            }}
+          >
+            <div className="inline ">
+              <BsBoxSeam />
+            </div>
+            Orders
+          </p>
+        ) : (
+          ""
+        )}
         <LogoutModal />
       </Menu>
     </div>

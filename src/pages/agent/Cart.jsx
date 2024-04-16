@@ -63,8 +63,31 @@ function Cart({ optionSetter }) {
     optionSetter("order", productDetails, "fromCart", "quantity");
   };
 
+  const handleRemoveFromCart = (obj) => {
+    axios
+      .delete(`http://localhost:8000/api/delete-cart/${obj.productId}`, {
+        headers: {
+          genericvalue: "agent",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        cartApiCall();
+      })
+      .catch((err) => console.log(err.message));
+  };
+
   return (
     <section className="px-6 flex-1 overflow-scroll h-[92vh] pb-5">
+      {itemRemoved ? (
+        <div className="border rounded-md absolute right-10 top-2">
+          <Alert message="Success!..." />
+        </div>
+      ) : (
+        ""
+      )}
+
       <div className=" mb-[.5rem] mt-[1.5rem] leading-[1.2] flex justify-between  ">
         <p className="text-[35px]  text-[#212529] ">Cart</p>
       </div>
@@ -102,7 +125,10 @@ function Cart({ optionSetter }) {
                 className="border shadow-md hover:shadow-2xl relative rounded-md gap-5 object-cover cursor-pointer hover:scale-[1.01]"
               >
                 <div>
-                  <div className="text-gray-500 ">
+                  <div
+                    className="text-gray-500 absolute top-1 left-1 hover:text-gray-700 "
+                    onClick={() => handleRemoveFromCart(p)}
+                  >
                     <IoIosCloseCircle size="18px" />
                   </div>
                   <div

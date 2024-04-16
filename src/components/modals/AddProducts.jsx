@@ -37,10 +37,12 @@ export default function BasicModal({ productApiCall }) {
   let local_accessToken = localStorage.getItem("accessToken");
   const [imagePath, setImagePath] = useState("");
   const [selectedImg, setSelectedImg] = useState("");
+  const [imgPathUrl, setImgPathUrl] = useState("");
 
-  const imageSetter = (path) => {
-    // console.log(path);
+  const imageSetter = (path, url) => {
+    console.log(path);
     setSelectedImg(path);
+    setImgPathUrl(url);
   };
 
   const handleAddProduct = (e) => {
@@ -55,9 +57,8 @@ export default function BasicModal({ productApiCall }) {
     formData.append("stock", proStock);
     formData.append("offer", proOffer);
     formData.append("color", proColor);
-    // formData.append("imageURL", selectedImg);
+    formData.append("image", selectedImg);
 
-    console.log(formData);
     axios
       .post("http://localhost:8000/api/addProdt", formData, {
         headers: {
@@ -68,6 +69,14 @@ export default function BasicModal({ productApiCall }) {
       .then((response) => {
         productApiCall();
         console.log(response);
+        setProName("");
+        setProPrice("");
+        setProCategory("");
+        setProAvailability("");
+        setProStock("");
+        setProOffer("");
+        setProColor("");
+        setProDetails("");
       })
       .catch((err) => {
         console.log(err.message);
@@ -102,8 +111,8 @@ export default function BasicModal({ productApiCall }) {
               <div className="h-28 w-28 p-2 flex items-center justify-center">
                 {selectedImg ? (
                   <img
-                    src={selectedImg ? `${selectedImg}` : productImg}
-                    alt="pdt"
+                    src={imgPathUrl ? imgPathUrl : productImg}
+                    alt="pdts"
                     className="h-full w-full object-contain rounded-lg"
                   />
                 ) : (
@@ -187,7 +196,7 @@ export default function BasicModal({ productApiCall }) {
                   placeholder="00"
                 />
               </label>
-              <label id="Label" >
+              <label id="Label">
                 Product Offer
                 <br />
                 <input
@@ -198,7 +207,6 @@ export default function BasicModal({ productApiCall }) {
                 />
               </label>
             </div>
-            
 
             <div className="grid grid-cols-1 items-center gap-4">
               <label id="Label">

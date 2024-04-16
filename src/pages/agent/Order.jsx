@@ -358,7 +358,7 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
                         <b>₹{p.discountedPrice}</b>
                       </pre>
                     </div>
-                    {/* <select
+                    <select
                       className="border border-gray-400 w-[90px] ml-[5px] my-1 rounded-sm"
                       onChange={(e) => setQuantity(e.target.value)}
                       value={quantity}
@@ -373,7 +373,7 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
                       <option className="">8</option>
                       <option className="">9</option>
                       <option className="">10</option>
-                    </select> */}
+                    </select>
                   </div>
                 </div>
               );

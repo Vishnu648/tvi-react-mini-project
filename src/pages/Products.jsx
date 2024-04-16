@@ -4,6 +4,8 @@ import productImg from "../assets/productImg.jpg";
 import AddProducts from "../components/modals/AddProducts";
 import Pagination from "../components/Pagination";
 import Loading from "../components/Loading";
+import { MdDelete } from "react-icons/md";
+import { handleLogout } from "../utils/utils";
 
 function AddProduct({ selectedOption }) {
   let local_accessToken = localStorage.getItem("accessToken");
@@ -23,7 +25,7 @@ function AddProduct({ selectedOption }) {
       .then((res) => {
         setProducts(res.data.products);
         res.data.products ? setIsLoading(false) : "";
-        console.log(res.data.products);
+        // console.log(res.data.products);
         setTotalCount(res.data.totalCount);
       })
       .catch((err) => console.log("error-", err.message));
@@ -43,6 +45,25 @@ function AddProduct({ selectedOption }) {
     productApiCall(pageNo);
   };
 
+  const handleRemoveProduct=(id) => {
+    // console.log('handleDelete',id)
+
+    axios
+      .delete(`http://localhost:8000/api/deleteProduct/${id}`, {
+        headers: {
+          genericvalue: "admin",
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => {
+        console.log(res)
+        if(res.status=='200'){
+          productApiCall();
+        }
+      })
+      .catch((err) => console.log(err.message));
+  }
+  
   return (
     <section className="px-6 flex-1 overflow-scroll h-[92vh] pb-5">
       <div className=" mb-[.5rem] mt-[1.5rem] leading-[1.2] flex justify-between  ">
@@ -55,37 +76,57 @@ function AddProduct({ selectedOption }) {
       <div className="h-[53vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         {isLoading ? (
           <Loading />
-        ) :products.length==0?(
+        ) : products.length == 0 ? (
           <p>No products</p>
-        ): (
+        ) : (
           products.map((p, i) => {
             if (p.image.length > 0) {
-              const base64String = p.image[0].data
-                ? btoa(String.fromCharCode(...new Uint8Array(p.image[0].data)))
+              {
+                /* const base64String = p.image[0].data
+                ? btoa(String.fromCharCode( new Uint8Array(p.image[0].data)))
                 : null;
               var imgUrl = base64String
                 ? `data:image/jpeg;base64,${base64String}`
-                : productImg;
+                : productImg; */
+              }
+              console.log(p.image);
             }
+
             return (
-              <div
-                onClick={() => selectedOption("product", p)}
-                key={p._id}
-                className="border shadow-md hover:shadow-2xl hover:scale-[1.01] rounded-md gap-5 object-cover cursor-pointer w-48 py-3"
-              >
-                <img
-                  src={imgUrl ? imgUrl : productImg}
-                  alt="product"
-                  className="h-40 w-full object-contain rounded-t-md"
-                />
-                <div className="p-2">
-                  <p>{p.title}</p>
-                  <div className="flex items-center gap-2 ">
-                    <p className="text-md font-medium ">₹{p.discountedPrice}</p>
-                    <p className="text-xs text-gray-400">
-                      <s>₹{p.price}</s>
-                    </p>
-                    <p className="text-[#26a541] text-xs"> {p.offer}% off</p>
+              <div className="border shadow-md hover:shadow-2xl relative rounded-md gap-5 object-cover cursor-pointer hover:scale-[1.01]">
+                <div className="absolute top-1 right-1 text-gray-500 hover:text-gray-800 "
+                  onClick={()=>handleRemoveProduct(p._id)}
+                >
+                  <MdDelete />
+                </div>
+                <div
+                  onClick={() => selectedOption("product", p)}
+                  key={p._id}
+                  className="w-48 py-3"
+                >
+                  <img
+                    // src={imgUrl ? imgUrl : productImg}
+                    src={
+                      p.image.length > 0
+                        ? URL.createObjectURL(
+                            new Blob([Uint8Array.from(p.image[0].data)])
+                          )
+                        : productImg
+                    }
+                    alt="product"
+                    className="h-36 mt-5 w-full object-contain hover:scale-[1.02]"
+                  />
+                  <div className="p-2">
+                    <p>{p.title}</p>
+                    <div className="flex items-center gap-2 ">
+                      <p className="text-md font-medium ">
+                        ₹{p.discountedPrice}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        <s>₹{p.price}</s>
+                      </p>
+                      <p className="text-[#26a541] text-xs"> {p.offer}% off</p>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -21,18 +21,20 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ obj, productApiCall }) {
+export default function BasicModal({ obj, imgPath, productApiCall }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [imagePath, setImagePath] = useState("");
-  const [proName, setProName] = useState(obj?.productName);
-  const [proPrice, setProPrice] = useState(obj?.productPrice);
-  const [proCategory, setProCategory] = useState(obj?.category);
-  const [proAvailability, setProAvailability] = useState(obj?.availability);
-  const [proStock, setProStock] = useState(obj?.stock);
-  const [proDetails, setProDetails] = useState(obj?.productDetails);
-  const [proCode, setProCode] = useState(obj?.productCode);
+  const [imagePath, setImagePath] = useState(imgPath);
+  const [proName, setProName] = useState(obj.title);
+  const [proPrice, setProPrice] = useState(obj.price);
+  const [proCategory, setProCategory] = useState(obj.category);
+  const [proAvailability, setProAvailability] = useState(obj.availability);
+  const [proStock, setProStock] = useState(obj.stock);
+  const [proOffer, setProOffer] = useState(obj.offer);
+  const [proColor, setProColor] = useState(obj.color);
+  const [proDetails, setProDetails] = useState(obj.description);
+
   let local_accessToken = localStorage.getItem("accessToken");
   const [selectedImg, setSelectedImg] = useState("");
 
@@ -54,37 +56,28 @@ export default function BasicModal({ obj, productApiCall }) {
   };
 
   useEffect(() => {
-    const base64String = btoa(
-      String.fromCharCode(...new Uint8Array(obj?.image?.data))
-    );
-    setImagePath(base64String);
-    // console.log(base64String);
+    // if (obj?.image.length > 0) {
+    //   const base64String = btoa(
+    //     String.fromCharCode(...new Uint8Array(obj?.image?.data))
+    //   );
+    // } else {
+    //   setImagePath(productImg);
+    // }
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // const details = {
-    //   availability: proAvailability,
-    //   category: proCategory,
-    //   productDetails: proDetails,
-    //   productName: proName,
-    //   productPrice: proPrice,
-    //   stock: proStock,
-    //   productCode: proCode,
-    //   image: imagePath,
-    // };
-
     const formData = new FormData();
-    formData.append("availability", proAvailability);
+    formData.append("title", proName);
+    formData.append("price", proPrice);
+    formData.append("description", proDetails);
     formData.append("category", proCategory);
-    formData.append("productDetails", proDetails);
-    formData.append("productName", proName);
-    formData.append("productPrice", proPrice);
+    formData.append("availability", proAvailability);
     formData.append("stock", proStock);
-    formData.append("productCode", proCode);
-    formData.append("imageURL", selectedImg);
-
+    formData.append("offer", proOffer);
+    formData.append("color", proColor);
+    formData.append("image", imagePath);
     axios
       .put(`http://localhost:8000/api/updateProdt/${obj._id}`, formData, {
         headers: {
@@ -102,6 +95,10 @@ export default function BasicModal({ obj, productApiCall }) {
       })
       .catch((err) => console.log(err.message));
   };
+
+  useEffect(() => {
+    console.log("ead;f", obj.image);
+  }, []);
 
   return (
     <div>
@@ -175,18 +172,18 @@ export default function BasicModal({ obj, productApiCall }) {
                 />
               </label>
               <label id="Label">
-                Product Code
+                Product Color
                 <br />
                 <input
                   type="text"
-                  value={proCode}
-                  onChange={(e) => setProCode(e.target.value)}
-                  placeholder="product code"
+                  value={proColor}
+                  onChange={(e) => setProColor(e.target.value)}
+                  placeholder="red"
                 />
               </label>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 ">
               <label id="Label">
                 Availability
                 <br />
@@ -205,6 +202,16 @@ export default function BasicModal({ obj, productApiCall }) {
                   type="text"
                   value={proStock}
                   placeholder="00"
+                />
+              </label>
+              <label id="Label">
+                Product Offer
+                <br />
+                <input
+                  type="text"
+                  value={proOffer}
+                  onChange={(e) => setProOffer(e.target.value)}
+                  placeholder="discount in %..."
                 />
               </label>
             </div>

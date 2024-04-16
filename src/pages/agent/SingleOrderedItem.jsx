@@ -34,6 +34,7 @@ function SingleOrderedItem({ obj, optionSetter }) {
   };
 
   const ratingApiCall = () => {
+    console.log(obj._id)
     axios
       .get(`http://localhost:8000/api/get_review/${obj._id}`, {
         headers: {

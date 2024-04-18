@@ -10,7 +10,7 @@ function SingleOrderedItem({ obj, optionSetter }) {
   const [productDetails, setProductDetails] = useState();
   const [address, setAddress] = useState();
   const [imageUrl, setImageUrl] = useState("");
-  const [ratingDetails, setRatingDetails] = useState([]);
+  // const [ratingDetails, setRatingDetails] = useState([]);
 
   const productDetailsApiCall = () => {
     axios
@@ -33,28 +33,28 @@ function SingleOrderedItem({ obj, optionSetter }) {
       .catch((err) => console.log(err.message));
   };
 
-  const ratingApiCall = () => {
-    console.log(obj._id)
-    axios
-      .get(`http://localhost:8000/api/get_review/${obj._id}`, {
-        headers: {
-          Authorization: local_accessToken,
-        },
-      })
-      .then((res) => {
-        console.log("rating res------", res.data.result?.[0]?.reviews);
-        localStorage.setItem(
-          "orderedRating",
-          JSON.stringify(res.data.result?.[0]?.reviews)
-        );
-        setRatingDetails(res.data.result?.[0]?.reviews);
-      })
-      .catch((err) => console.error(err.message));
-  };
+  // const ratingApiCall = () => {
+  //   console.log('-------',obj._id)
+  //   axios
+  //     .get(`http://localhost:8000/api/get_review/${obj._id}`, {
+  //       headers: {
+  //         Authorization: local_accessToken,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log("rating res------", res.data.result?.[0]?.reviews);
+  //       localStorage.setItem(
+  //         "orderedRating",
+  //         JSON.stringify(res.data.result?.[0]?.reviews)
+  //       );
+  //       setRatingDetails(res.data.result?.[0]?.reviews);
+  //     })
+  //     .catch((err) => console.error(err.message));
+  // };
 
   useEffect(() => {
-    console.log("obj--", obj);
-    ratingApiCall();
+    // console.log("obj--", obj);
+    // ratingApiCall();
     if (obj?.product?.image.length > 0) {
       const img = obj?.product?.image[0];
 
@@ -95,7 +95,7 @@ function SingleOrderedItem({ obj, optionSetter }) {
             </p>
           </div>
           <div className="flex flex-1 ">
-            <StarRating ratingDetails={ratingDetails} />
+            <StarRating obj={obj} />
           </div>
         </div>
         <div className="flex w-full flex-col xl:flex-row">
@@ -186,7 +186,7 @@ function SingleOrderedItem({ obj, optionSetter }) {
         </div>
       </div>
       <div className="p-2 float-right">
-        <RateProduct productId={obj._id} />
+        {/* <RateProduct productId={obj._id} /> */}
       </div>
     </section>
   );

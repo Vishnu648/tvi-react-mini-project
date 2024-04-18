@@ -79,8 +79,6 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
       addressId: id,
     };
 
-    console.log("deliveryAddress", deliveryAddress);
-
     axios
       .post("http://localhost:8000/api/order", deliveryAddress, {
         headers: {

@@ -18,7 +18,7 @@ function UserProfile() {
   const navigate = useNavigate();
   const [userData, setuserData] = useState({});
   const [selectedProduct, setSelectedProduct] = useState();
-  const [selectedOption, setSelectedOption] = useState("profile");
+  const [selectedOption, setSelectedOption] = useState("store");
   const fullName = `${userData.firstName} ${userData.lastName}`;
 
   const tokens = useSelector((state) => state.token);

@@ -17,7 +17,7 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ productId }) {
+export default function BasicModal({ productId,ratingStarComment }) {
   let local_accessToken = localStorage.getItem("accessToken");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -31,6 +31,8 @@ export default function BasicModal({ productId }) {
 
   const handleRate = (e) => {
     e.preventDefault();
+
+    ratingStarComment(rating,comment)
     const details = {
       rating: rating,
       comment: comment,
@@ -55,7 +57,7 @@ export default function BasicModal({ productId }) {
         onClick={handleOpen}
         className="border px-3 py-1 hover:shadow-md hover:shadow-black"
       >
-        Rate Product
+        Edit
       </button>
       <Modal
         open={open}

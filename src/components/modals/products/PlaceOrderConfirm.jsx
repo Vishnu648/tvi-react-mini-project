@@ -1,9 +1,10 @@
-import * as React from "react";
+import React,{useState,useEffect} from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
+import OrderSuccess from '../products/OrderSuccess'
 
 const style = {
   position: "absolute",
@@ -27,6 +28,7 @@ export default function BasicModal({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   let local_accessToken = localStorage.getItem("accessToken");
+  const [successMessageVisible, setSuccessMessageVisible] = useState(false)
 
   const singleProductOrder = () => {
     const address = {
@@ -40,7 +42,12 @@ export default function BasicModal({
           Authorization: local_accessToken,
         },
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res.status)
+        if(res.status=='201'){
+          setSuccessMessageVisible(true)
+        }
+      })
       .catch((err) => console.error(err.message));
   };
 
@@ -52,6 +59,7 @@ export default function BasicModal({
       >
         Continue{" "}
       </button>
+      {/* {successMessageVisible?<OrderSuccess/>:""} */}
       <Modal
         open={open}
         onClose={handleClose}
@@ -75,7 +83,6 @@ export default function BasicModal({
                   handleFunction();
                   handleClose();
                 } else {
-                  console.log("ordered");
                   singleProductOrder();
                   handleClose();
                 }

@@ -80,8 +80,9 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   };
 
   const ratingApiCall = () => {
+    console.log('obj_id--',obj._id)
     axios
-      .get(`http://localhost:8000/api/get_review/${obj._id}`, {
+      .get(`http://localhost:8000/api/get_review/${'661f4e045b1572d90c44ea94'}`, {
         headers: {
           Authorization: local_accessToken,
         },

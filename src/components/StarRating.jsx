@@ -5,7 +5,7 @@ import RateProduct from "../components/modals/products/RateProduct";
 
 import React from "react";
 
-function StarRating({ obj }) {
+function StarRating({ obj, selectedPage }) {
   let local_accessToken = localStorage.getItem("accessToken");
   const numbers = [{ sl: 1 }, { sl: 2 }, { sl: 3 }, { sl: 4 }, { sl: 5 }];
   const local_orderedRating = localStorage.getItem("orderedRating");
@@ -22,6 +22,28 @@ function StarRating({ obj }) {
   };
 
   // const parsedData = JSON.parse(local_orderedRating);
+
+  const handleRate = () => {
+    // e.preventDefault();
+
+    const details = {
+      rating: rating,
+      comment: "new product",
+    };
+
+    axios
+      .post(`http://localhost:8000/api/add_review/${obj._id}`, details, {
+        headers: {
+          Authorization: local_accessToken,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        ratingApiCall();
+        // handleClose();
+      })
+      .catch((err) => console.log(err.message));
+  };
 
   const numberElements = [];
   for (let i = 0; i < rating; i++) {
@@ -66,18 +88,25 @@ function StarRating({ obj }) {
       comment: "good product",
     };
 
-    axios
-      .put(
-        `http://localhost:8000/api/edit_review/${ratingDetails._id}`,
-        details,
-        {
-          headers: {
-            Authorization: local_accessToken,
-          },
-        }
-      )
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err.message));
+    // ratingDetails=='undefined'?console.log('un'):console.log('not un')
+
+    if (ratingDetails == undefined) {
+      // console.log('add a new rating')
+      handleRate(rating);
+    } else {
+      axios
+        .put(
+          `http://localhost:8000/api/edit_review/${ratingDetails._id}`,
+          details,
+          {
+            headers: {
+              Authorization: local_accessToken,
+            },
+          }
+        )
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err.message));
+    }
   };
 
   useEffect(() => {
@@ -85,6 +114,7 @@ function StarRating({ obj }) {
     // setRating(ratingDetails?.rating);
     ratingApiCall();
     // setRating(ratingDetails.rating);
+    // console.log("from page--", selectedPage);
   }, []);
 
   return (

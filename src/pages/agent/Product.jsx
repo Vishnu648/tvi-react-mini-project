@@ -25,7 +25,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
   const [wishIds, setWishIds] = useState([]);
 
   const productApiCall = () => {
-    // console.log("obj--", obj);
+    console.log("obj--", obj);
     axios
       .get(
         `http://localhost:8000/api/get-one/${
@@ -42,7 +42,7 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
         {
           setProductDetails(res.data.result);
           // ratingApiCall(res.data.result._id);
-          console.log(res.data.result);
+          console.log('productDetails--',res.data.result);
           res.data.result ? setIsLoading(false) : "";
 
           axios
@@ -336,10 +336,10 @@ function Product({ selectedProduct, obj, optionSetter, selectedPage }) {
                 </div>
               </div>
             </div>
-            <div className="md:w-[20vw] px-2 py-5 font-medium">
-              <h2>Ratings & Reviews</h2>
-              <StarRating ratingDetails={ratingDetails} />
-            </div>
+            {/* <div className="md:w-[20vw] px-2 py-5 font-medium">
+              <h2>Ratings</h2>
+              <StarRating obj={productDetails} />
+            </div> */}
           </div>
           <div className=" flex justify-evenly">
             {selectedPage == "cartDetails" ? (

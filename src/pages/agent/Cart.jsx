@@ -24,8 +24,8 @@ function Cart({ optionSetter }) {
         },
       })
       .then((res) => {
-        console.log(res.data.results);
-        if (res.data.results.length > 0) {
+        console.log('res.data--',res);
+        if (res?.data?.results.length > 0) {
           setTotalPrice(res.data.results[0].total);
           setProductDetails(res.data.results[0].results);
           // res.data.results[0].results ? setIsLoading(false) : "";

@@ -5,6 +5,8 @@ import productImg from "../../assets/productImg.jpg";
 import { FaArrowDownLong } from "react-icons/fa6";
 import Address from "../../components/modals/products/Address";
 import PlaceOrderConfirm from "../../components/modals/products/PlaceOrderConfirm";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Order({ optionSetter, obj, selectedPage, productQuantity }) {
   let local_accessToken = localStorage.getItem("accessToken");
@@ -42,6 +44,8 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
       })
       .catch((err) => console.error(err.message));
   };
+
+  const notify = (msg = "success") => toast(msg);
 
   const cartApiCall = () => {
     axios
@@ -86,7 +90,16 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
           Authorization: local_accessToken,
         },
       })
-      .then((res) => console.log(res.status))
+      .then((res) => {
+        console.log(res.status);
+        if (res.status == "201") {
+          notify("Order Place Successfully");
+
+          setTimeout(() => {
+            optionSetter("orderedItems");
+          }, 1500);
+        }
+      })
       .catch((err) => console.log(err.message));
   };
 
@@ -144,6 +157,7 @@ function Order({ optionSetter, obj, selectedPage, productQuantity }) {
 
   return (
     <section className="px-6 flex-1 relative h-[92vh] pb-5">
+      <ToastContainer />
       <div className=" mb-[.5rem] mt-[1.5rem] leading-[1.2] flex justify-between  ">
         <button
           onClick={() => {

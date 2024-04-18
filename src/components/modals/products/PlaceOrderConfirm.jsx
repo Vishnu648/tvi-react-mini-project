@@ -5,6 +5,8 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import OrderSuccess from '../products/OrderSuccess'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const style = {
   position: "absolute",
@@ -22,13 +24,16 @@ export default function BasicModal({
   handleFunction,
   selectedPage,
   addressId,
-  productId
+  productId,
+  optionSetter
 }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   let local_accessToken = localStorage.getItem("accessToken");
   const [successMessageVisible, setSuccessMessageVisible] = useState(false)
+
+  const notify = (msg = "success") => toast(msg);
 
   const singleProductOrder = () => {
     const address = {
@@ -43,9 +48,15 @@ export default function BasicModal({
         },
       })
       .then((res) => {
-        console.log(res.status)
+        // console.log(res)
         if(res.status=='201'){
+
           setSuccessMessageVisible(true)
+          notify('Order Place Successfully')
+
+          setTimeout(() => {
+            optionSetter("orderedItems");
+          }, 1500);
         }
       })
       .catch((err) => console.error(err.message));
@@ -53,6 +64,7 @@ export default function BasicModal({
 
   return (
     <div>
+    <ToastContainer />
       <button
         onClick={handleOpen}
         className="bg-[#fb641b] text-white px-7 py-1 rounded-sm font-[500]"

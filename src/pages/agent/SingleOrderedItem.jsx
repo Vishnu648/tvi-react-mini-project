@@ -5,7 +5,7 @@ import RateProduct from "../../components/modals/products/RateProduct";
 import { FaStar } from "react-icons/fa6";
 import StarRating from "../../components/StarRating";
 
-function SingleOrderedItem({ obj, optionSetter }) {
+function SingleOrderedItem({ obj, optionSetter,selectedPage }) {
   let local_accessToken = localStorage.getItem("accessToken");
   const [productDetails, setProductDetails] = useState();
   const [address, setAddress] = useState();
@@ -53,7 +53,7 @@ function SingleOrderedItem({ obj, optionSetter }) {
   // };
 
   useEffect(() => {
-    // console.log("obj--", obj);
+    console.log("obj--", obj);
     // ratingApiCall();
     if (obj?.product?.image.length > 0) {
       const img = obj?.product?.image[0];
@@ -95,7 +95,7 @@ function SingleOrderedItem({ obj, optionSetter }) {
             </p>
           </div>
           <div className="flex flex-1 ">
-            <StarRating obj={obj} />
+            <StarRating obj={obj} selectedPage={selectedPage}/>
           </div>
         </div>
         <div className="flex w-full flex-col xl:flex-row">

@@ -19,7 +19,7 @@ function OrderedItems({ optionSetter }) {
       .then((res) => {
         setOrderedItems(res.data.results);
         res.data.results ? setIsLoading(false) : "";
-        // console.log(res.data.results);
+        console.log(res.data.results);
       })
       .catch((err) => console.log(err.message));
   };
@@ -68,7 +68,7 @@ function OrderedItems({ optionSetter }) {
               <div
                 key={i}
                 className="flex flex-col lg:flex-row w-full border rounded-md hover:shadow-md px-2 py-1 gap-3 cursor-pointer"
-                onClick={() => optionSetter("singleOrder", item)}
+                onClick={() => optionSetter("singleOrder", item,'OrderedItem')}
               >
                 <div className="flex items-center w-[50%] gap-11">
                   <img

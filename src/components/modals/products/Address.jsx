@@ -176,7 +176,7 @@ export default function Address({ address, addressSetter, addressApi }) {
                   <input
                     type="text"
                     className="p-2"
-                    placeholder="pincode"
+                    placeholder="6 digit pincode"
                     onChange={(e) => setPincode(e.target.value)}
                     value={pincode}
                   />

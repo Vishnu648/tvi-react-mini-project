@@ -47,7 +47,7 @@ function UserProfile() {
       })
       .then((response) => {
         setuserData(response.data.result);
-        console.log(response.data.result);
+        // console.log(response.data.result);
       })
       .catch((error) => {
         console.error(error.message);
@@ -115,12 +115,13 @@ function UserProfile() {
         ) : selectedOption == "orderedItems" ? (
           <OrderedItems optionSetter={optionSetter} />
         ) : selectedOption == "singleOrder" ? (
-          <SingleOrderedItem 
+          <SingleOrderedItem
             obj={selectedProduct}
             optionSetter={optionSetter}
+            selectedPage={selectedPage}
           />
         ) : (
-          console.log("undefined-------")
+          console.log("undefined optionSetter-------")
         )}
       </div>
     </div>

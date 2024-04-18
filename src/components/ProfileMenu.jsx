@@ -48,7 +48,7 @@ export default function bMenu({ optionSetter }) {
         }}
       >
         {local_role == "agent" ? (
-          <p
+          <div
             className="px-2 py-1 flex cursor-pointer items-center gap-1"
             onClick={() => {
               optionSetter("orderedItems");
@@ -59,7 +59,7 @@ export default function bMenu({ optionSetter }) {
               <BsBoxSeam />
             </div>
             Orders
-          </p>
+          </div>
         ) : (
           ""
         )}

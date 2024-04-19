@@ -75,8 +75,13 @@ function Profile() {
       image: selectedImg,
     };
 
+    const formData = new FormData();
+    formData.append("firstName", firstName || userData.firstName);
+    formData.append("lastName", lastName || userData.lastName);
+    formData.append("image", selectedImg);
+
     axios
-      .put("http://localhost:8000/api/me/update-user", details, {
+      .put("http://localhost:8000/api/me/update-user", formData, {
         headers: {
           genericvalue: "agent",
           Authorization: tokens.access_token || local_accessToken,

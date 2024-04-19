@@ -69,14 +69,14 @@ export default function BasicModal({ productApiCall }) {
       .then((response) => {
         productApiCall();
         console.log(response);
-        setProName("");
-        setProPrice("");
-        setProCategory("");
-        setProAvailability("");
-        setProStock("");
-        setProOffer("");
-        setProColor("");
-        setProDetails("");
+        // setProName("");
+        // setProPrice("");
+        // setProCategory("");
+        // setProAvailability("");
+        // setProStock("");
+        // setProOffer("");
+        // setProColor("");
+        // setProDetails("");
       })
       .catch((err) => {
         console.log(err.message);

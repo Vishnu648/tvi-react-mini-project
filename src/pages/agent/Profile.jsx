@@ -28,7 +28,7 @@ function Profile() {
   const imageSetter = (path, url) => {
     setSelectedImg(path);
     setimgPathUrl(url);
-    console.log(path, url);
+    // console.log(path, url);
   };
 
   const userApiCall = () => {
@@ -105,6 +105,7 @@ function Profile() {
   const handleCancel = () => {
     // setImagePath(userData.imageURL);
     setIsEditing((prev) => !prev);
+    setimgPathUrl("")
   };
 
   let words = fullName.split(" ");
@@ -127,7 +128,22 @@ function Profile() {
           <p className="text-white text-[4rem]">{dp || "UN"}</p>
         )}
       </div>
-      {isEditing ? <ImageUpload imageSetter={imageSetter} /> : ""}
+      {isEditing ? (
+        <div className="flex items-center">
+          <ImageUpload imageSetter={imageSetter} />
+          {imgPathUrl ? (
+            <img
+              className="rounded-full object-fill h-24 w-h-h-24"
+              src={imgPathUrl}
+              alt="new profile"
+            />
+          ) : (
+            ""
+          )}
+        </div>
+      ) : (
+        ""
+      )}
       <Paper elevation={2} className="h-11 rounded-md w-full md:w-[48%]">
         {isEditing ? (
           <input

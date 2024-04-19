@@ -53,6 +53,7 @@ function Home() {
       <Navbar
         toogleSidebar={toogleSidebar}
         searchDataFunction={searchDataFunction}
+        sidebarOption={sidebarOption}
       />
       <section className="flex w-full">
         <div

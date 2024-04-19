@@ -23,7 +23,7 @@ function SingleProduct({ obj, selectedOption }) {
       })
       .then((res) => {
         setProductDetails(res.data.result);
-        console.log(res.data.result);
+        // console.log(res.data.result);
         res.data.result ? setIsLoading(false) : "";
 
         const base64String = btoa(
@@ -39,6 +39,7 @@ function SingleProduct({ obj, selectedOption }) {
 
   useEffect(() => {
     productApiCall();
+    console.log('--obj._id',obj._id)
   }, []);
 
   const handleDelete = () => {

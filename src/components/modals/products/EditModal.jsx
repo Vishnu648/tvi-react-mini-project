@@ -66,6 +66,7 @@ export default function BasicModal({ obj, imgPath, productApiCall }) {
     // } else {
     //   setImagePath(productImg);
     // }
+    setImagePath(imgPath)
   }, []);
 
   const handleSubmit = (e) => {
@@ -80,7 +81,7 @@ export default function BasicModal({ obj, imgPath, productApiCall }) {
     formData.append("stock", proStock);
     formData.append("offer", proOffer);
     formData.append("color", proColor);
-    formData.append("image", imagePath);
+    formData.append("image", selectedImg || imagePath);
     axios
       .put(`http://localhost:8000/api/updateProdt/${obj._id}`, formData, {
         headers: {

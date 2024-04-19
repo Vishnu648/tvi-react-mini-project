@@ -96,7 +96,7 @@ function AddProduct({ selectedOption }) {
             }
 
             return (
-              <div className="border shadow-md hover:shadow-2xl relative rounded-md gap-5 object-cover cursor-pointer hover:scale-[1.01]">
+              <div key={p._id} className="border shadow-md hover:shadow-2xl relative rounded-md gap-5 object-cover cursor-pointer hover:scale-[1.01]">
                 <div
                   className="absolute top-1 right-1 text-gray-500 text-['1px'] hover:text-gray-800 "
                   // onClick={() => handleRemoveProduct(p._id)}

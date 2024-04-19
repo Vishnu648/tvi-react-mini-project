@@ -146,7 +146,7 @@ function Store({ optionSetter }) {
       <div className="bg-[#e9ecef]  h-12 flex items-center text-[#838b92] px-4 rounded-sm text-[1rem] mb-2">
         Products
       </div>
-      <div className="h-[55vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
+      <div className="h-[65vh] sm:h-[55vh] flex flex-wrap lg:flex-row gap-3 justify-center md:justify-center items-center p-5 my-8 overflow-scroll border rounded-md border-[#e9ecef] ">
         {isLoading ? (
           <Loading />
         ) : isError ? (

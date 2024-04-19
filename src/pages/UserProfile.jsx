@@ -85,7 +85,7 @@ function UserProfile() {
       <div className="flex ">
         <div
           className={`transition-all duration-500 ${
-            sidebarIsOpen ? "w-[225px]" : "w-0"
+            sidebarIsOpen ? "w-[160px] sm:w-[225px]" : "w-0"
           } overflow-hidden`}
         >
           <UserSidebar optionSetter={optionSetter} fullName={fullName} />

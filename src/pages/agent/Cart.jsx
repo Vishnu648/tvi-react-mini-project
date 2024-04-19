@@ -131,12 +131,12 @@ function Cart({ optionSetter }) {
                   >
                     <IoIosCloseCircle size="18px" />
                   </div>
-                  <div
+                  {/* <div
                     className="absolute top-1 right-1 "
                     onClick={() => handleAddToWishlist(p._id)}
                   >
                     <MdOutlineFavoriteBorder />
-                  </div>
+                  </div> */}
                 </div>
 
                 <div

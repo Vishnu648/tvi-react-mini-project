@@ -25,7 +25,7 @@ function Home() {
   let local_accessToken = localStorage.getItem("accessToken");
   let local_role = localStorage.getItem("role");
   const [newUserData, setnewUserData] = useState({});
-  const [sidebarOption, setSidebarOption] = useState("products");
+  const [sidebarOption, setSidebarOption] = useState("dashboard");
   const [selectedProductId, setSelectedProductId] = useState("");
 
   useEffect(() => {

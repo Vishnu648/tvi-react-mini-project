@@ -39,7 +39,7 @@ function SingleProduct({ obj, selectedOption }) {
 
   useEffect(() => {
     productApiCall();
-    console.log('--obj._id',obj._id)
+    // console.log('--obj._id',obj._id)
   }, []);
 
   const handleDelete = () => {

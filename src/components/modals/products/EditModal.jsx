@@ -45,6 +45,8 @@ export default function BasicModal({ obj, imgPath, productApiCall }) {
     // };
     setSelectedImg(path);
     setImgPathUrl(url);
+
+    console.log(path);
     // setSelectedImg(path);
     // console.log(path);
     // axios
@@ -66,22 +68,23 @@ export default function BasicModal({ obj, imgPath, productApiCall }) {
     // } else {
     //   setImagePath(productImg);
     // }
-    setImagePath(imgPath)
+    setImagePath(imgPath);
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("title", proName);
-    formData.append("price", proPrice);
-    formData.append("description", proDetails);
-    formData.append("category", proCategory);
-    formData.append("availability", proAvailability);
-    formData.append("stock", proStock);
-    formData.append("offer", proOffer);
-    formData.append("color", proColor);
-    formData.append("image", selectedImg || imagePath);
+    proName ? formData.append("title", proName) : "";
+
+    proPrice ? formData.append("price", proPrice) : "";
+    proDetails?formData.append("description", proDetails):""
+    proCategory?formData.append("category", proCategory):""
+    proAvailability?formData.append("availability", proAvailability):""
+    proStock?formData.append("stock", proStock):""
+    proOffer?formData.append("offer", proOffer):""
+    proColor?formData.append("color", proColor):""
+    selectedImg ? formData.append("image", selectedImg ):""
     axios
       .put(`http://localhost:8000/api/updateProdt/${obj._id}`, formData, {
         headers: {
@@ -105,7 +108,6 @@ export default function BasicModal({ obj, imgPath, productApiCall }) {
   return (
     <div>
       <MdEdit onClick={handleOpen} className="text-2xl cursor-pointer" />
-
       <Modal
         open={open}
         onClose={handleClose}
@@ -113,6 +115,8 @@ export default function BasicModal({ obj, imgPath, productApiCall }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} className="rounded-lg overflow-scroll">
+          {/* <img src={`data:image/png;base64,${imgPath}`} alt='img'/> */}
+
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Edit Product
           </Typography>

@@ -76,9 +76,9 @@ function Profile() {
     };
 
     const formData = new FormData();
-    formData.append("firstName", firstName || userData.firstName);
-    formData.append("lastName", lastName || userData.lastName);
-    formData.append("image", selectedImg);
+   firstName?  formData.append("firstName", firstName || userData.firstName):""
+    lastName?formData.append("lastName", lastName || userData.lastName):""
+    selectedImg?formData.append("image", selectedImg):""
 
     axios
       .put("http://localhost:8000/api/me/update-user", formData, {
